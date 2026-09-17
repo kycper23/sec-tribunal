@@ -6,7 +6,11 @@
 import { z } from 'zod'
 import { openrouterFetch } from '../lib/openrouter.js'
 
-const MODEL = process.env.OPENROUTER_MODEL ?? 'anthropic/claude-fable-5'
+// `||` (not `??`) so an env var present but set to an empty string still
+// falls back to the default — Vercel dashboards make it easy to add a key
+// with a blank value, which would otherwise send an empty "model" to the
+// gateway and fail with "A model is required."
+const MODEL = process.env.OPENROUTER_MODEL || 'anthropic/claude-fable-5'
 
 interface ChatMessage {
   role: 'system' | 'user'

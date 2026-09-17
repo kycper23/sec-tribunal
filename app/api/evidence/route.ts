@@ -7,11 +7,11 @@ import { NextResponse } from 'next/server'
 import { fetchCompanyFacts, resolveTicker } from '../../../src/sec/edgar.js'
 import { buildBrief } from '../../../src/sec/facts.js'
 import { findPeer } from '../../../src/tribunal/peers.js'
-import { asString, jsonError } from '../_lib.js'
+import { asString, jsonError, withErrorHandling } from '../_lib.js'
 
 export const maxDuration = 60
 
-export async function POST(req: Request) {
+export const POST = withErrorHandling(async (req: Request) => {
   const body = (await req.json().catch(() => ({}))) as Record<string, unknown>
   const ticker = asString(body.ticker).trim().toUpperCase()
   if (!ticker || ticker.length > 10) return jsonError('Provide a ticker, e.g. TSLA.')
@@ -32,4 +32,4 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.json({ company, peer: peerBrief ? peer : null, brief, peerBrief })
-}
+})

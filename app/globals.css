@@ -193,3 +193,68 @@ body {
   .masthead h1 { font-size: 2.2rem; }
   .container { padding-top: 2rem; }
 }
+
+/* ---- Agents' bench -------------------------------------------------------- */
+.bench {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.9rem;
+  margin: 1.6rem 0 0.4rem; animation: rise 0.45s ease both;
+}
+.bench-agent {
+  --role: var(--muted);
+  background: linear-gradient(160deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--border); border-radius: 14px; padding: 1rem 0.8rem 0.85rem;
+  text-align: center; transition: opacity 0.35s, border-color 0.35s, transform 0.35s;
+}
+.bench-agent.prosecutor { --role: var(--red); }
+.bench-agent.defense { --role: var(--green); }
+.bench-agent.judge { --role: var(--violet); }
+
+.bench-agent.idle { opacity: 0.42; filter: saturate(0.4); }
+.bench-agent.done { opacity: 0.66; }
+.bench-agent.thinking, .bench-agent.speaking {
+  opacity: 1; border-color: color-mix(in srgb, var(--role) 45%, transparent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--role) 12%, transparent);
+}
+
+.bench-avatar {
+  width: 62px; height: 62px; margin: 0 auto 0.55rem; border-radius: 50%;
+  display: grid; place-items: center;
+  background: color-mix(in srgb, var(--role) 9%, transparent);
+  border: 2px solid color-mix(in srgb, var(--role) 40%, transparent);
+  transition: border-color 0.35s;
+}
+.bench-agent.thinking .bench-avatar { animation: pulse-role 1.6s ease-in-out infinite; }
+.bench-agent.speaking .bench-avatar { border-color: var(--role); box-shadow: 0 0 18px color-mix(in srgb, var(--role) 35%, transparent); }
+@keyframes pulse-role {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--role) 38%, transparent); }
+  55% { box-shadow: 0 0 0 9px transparent; }
+}
+
+.bench-name { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.02em; }
+.bench-state {
+  min-height: 1.5em; margin-top: 0.3rem; display: flex; gap: 0.45rem;
+  align-items: center; justify-content: center;
+}
+.bench-status { color: var(--muted); font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.05em; animation: rise 0.3s ease both; }
+.bench-agent.speaking .bench-status { color: var(--role); text-transform: uppercase; font-weight: 600; }
+
+.dots { display: inline-flex; gap: 3px; align-items: center; }
+.dots i {
+  width: 4px; height: 4px; border-radius: 50%; background: var(--role); display: inline-block;
+  animation: dot-bounce 1.2s ease-in-out infinite;
+}
+.dots i:nth-child(2) { animation-delay: 0.15s; }
+.dots i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes dot-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .bench { gap: 0.5rem; }
+  .bench-agent { padding: 0.7rem 0.4rem 0.6rem; }
+  .bench-avatar { width: 48px; height: 48px; }
+  .bench-avatar svg { width: 30px; height: 30px; }
+  .bench-status { font-size: 0.6rem; }
+}

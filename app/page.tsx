@@ -6,6 +6,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { Markdown } from './components/markdown'
 import { buildDossier, post, type Company, type Speech, type Verdict } from './trial'
 import { VerdictCard } from './verdict-card'
 
@@ -25,7 +26,7 @@ function Typewriter({ text, done, onDone }: { text: string; done: boolean; onDon
   const visible = done ? text : text.slice(0, shown)
   return (
     <div className="speech-body">
-      {visible}
+      <Markdown text={visible} />
       {!done && <span className="cursor">&nbsp;</span>}
     </div>
   )
@@ -128,7 +129,8 @@ export default function Courtroom() {
   return (
     <main className="container">
       <header className="masthead">
-        <h1>⚖️ SEC TRIBUNAL</h1>
+        <div className="eyebrow">AI Courtroom · SEC EDGAR Evidence</div>
+        <h1>SEC Tribunal</h1>
         <p>Three AI agents put a public company on trial — evidence: real SEC EDGAR filings.</p>
       </header>
 

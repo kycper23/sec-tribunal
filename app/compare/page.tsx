@@ -79,7 +79,8 @@ export default function ComparePage() {
   return (
     <main className="container container-wide">
       <header className="masthead">
-        <h1>⚖️ SEC TRIBUNAL — DOUBLE TRIAL</h1>
+        <div className="eyebrow">Double Trial · Head to Head</div>
+        <h1>SEC Tribunal</h1>
         <p>Two companies. Two trials. One healthier balance sheet.</p>
       </header>
 

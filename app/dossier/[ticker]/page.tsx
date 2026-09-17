@@ -8,6 +8,7 @@ import { resolve } from 'node:path'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { TrialResult } from '../../../src/tribunal/run.js'
+import { Markdown } from '../../components/markdown'
 import { VerdictCard } from '../../verdict-card'
 
 export const dynamicParams = false
@@ -44,7 +45,8 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
   return (
     <main className="container">
       <header className="masthead">
-        <h1>⚖️ SEC TRIBUNAL</h1>
+        <div className="eyebrow">Precomputed Case File</div>
+        <h1>SEC Tribunal</h1>
         <p>
           In re {demo.company.name} ({demo.company.ticker}) · CIK {demo.company.cik10} · tried {demo.generatedAt}
         </p>
@@ -66,7 +68,9 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
             <span className={`speech-role ${s.role}`}>{s.title}</span>
             <span className="speech-sub">In re {demo.company.name}</span>
           </div>
-          <div className="speech-body">{s.text}</div>
+          <div className="speech-body">
+            <Markdown text={s.text} />
+          </div>
         </section>
       ))}
 

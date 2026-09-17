@@ -6,7 +6,7 @@ export function Gauge({ score }: { score: number }) {
     <div className="gauge-wrap">
       <div
         className="gauge"
-        style={{ background: `conic-gradient(${scoreColor(score)} ${score * 3.6}deg, #2c2822 0deg)` }}
+        style={{ background: `conic-gradient(${scoreColor(score)} ${score * 3.6}deg, var(--gauge-track) 0deg)` }}
       >
         <div className="gauge-inner">
           <div>

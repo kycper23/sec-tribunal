@@ -17,17 +17,13 @@
   renderer Markdownu (`app/components/markdown.tsx`, zero zależności) podpięty
   w courtroom i dossier. Zweryfikowane na produkcji.
 
-## 🔜 Do zrobienia (kolejność)
+- **Etap 2a — Awatary + ława agentów** (`20d6371`):
+  `agent-avatars.tsx` (4 awatary SVG: miecz/tarcza/młotek/dokument),
+  `agent-bench.tsx` (stany idle/thinking/speaking/done, pulsujące ringi,
+  skaczące kropki, rotujące statusy co 4 s), podpięte w `page.tsx`,
+  stany przełączane między wywołaniami API.
 
-### Etap 2a — Awatary + ława agentów
-- `app/components/agent-avatars.tsx`: 4 autorskie awatary SVG
-  (prokurator — czerwień, obrońca — szmaragd, sędzia — fiolet, klerk — szary),
-  okrągłe plakietki z gradientowym ringiem w kolorze roli.
-- `app/components/agent-bench.tsx`: stały pasek 3 agentów nad transkryptem;
-  stany: `idle` (przygaszony), `thinking` (pulsujący ring + 3 skaczące kropki +
-  rotujące co ~4 s statusy, np. "Cross-referencing Exhibit A…"),
-  `speaking` (glow + badge ON THE FLOOR), `done` (checkmark).
-- Podpięcie do `app/page.tsx` + CSS. Commit + push + weryfikacja.
+## 🔜 Do zrobienia (kolejność)
 
 ### Etap 2b — Stepper + auto-scroll (życzenie użytkownika!)
 - Stepper 5 faz: Evidence → Prosecution → Defense → Rebuttal → Verdict,

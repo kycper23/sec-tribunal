@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 04 — Web search, run by OpenRouter.
  *
  * Server tools are tools the model can call that OpenRouter executes for you:
@@ -16,7 +16,8 @@ const res = await openrouterFetch('/chat/completions', {
   body: JSON.stringify({
     model: DEFAULT_MODEL,
     messages: [{ role: 'user', content: `${question} Cite sources.` }],
-    tools: [{ type: 'openrouter:web_search' }],
+    tools: [{ type: 'openrouter:web_search', parameters: { max_uses: 3 } }],
+    max_tool_calls: 5,
   }),
 })
 

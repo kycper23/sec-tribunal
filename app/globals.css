@@ -1,0 +1,94 @@
+:root {
+  --bg: #0e0d0b;
+  --panel: #171512;
+  --border: #2c2822;
+  --text: #e8e2d5;
+  --muted: #9a917f;
+  --gold: #c9a227;
+  --red: #d0544a;
+  --green: #5fa86b;
+  --amber: #d9a04b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.6;
+}
+
+.container { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
+
+.masthead { text-align: center; margin-bottom: 2rem; }
+.masthead h1 { font-size: 2.4rem; letter-spacing: 0.12em; margin: 0; color: var(--gold); }
+.masthead p { color: var(--muted); margin: 0.4rem 0 0; font-style: italic; }
+
+.ticker-form { display: flex; gap: 0.6rem; justify-content: center; margin: 1.5rem 0 2.5rem; }
+.ticker-form input {
+  background: var(--panel); border: 1px solid var(--border); color: var(--text);
+  font-size: 1.15rem; padding: 0.65rem 1rem; width: 11rem; border-radius: 6px;
+  text-transform: uppercase; font-family: inherit; letter-spacing: 0.1em;
+}
+.ticker-form input:focus { outline: 1px solid var(--gold); }
+.ticker-form button {
+  background: var(--gold); color: #1a1608; border: none; font-size: 1.05rem;
+  padding: 0.65rem 1.4rem; border-radius: 6px; cursor: pointer; font-family: inherit; font-weight: bold;
+}
+.ticker-form button:disabled { opacity: 0.45; cursor: wait; }
+
+.status-line { text-align: center; color: var(--muted); font-style: italic; min-height: 1.6em; }
+.error { color: var(--red); text-align: center; }
+
+.speech { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.4rem; margin: 1.4rem 0; }
+.speech-head { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 0.5rem; }
+.speech-role { font-weight: bold; letter-spacing: 0.14em; font-size: 0.85rem; text-transform: uppercase; }
+.speech-role.prosecutor { color: var(--red); }
+.speech-role.defense { color: var(--green); }
+.speech-role.judge { color: var(--gold); }
+.speech-role.clerk { color: var(--muted); }
+.speech-sub { color: var(--muted); font-size: 0.8rem; }
+.speech-body { white-space: pre-wrap; font-size: 0.95rem; }
+.cursor { display: inline-block; width: 0.55em; background: var(--gold); animation: blink 0.9s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.verdict-card { border: 2px solid var(--gold); border-radius: 12px; padding: 1.6rem; margin-top: 2rem; background: var(--panel); }
+.verdict-card h2 { color: var(--gold); letter-spacing: 0.1em; margin-top: 0; text-align: center; }
+.gauge-wrap { display: flex; justify-content: center; margin: 1rem 0 1.4rem; }
+.gauge { width: 150px; height: 150px; border-radius: 50%; display: grid; place-items: center; }
+.gauge-inner { width: 118px; height: 118px; border-radius: 50%; background: var(--panel); display: grid; place-items: center; text-align: center; }
+.gauge-score { font-size: 2.1rem; font-weight: bold; line-height: 1; }
+.gauge-label { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.08em; }
+
+.charges { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 1rem 0; }
+.charges th, .charges td { border: 1px solid var(--border); padding: 0.55rem 0.7rem; text-align: left; vertical-align: top; }
+.charges th { color: var(--muted); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.1em; }
+.stamp { font-weight: bold; font-size: 0.75rem; letter-spacing: 0.08em; padding: 0.15rem 0.45rem; border-radius: 4px; white-space: nowrap; }
+.stamp.SUSTAINED { color: var(--red); border: 1px solid var(--red); }
+.stamp.DISMISSED { color: var(--green); border: 1px solid var(--green); }
+.stamp.PARTIAL { color: var(--amber); border: 1px solid var(--amber); }
+
+.actions { display: flex; gap: 0.7rem; justify-content: center; margin-top: 1.2rem; }
+.actions button {
+  background: transparent; border: 1px solid var(--gold); color: var(--gold);
+  padding: 0.5rem 1.1rem; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.95rem;
+}
+.actions button:hover { background: var(--gold); color: #1a1608; }
+
+.footer { text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 3rem; }
+
+.container-wide { max-width: 1240px; }
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; align-items: start; }
+@media (max-width: 900px) { .compare-grid { grid-template-columns: 1fr; } }
+
+.link-button {
+  border: 1px solid var(--gold); color: var(--gold); text-decoration: none;
+  padding: 0.5rem 1.1rem; border-radius: 6px; font-size: 0.95rem;
+}
+.link-button:hover { background: var(--gold); color: #1a1608; }
+
+.nav-links { display: flex; gap: 1.2rem; justify-content: center; margin-bottom: 0.5rem; font-size: 0.85rem; }
+.nav-links a { color: var(--muted); text-decoration: none; letter-spacing: 0.06em; }
+.nav-links a:hover { color: var(--gold); }

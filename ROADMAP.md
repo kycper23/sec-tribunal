@@ -309,7 +309,13 @@ Gra: w blind trial gracz stawia proroctwo ZANIM zapadnie werdykt, trybunał
 - CSS: `.prophecy-panel`, `.prophecy-btn`, `.prophecy-outcome` — spójne z
   `.blind-trial*`/`.reveal-banner`.
 
-### Etap H — Prophecy Ledger: track record w localStorage
+### Etap H — Prophecy Ledger: track record w localStorage — ZROBIONE
+Zrealizowane wg planu poniżej: `app/ledger.ts` (LedgerEntry, loadLedger/
+appendLedger/clearLedger na `prophecy-ledger-v1`, FIFO 50, tallyLedger),
+`app/components/prophecy-ledger.tsx` (tally + tabela + Clear), zapis w
+`breakSeal()` w `page.tsx` (jedyny moment z kompletem danych), render nad
+stopką, load po mount (SSR-safe). CSS `.prophecy-ledger*`.
+typecheck/lint/build czyste.
 - Nowy `app/ledger.ts`: `LedgerEntry = {ts, ticker, cutoff, score, userCall,
   tribunalCall, realityCall, outcome}`; `loadLedger()`/`appendLedger(entry)`
   na kluczu `prophecy-ledger-v1` (try/catch na brak localStorage/SSR,

@@ -13,6 +13,7 @@ import { DocketPanel } from './components/docket'
 import { ExhibitChart } from './components/exhibit-chart'
 import { HeroPlate } from './components/hero-plate'
 import { Markdown } from './components/markdown'
+import { ProphecyLedger } from './components/prophecy-ledger'
 import { ProphecyPanel } from './components/prophecy-panel'
 import { RevealBanner } from './components/reveal-banner'
 import { TempleGate } from './components/temple-gate'
@@ -30,7 +31,8 @@ import {
   type Verdict,
 } from './trial'
 import { VerdictCard } from './verdict-card'
-import type { Call } from './prophecy'
+import { judgeOutcome, realityCall, tribunalCall, type Call } from './prophecy'
+import { appendLedger, clearLedger, loadLedger, type LedgerEntry } from './ledger'
 
 /** Default seal date offered when Blind Trial is first switched on: one year back. */
 const defaultCutoff = (): string => {
@@ -105,6 +107,13 @@ export default function Courtroom() {
   const [revealed, setRevealed] = useState(false)
   const [futureSeries, setFutureSeries] = useState<ChartSeries[]>([])
   const [userCall, setUserCall] = useState<Call | null>(null)
+  const [ledger, setLedger] = useState<LedgerEntry[]>([])
+
+  // The ledger lives in localStorage: read only after mount so the server
+  // render (empty) always matches the first client render.
+  useEffect(() => {
+    setLedger(loadLedger())
+  }, [])
 
   const addSpeech = (s: Speech) => setSpeeches((prev) => [...prev, s])
   const finishLast = useCallback(
@@ -138,6 +147,34 @@ export default function Courtroom() {
     followRef.current = true
     setFollow(true)
     scrollToBottom()
+  }
+
+  /**
+   * Breaking the seal is the one moment verdict + reality + wager are all
+   * known — so it's also the moment the trial is written into the ledger.
+   */
+  const breakSeal = () => {
+    setRevealed(true)
+    if (!company || !verdict || !reality || !sealedCutoff) return
+    const actual = realityCall(reality)
+    const tribunal = tribunalCall(verdict)
+    setLedger(
+      appendLedger({
+        ts: Date.now(),
+        ticker: company.ticker,
+        cutoff: sealedCutoff,
+        score: verdict.score,
+        userCall,
+        tribunalCall: tribunal,
+        realityCall: actual,
+        outcome: userCall !== null && actual !== null ? judgeOutcome(userCall, tribunal, actual) : null,
+      }),
+    )
+  }
+
+  const wipeLedger = () => {
+    clearLedger()
+    setLedger([])
   }
 
   const runTrial = async (e: React.FormEvent) => {
@@ -366,7 +403,7 @@ export default function Courtroom() {
             <RevealBanner
               reality={reality}
               revealed={revealed}
-              onReveal={() => setRevealed(true)}
+              onReveal={breakSeal}
               userCall={userCall}
               verdict={verdict}
             />
@@ -377,6 +414,8 @@ export default function Courtroom() {
           </div>
         </>
       )}
+
+      <ProphecyLedger entries={ledger} onClear={wipeLedger} />
 
       <footer className="footer">
         Built for Orbio Build Week · Data: SEC EDGAR XBRL companyfacts · Not investment advice.

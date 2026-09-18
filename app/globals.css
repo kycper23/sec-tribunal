@@ -683,6 +683,46 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .prophecy-panel, .prophecy-outcome { animation: none; }
 }
+
+/* ---- The Prophecy Ledger: local track record of blind trials --------------- */
+.prophecy-ledger {
+  margin: 2rem 0 0; padding: 1rem 1.2rem; border: 1px solid var(--border-strong);
+  border-radius: 0; background: var(--panel); animation: rise 0.4s ease both;
+}
+.prophecy-ledger h3 {
+  margin: 0 0 0.6rem; font-family: var(--display); letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: 0.95rem; color: var(--frame); text-align: center;
+}
+.prophecy-ledger-tally {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem 1.4rem;
+  margin-bottom: 0.8rem; padding-bottom: 0.7rem; border-bottom: 1px dashed var(--border-strong);
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muted);
+}
+.prophecy-ledger-tally strong { color: var(--accent); font-size: 0.85rem; margin-left: 0.25rem; }
+.prophecy-ledger-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.prophecy-ledger-table th, .prophecy-ledger-table td {
+  border: 1px solid var(--border); padding: 0.35rem 0.5rem; text-align: left; white-space: nowrap;
+}
+.prophecy-ledger-table th {
+  color: var(--muted); font-family: var(--mono); font-size: 0.62rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.prophecy-ledger-table td { font-family: var(--mono); }
+.prophecy-ledger-outcome { font-size: 0.68rem; letter-spacing: 0.04em; }
+.prophecy-ledger-clear {
+  margin-top: 0.8rem; background: none; border: 1px solid var(--border-strong); border-radius: 0;
+  color: var(--muted); font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 0.35rem 0.9rem; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.prophecy-ledger-clear:hover { color: var(--red); border-color: var(--red); }
+@media (prefers-reduced-motion: reduce) {
+  .prophecy-ledger { animation: none; }
+}
+@media (max-width: 640px) {
+  .prophecy-ledger { overflow-x: auto; }
+}
 .docket-badge.red { color: var(--red); border-color: color-mix(in srgb, var(--red) 50%, transparent); }
 .docket-badge.amber { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 50%, transparent); }
 .docket-labels { color: var(--text); }

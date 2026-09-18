@@ -101,12 +101,6 @@ SUSTAINED/DISMISSED/PARTIAL wbijane sekwencyjnie (scale+rotate), wiersze
 zarzutów wjeżdżają kolejno. Spójność stylu na `/compare` i `/dossier`.
 
 ### Opcjonalne (jeśli zostanie czas przed 20.09)
-- **Pakiet 0b — Prompt caching** (rozszerzenie Pakietu 0): `cache_control:
-  ephemeral` (Anthropic-style) na Exhibit A/B w promptach Prosecutora/
-  Obrony/Rebuttal — zero utraty jakości, mniejszy koszt powtórnych wywołań
-  na tym samym exhibicie. Do `BillReceipt`/dossier dokleić linijkę "saved $X
-  via prompt caching" gdy `cachedTokens > 0`. Rozważyć zaraz po Pakiecie 0,
-  przed Etapem 2b.
 - **Wykresy Exhibit A**: `/api/evidence` zwraca serie liczbowe (z
   `extractSeries`), mini-wykresy SVG bez bibliotek.
 - **Pakiet 3 — Risk Factors z 10-K** (Item 1A, własne słowa spółki):
@@ -122,6 +116,15 @@ zarzutów wjeżdżają kolejno. Spójność stylu na `/compare` i `/dossier`.
   już maskują czekanie; priorytet ma substancja analizy.
 - **Gamifikacja** (predykcja score, momentum bar, docket localStorage) —
   po hackathonie.
+- **Pakiet 0b — Prompt caching** — sprawdzone w dokumentacji OpenRouter/
+  Anthropic i odrzucone: `cache_control: ephemeral` cache'uje CAŁY prefiks
+  rozmowy do breakpointu, łącznie z system promptem, który go poprzedza.
+  Prosecutor/Defense/Rebuttal/Judge mają każdy INNY system prompt, mimo że
+  współdzielą treść Exhibit A/B — więc w ramach jednej rozprawy nie ma
+  cache-hitów. Realny zysk istniałby tylko przy retry tego samego wywołania
+  albo powtórnym demo tego samego tickera w ciągu 5 min TTL — czyli w
+  typowym jednorazowym demo UI pokazywałby "saved $0.00", co wygląda jak
+  zepsuta funkcja przed jurorami. Odrzucone dla jakości, nie realizowane.
 
 ## Notatki techniczne
 - Czysty CSS (bez Tailwinda), zero nowych zależności npm.

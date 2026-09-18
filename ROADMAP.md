@@ -17,6 +17,21 @@
 - **Etap 2a — Ława agentów** (`20d6371`): `agent-avatars.tsx` (4 awatary SVG),
   `agent-bench.tsx` (idle/thinking/speaking/done, pulsujące ringi, rotujące
   statusy co 4 s), stany przełączane w `page.tsx` między wywołaniami API.
+- **Pakiet 0 — Court Bill** (`65d6399`): realny koszt każdej rozprawy z
+  Orbio (`usage: {include: true}` → `usage.cost` w USD, tokenized $ORBIO
+  credits) — cecha odróżniająca od konkurencji na hackathonie.
+  `agents.ts`: `CallUsage`/`sumUsage`, `complete()` zwraca `{content, usage}`,
+  wszystkie funkcje agentów (`runProsecutor`/`runDefense`/
+  `runProsecutorRebuttal`/`runJudge`) zwracają `{..., usage}`; zero-fallback
+  gdy gateway nie odda `usage`. `run.ts`: `TrialResult.usage` (per agent +
+  total). 4 API routes zwracają `usage`. UI: `app/components/court-bill.tsx`
+  (`CostBadge` przy każdej mowie, `CourtBill` — animowany licznik nad ławą,
+  `BillReceipt` — pokwitowanie po werdykcie z najdroższym mówcą 💸),
+  `app/trial.ts` (`CallUsage`/`BillEntry`/`sumBill`, `buildDossier` dokleja
+  sekcję rachunku), `report.ts` (sekcja "### Court Bill" w dossier .md),
+  `index.ts` CLI drukuje `[BILL] ...`. `demos/*.json` zregenerowane z realnym
+  `usage` (np. AAPL: 4 wywołania, 36 552 tokenów, $0.8341). Zweryfikowane na
+  produkcji: `/dossier/AAPL` pokazuje pokwitowanie z realnymi kwotami.
 
 ## 🔜 Do zrobienia (w tej kolejności)
 
@@ -86,6 +101,12 @@ SUSTAINED/DISMISSED/PARTIAL wbijane sekwencyjnie (scale+rotate), wiersze
 zarzutów wjeżdżają kolejno. Spójność stylu na `/compare` i `/dossier`.
 
 ### Opcjonalne (jeśli zostanie czas przed 20.09)
+- **Pakiet 0b — Prompt caching** (rozszerzenie Pakietu 0): `cache_control:
+  ephemeral` (Anthropic-style) na Exhibit A/B w promptach Prosecutora/
+  Obrony/Rebuttal — zero utraty jakości, mniejszy koszt powtórnych wywołań
+  na tym samym exhibicie. Do `BillReceipt`/dossier dokleić linijkę "saved $X
+  via prompt caching" gdy `cachedTokens > 0`. Rozważyć zaraz po Pakiecie 0,
+  przed Etapem 2b.
 - **Wykresy Exhibit A**: `/api/evidence` zwraca serie liczbowe (z
   `extractSeries`), mini-wykresy SVG bez bibliotek.
 - **Pakiet 3 — Risk Factors z 10-K** (Item 1A, własne słowa spółki):

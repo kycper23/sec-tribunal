@@ -3,7 +3,8 @@
  * routes tomorrow. Emits progress events so any front-end can render the
  * courtroom live.
  */
-import { fetchCompanyFacts, resolveTicker, type Company } from '../sec/edgar.js'
+import { fetchCompanyFacts, fetchSubmissions, resolveTicker, type Company } from '../sec/edgar.js'
+import { buildDocket, renderDocket, type Docket } from '../sec/events.js'
 import { buildBrief } from '../sec/facts.js'
 import {
   runDefense,
@@ -35,6 +36,7 @@ export interface TrialResult {
   peer: Company | null
   brief: string
   peerBrief: string | null
+  docket: Docket | null
   bearCase: string
   defense: string
   rebuttal: string
@@ -59,7 +61,17 @@ export const runTribunal = async (
 
   onProgress({ stage: 'edgar', message: `${company.name} → CIK ${company.cik10}. Fetching companyfacts…` })
   const facts = await fetchCompanyFacts(company.cik10)
-  const brief = buildBrief(company, facts)
+  let brief = buildBrief(company, facts)
+
+  let docket: Docket | null = null
+  try {
+    docket = buildDocket(await fetchSubmissions(company.cik10))
+    brief = `${brief}\n\n${renderDocket(docket)}`
+    onProgress({ stage: 'edgar', message: `Filings docket ready: ${docket.events.length} 8-K event(s) in window.` })
+  } catch {
+    docket = null
+    onProgress({ stage: 'edgar', message: 'Filings docket unavailable; proceeding without it.' })
+  }
 
   onProgress({ stage: 'edgar', message: 'Looking up an industry peer for the defense…' })
   const peer = await findPeer(company)
@@ -94,5 +106,16 @@ export const runTribunal = async (
     total: sumUsage([prosecutorUsage, defenseUsage, rebuttalUsage, judgeUsage]),
   }
 
-  return { company, peer: peerBrief ? peer : null, brief, peerBrief, bearCase, defense, rebuttal, verdict, usage }
+  return {
+    company,
+    peer: peerBrief ? peer : null,
+    brief,
+    peerBrief,
+    docket,
+    bearCase,
+    defense,
+    rebuttal,
+    verdict,
+    usage,
+  }
 }

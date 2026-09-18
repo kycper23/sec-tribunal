@@ -8,9 +8,19 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { AgentBench, type BenchStates } from './components/agent-bench'
 import { BillReceipt, CostBadge, CourtBill } from './components/court-bill'
+import { DocketPanel } from './components/docket'
 import { Markdown } from './components/markdown'
 import { TrialProgress, type Phase } from './components/trial-progress'
-import { buildDossier, post, type BillEntry, type CallUsage, type Company, type Speech, type Verdict } from './trial'
+import {
+  buildDossier,
+  post,
+  type BillEntry,
+  type CallUsage,
+  type Company,
+  type Docket,
+  type Speech,
+  type Verdict,
+} from './trial'
 import { VerdictCard } from './verdict-card'
 
 const BENCH_IDLE: BenchStates = { prosecutor: 'idle', defense: 'idle', judge: 'idle' }
@@ -65,6 +75,7 @@ export default function Courtroom() {
   const [company, setCompany] = useState<Company | null>(null)
   const [bench, setBench] = useState<BenchStates>(BENCH_IDLE)
   const [bill, setBill] = useState<BillEntry[]>([])
+  const [docket, setDocket] = useState<Docket | null>(null)
   const [phase, setPhase] = useState<Phase | null>(null)
   const [phaseDone, setPhaseDone] = useState(false)
   const [follow, setFollow] = useState(true)
@@ -116,6 +127,7 @@ export default function Courtroom() {
     setCompany(null)
     setBench(BENCH_IDLE)
     setBill([])
+    setDocket(null)
     setPhase('evidence')
     setPhaseDone(false)
     followRef.current = true
@@ -124,11 +136,15 @@ export default function Courtroom() {
 
     try {
       setStatus('The clerk is gathering SEC filings…')
-      const ev = await post<{ company: Company; peer: Company | null; brief: string; peerBrief: string | null }>(
-        '/api/evidence',
-        { ticker: t },
-      )
+      const ev = await post<{
+        company: Company
+        peer: Company | null
+        brief: string
+        peerBrief: string | null
+        docket: Docket | null
+      }>('/api/evidence', { ticker: t })
       setCompany(ev.company)
+      setDocket(ev.docket)
       addSpeech({
         role: 'clerk',
         title: 'Clerk of the Tribunal',
@@ -275,6 +291,7 @@ export default function Courtroom() {
             onDone={finishLast}
             onTick={() => followRef.current && scrollToBottom()}
           />
+          {s.role === 'clerk' && <DocketPanel docket={docket} />}
         </section>
       ))}
 

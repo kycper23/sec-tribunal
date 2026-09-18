@@ -66,3 +66,29 @@ export interface CompanyFacts {
 
 export const fetchCompanyFacts = (cik10: string): Promise<CompanyFacts> =>
   fetchJson<CompanyFacts>(`https://data.sec.gov/api/xbrl/companyfacts/CIK${cik10}.json`)
+
+// --- submissions (filing history, incl. 8-K event docket) --------------------
+
+/**
+ * `filings.recent` is a set of parallel arrays (same index = same filing),
+ * newest first. Older filings live in paginated `filings.files` — out of
+ * scope here; the docket only needs the last ~18 months, which `recent`
+ * always covers.
+ */
+export interface SubmissionsRecent {
+  form: string[]
+  filingDate: string[]
+  reportDate: string[]
+  items: string[]
+  accessionNumber: string[]
+  primaryDocument: string[]
+}
+
+export interface Submissions {
+  cik: string
+  name: string
+  filings: { recent: SubmissionsRecent }
+}
+
+export const fetchSubmissions = (cik10: string): Promise<Submissions> =>
+  fetchJson<Submissions>(`https://data.sec.gov/submissions/CIK${cik10}.json`)

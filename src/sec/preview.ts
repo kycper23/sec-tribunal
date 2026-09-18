@@ -4,7 +4,8 @@
  *
  *   pnpm brief JPM
  */
-import { fetchCompanyFacts, resolveTicker } from './edgar.js'
+import { fetchCompanyFacts, fetchSubmissions, resolveTicker } from './edgar.js'
+import { buildDocket, renderDocket } from './events.js'
 import { buildBrief } from './facts.js'
 
 const ticker = (process.argv[2] ?? '').trim().toUpperCase()
@@ -19,6 +20,13 @@ if (!ticker) {
   } else {
     const brief = buildBrief(company, await fetchCompanyFacts(company.cik10))
     console.log(brief)
-    console.log(`\n--- ${brief.length} chars ---`)
+    console.log(`\n--- ${brief.length} chars ---\n`)
+
+    try {
+      const docket = buildDocket(await fetchSubmissions(company.cik10))
+      console.log(renderDocket(docket))
+    } catch (err) {
+      console.error(`Docket unavailable: ${err instanceof Error ? err.message : err}`)
+    }
   }
 }

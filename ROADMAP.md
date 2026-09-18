@@ -42,32 +42,34 @@
   `busy && !follow`. CSS: `.stepper`, `.step`, `.live-btn`. Zweryfikowane:
   typecheck/build/lint czyste, lokalny `next start` renderuje `/` i
   `/dossier/AAPL` bez błędów, produkcyjny CSS zawiera `.stepper`/`.live-btn`.
+- **Pakiet 1 — Exhibit: kronika zdarzeń 8-K (docket)**: `src/sec/edgar.ts`
+  dostał `fetchSubmissions(cik10)` → `data.sec.gov/submissions/CIK{cik10}.json`
+  (typ `Submissions`, `filings.recent` jako równoległe tablice). Nowy
+  `src/sec/events.ts`: `buildDocket(subs)` filtruje 8-K/8-K-A z ostatnich
+  ~18 mies. (max 14, najnowsze pierwsze), mapuje kody itemów na etykiety +
+  severity (czerwone: 4.02 restatement, 1.03 bankructwo, 2.04 przyspieszenie
+  długu, 2.06 odpisy, 3.01 delisting, 4.01 zmiana audytora; bursztynowe: 2.05
+  restrukturyzacja, 5.02 odejścia z zarządu, 2.03 nowy dług, 1.02 zerwanie
+  umowy, 5.01 zmiana kontroli; info: reszta, nieznany kod → generyczna
+  etykieta zamiast zniknięcia), liczy NT 10-K/NT 10-Q jako spóźnione raporty
+  w oknie. `renderDocket()` → blok tekstu dla agentów. `/api/evidence` i
+  `runTribunal` (`src/tribunal/run.ts`) dociągają submissions w try/catch
+  (docket nullable, nigdy nie wywala rozprawy), doklejają `renderDocket` do
+  `brief` i zwracają ustrukturyzowany `docket`. `TrialResult.docket` w typie.
+  Prompty prosecutora/defense (`agents.ts`) wzmiankują docket 8-K jako dowód.
+  UI: `app/components/docket.tsx` (`DocketPanel`) — panel "FILINGS DOCKET"
+  pod mową klerka na `/` i `/dossier/[ticker]`: tally red/amber/routine +
+  wiersze z datą, formularzem, badge severity, etykietami itemów. CSS:
+  `.docket`, `.docket-row`, `.docket-badge` itd. `src/sec/preview.ts`
+  (`npm run brief TSLA`) drukuje też docket bez klucza OpenRouter.
+  Zweryfikowane: typecheck/build/lint czyste, `npm run brief AAPL/TSLA`
+  pokazuje realne 8-K (AAPL: 6 amber/8 info, TSLA: 2 amber/12 info), lokalny
+  `next start` → POST `/api/evidence` zwraca pole `docket` z 14 zdarzeniami,
+  `/dossier/AAPL` renderuje się (demos/*.json jeszcze bez pola `docket` —
+  `DocketPanel` obsługuje `null`/`undefined` bez błędu). Regeneracja
+  demos/ z docketem odłożona do sekcji Opcjonalne (wymaga klucza OpenRouter).
 
 ## 🔜 Do zrobienia (w tej kolejności)
-
-### Pakiet 1 — Exhibit: kronika zdarzeń 8-K (docket)
-1. `src/sec/edgar.ts`: dodać `fetchSubmissions(cik10)` →
-   `https://data.sec.gov/submissions/CIK{cik10}.json` (ten sam User-Agent);
-   typ `Submissions` z `filings.recent` (równoległe tablice: `form`,
-   `filingDate`, `items`, `accessionNumber`, `primaryDocument`).
-2. Nowy `src/sec/events.ts`: `buildDocket(subs)` — filtruje 8-K z ostatnich
-   ~18 mies. (max 14 szt.), mapuje kody itemów na etykiety + severity:
-   czerwone: 4.02 (non-reliance/restatement!), 1.03 (bankructwo), 2.04
-   (przyspieszenie długu), 2.06 (odpisy), 3.01 (delisting), 4.01 (zmiana
-   audytora); bursztynowe: 2.05 (restrukturyzacja), 5.02 (odejścia
-   z zarządu), 2.03 (nowy dług); info: 1.01, 2.01, 2.02, 5.03, 5.07, 7.01,
-   8.01. Zliczyć też NT 10-K/NT 10-Q (spóźnione raporty) w oknie.
-   `renderDocket()` → zwięzły blok tekstu dla agentów.
-3. `/api/evidence`: fetch submissions w try/catch (docket nullable), dokleić
-   `renderDocket` do `brief` (sekcja "RECENT MATERIAL EVENTS — 8-K DOCKET"),
-   zwrócić też ustrukturyzowany `docket` dla UI.
-4. Prompty (`agents.ts`): wzmianka, że Exhibit A może zawierać docket 8-K
-   (odejścia zarządu, restatementy, odpisy) — używać jako dowodów.
-5. UI: nowy `app/components/docket.tsx` — panel "FILINGS DOCKET" pod mową
-   klerka: data, formularz, etykiety itemów kolorowane wg severity.
-6. Walidacja: rozszerzyć `src/sec/preview.ts` o wydruk docketu
-   (`npm run brief TSLA` — bez klucza OpenRouter). Commit → push →
-   weryfikacja: POST produkcyjny /api/evidence ma pole `docket`.
 
 ### Pakiet 2 — Raport śledczy klerka (deterministyczny, w kodzie)
 1. `src/sec/facts.ts`: wyeksportować `extractSeries(company, facts)`

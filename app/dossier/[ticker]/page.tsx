@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { TrialResult } from '../../../src/tribunal/run.js'
 import { BillReceipt } from '../../components/court-bill'
+import { DocketPanel } from '../../components/docket'
 import { Markdown } from '../../components/markdown'
 import type { BillEntry } from '../../trial'
 import { VerdictCard } from '../../verdict-card'
@@ -62,6 +63,7 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
           Exhibit A: XBRL financial facts from SEC EDGAR 10-K/10-Q filings.
           {demo.peer ? ` Exhibit B: industry peer ${demo.peer.name} (${demo.peer.ticker}).` : ''}
         </div>
+        <DocketPanel docket={demo.docket} />
       </section>
 
       {speeches.map((s, i) => (

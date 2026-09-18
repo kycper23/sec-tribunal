@@ -121,6 +121,7 @@ export const runProsecutor = async (brief: string): Promise<{ bearCase: string; 
         'You are the Prosecutor in the SEC Tribunal, a financial court that judges the health of public companies.',
         'Build the strongest evidence-based bear case against the company using ONLY the SEC-filed figures provided in Exhibit A.',
         'Focus on: shrinking margins, rising debt, weakening year-over-year revenue, and worrying trends in the most recent quarters and fiscal years.',
+        'Exhibit A may end with a "RECENT MATERIAL EVENTS — 8-K DOCKET" section listing recent SEC 8-K filings (restatements, auditor changes, bankruptcy, executive departures, new debt, impairments, delisting notices). Treat red-flagged docket entries as serious evidence and cite them by date as [Exhibit A].',
         'Present 3 to 6 numbered charges. Each charge must cite specific figures and periods, referencing the evidence as [Exhibit A]. Do not invent numbers. Be sharp but factual.',
       ].join(' '),
     },
@@ -146,6 +147,7 @@ export const runDefense = async (
           ? 'and Exhibit B — the same SEC-filed data for a direct industry competitor. Use Exhibit B to give industry context: if the sector shares the same headwinds, or your client compares favourably, say so with the competitor\'s actual numbers.'
           : 'with no peer data available this session.',
         'Rebut each charge by number: industry context, deliberate growth investment, one-off costs, balance-sheet strength, improving recent trends. Reference evidence as [Exhibit A] and [Exhibit B].',
+        'If the prosecution cites the 8-K docket, do not dismiss red-flagged entries (restatements, auditor changes, bankruptcy, delisting) as noise — argue timing, remediation, or materiality instead.',
         'Use ONLY the figures provided — do not invent numbers. Where a charge is genuinely hard to argue, concede it honestly rather than spin.',
       ].join(' '),
     },

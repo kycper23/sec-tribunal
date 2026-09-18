@@ -41,6 +41,26 @@ export interface BillEntry {
   usage: CallUsage
 }
 
+/** Mirrors `src/sec/events.ts` — the 8-K material-events docket. */
+export type Severity = 'red' | 'amber' | 'info'
+
+export interface DocketEvent {
+  date: string
+  form: string
+  items: string[]
+  labels: string[]
+  severity: Severity
+  accessionNumber: string
+  primaryDocument: string
+  url: string
+}
+
+export interface Docket {
+  events: DocketEvent[]
+  lateFilings: number
+  counts: { red: number; amber: number; info: number }
+}
+
 export const sumBill = (entries: BillEntry[]): CallUsage =>
   entries.reduce(
     (acc, e) => ({

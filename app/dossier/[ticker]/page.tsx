@@ -40,9 +40,9 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
   if (!demo) notFound()
 
   const speeches = [
-    { role: 'prosecutor', title: 'The Prosecution', text: demo.bearCase },
-    { role: 'defense', title: 'The Defense', text: demo.defense },
-    { role: 'prosecutor', title: 'The Prosecution — Rebuttal', text: demo.rebuttal },
+    { role: 'prosecutor', title: 'The Skeptic — Prosecution', text: demo.bearCase },
+    { role: 'defense', title: 'The Advocate — Defense', text: demo.defense },
+    { role: 'prosecutor', title: 'The Skeptic — Rebuttal', text: demo.rebuttal },
   ]
 
   return (
@@ -57,7 +57,7 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
 
       <section className="speech">
         <div className="speech-head">
-          <span className="speech-role clerk">Clerk of the Tribunal</span>
+          <span className="speech-role clerk">The Scribe — Clerk of the Tribunal</span>
         </div>
         <div className="speech-body">
           Exhibit A: XBRL financial facts from SEC EDGAR 10-K/10-Q filings.

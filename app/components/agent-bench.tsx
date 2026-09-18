@@ -41,7 +41,7 @@ const STATE_LABEL: Record<AgentState, string> = {
   idle: 'Awaiting',
   thinking: '',
   speaking: 'On the floor',
-  done: '✓ Rested',
+  done: 'Rested',
 }
 
 function RotatingStatus({ phrases }: { phrases: string[] }) {
@@ -58,9 +58,9 @@ function RotatingStatus({ phrases }: { phrases: string[] }) {
 }
 
 const CAST = [
-  { key: 'prosecutor', name: 'The Prosecution' },
-  { key: 'defense', name: 'The Defense' },
-  { key: 'judge', name: 'The Judge' },
+  { key: 'prosecutor', name: 'The Skeptic', sub: 'prosecution' },
+  { key: 'defense', name: 'The Advocate', sub: 'defense' },
+  { key: 'judge', name: 'The Arbiter', sub: 'judgement' },
 ] as const
 
 export function AgentBench({ states }: { states: BenchStates }) {
@@ -74,6 +74,7 @@ export function AgentBench({ states }: { states: BenchStates }) {
               <AgentAvatar role={agent.key} size={40} />
             </div>
             <div className="bench-name">{agent.name}</div>
+            <div className="bench-role-sub">{agent.sub}</div>
             <div className="bench-state">
               {state === 'thinking' ? (
                 <>

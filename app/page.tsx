@@ -147,7 +147,7 @@ export default function Courtroom() {
       setDocket(ev.docket)
       addSpeech({
         role: 'clerk',
-        title: 'Clerk of the Tribunal',
+        title: 'The Scribe — Clerk of the Tribunal',
         text:
           `Case called: ${ev.company.name} (${ev.company.ticker}), CIK ${ev.company.cik10}.\n` +
           `Exhibit A entered: XBRL financial facts from SEC EDGAR 10-K/10-Q filings.` +
@@ -160,7 +160,7 @@ export default function Courtroom() {
       setPhase('prosecution')
       setBench({ prosecutor: 'thinking', defense: 'idle', judge: 'idle' })
       const pr = await post<{ bearCase: string; usage?: CallUsage }>('/api/prosecutor', { brief: ev.brief })
-      addSpeech({ role: 'prosecutor', title: 'The Prosecution', text: pr.bearCase, done: false, usage: pr.usage })
+      addSpeech({ role: 'prosecutor', title: 'The Skeptic — Prosecution', text: pr.bearCase, done: false, usage: pr.usage })
       addBill('Prosecutor', pr.usage)
       if (followRef.current) scrollToBottom()
 
@@ -173,7 +173,7 @@ export default function Courtroom() {
         peerBrief: ev.peerBrief,
       })
       finishLast()
-      addSpeech({ role: 'defense', title: 'The Defense', text: df.defense, done: false, usage: df.usage })
+      addSpeech({ role: 'defense', title: 'The Advocate — Defense', text: df.defense, done: false, usage: df.usage })
       addBill('Defense', df.usage)
       if (followRef.current) scrollToBottom()
 
@@ -188,7 +188,7 @@ export default function Courtroom() {
       finishLast()
       addSpeech({
         role: 'prosecutor',
-        title: 'The Prosecution — Rebuttal',
+        title: 'The Skeptic — Rebuttal',
         text: rb.rebuttal,
         done: false,
         usage: rb.usage,

@@ -49,7 +49,6 @@ export function CourtBill({ entries }: { entries: BillEntry[] }) {
     <div className="court-bill" title="Running cost of this trial, fueled by tokenized $ORBIO credits">
       <span className="court-bill-label">COURT BILL</span>
       <span className="court-bill-amount">{fmtCost(shown)}</span>
-      <span className="court-bill-ticker">⏳</span>
     </div>
   )
 }

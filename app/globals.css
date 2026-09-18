@@ -256,6 +256,10 @@ body {
 }
 
 .bench-name { font-weight: 600; font-size: 0.9rem; letter-spacing: 0.03em; font-family: var(--display); }
+.bench-role-sub {
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); margin-top: 0.1rem;
+}
 .bench-state {
   min-height: 1.5em; margin-top: 0.3rem; display: flex; gap: 0.45rem;
   align-items: center; justify-content: center;
@@ -386,7 +390,6 @@ body {
 }
 .court-bill-label { color: var(--muted); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.14em; }
 .court-bill-amount { color: var(--accent); font-weight: 700; font-size: 0.92rem; }
-.court-bill-ticker { opacity: 0.6; }
 
 .cost-badge {
   margin-left: auto; color: var(--muted); font-family: var(--mono); font-size: 0.68rem;
@@ -406,6 +409,6 @@ body {
 .bill-receipt table { width: 100%; border-collapse: collapse; font-size: 0.86rem; font-family: var(--mono); }
 .bill-receipt td { padding: 0.4rem 0.3rem; border-bottom: 1px dashed var(--border); }
 .bill-receipt td:last-child, .bill-receipt td:nth-child(2) { text-align: right; }
-.bill-receipt tr.priciest td:first-child::after { content: ' 💸'; }
+.bill-receipt tr.priciest td { color: var(--accent); font-weight: 600; }
 .bill-receipt tr.total td { border-top: 1px solid var(--border-strong); border-bottom: none; font-weight: 700; color: var(--accent); }
 .bill-footnote { margin: 0.7rem 0 0; color: var(--muted); font-size: 0.76rem; text-align: center; }

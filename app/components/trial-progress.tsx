@@ -29,7 +29,7 @@ export function TrialProgress({ phase, done }: { phase: Phase | null; done: bool
         const state = done || i < activeIndex ? 'complete' : i === activeIndex ? 'active' : 'pending'
         return (
           <div key={s.key} className={`step ${state}`} role="listitem" aria-current={state === 'active'}>
-            <span className="step-dot">{state === 'complete' ? '✓' : i + 1}</span>
+            <span className="step-dot">{i + 1}</span>
             <span className="step-label">{s.label}</span>
           </div>
         )

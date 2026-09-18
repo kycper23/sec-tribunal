@@ -109,7 +109,7 @@ export default function ComparePage() {
 
       {winner && (
         <p className="status-line">
-          🏆 The tribunal finds <strong>{winner}</strong> in better financial health.
+          The tribunal finds <strong>{winner}</strong> in better financial health.
         </p>
       )}
 

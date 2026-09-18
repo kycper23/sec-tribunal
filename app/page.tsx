@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { AgentBench, type BenchStates } from './components/agent-bench'
 import { BillReceipt, CostBadge, CourtBill } from './components/court-bill'
 import { DocketPanel } from './components/docket'
+import { ExhibitChart } from './components/exhibit-chart'
 import { HeroPlate } from './components/hero-plate'
 import { Markdown } from './components/markdown'
 import { TempleGate } from './components/temple-gate'
@@ -18,6 +19,7 @@ import {
   post,
   type BillEntry,
   type CallUsage,
+  type ChartSeries,
   type Company,
   type Docket,
   type Speech,
@@ -78,6 +80,7 @@ export default function Courtroom() {
   const [bench, setBench] = useState<BenchStates>(BENCH_IDLE)
   const [bill, setBill] = useState<BillEntry[]>([])
   const [docket, setDocket] = useState<Docket | null>(null)
+  const [series, setSeries] = useState<ChartSeries[]>([])
   const [phase, setPhase] = useState<Phase | null>(null)
   const [phaseDone, setPhaseDone] = useState(false)
   const [follow, setFollow] = useState(true)
@@ -130,6 +133,7 @@ export default function Courtroom() {
     setBench(BENCH_IDLE)
     setBill([])
     setDocket(null)
+    setSeries([])
     setPhase('evidence')
     setPhaseDone(false)
     followRef.current = true
@@ -144,9 +148,11 @@ export default function Courtroom() {
         brief: string
         peerBrief: string | null
         docket: Docket | null
+        series: ChartSeries[]
       }>('/api/evidence', { ticker: t })
       setCompany(ev.company)
       setDocket(ev.docket)
+      setSeries(ev.series)
       addSpeech({
         role: 'clerk',
         title: 'The Scribe — Clerk of the Tribunal',
@@ -292,6 +298,7 @@ export default function Courtroom() {
             onDone={finishLast}
             onTick={() => followRef.current && scrollToBottom()}
           />
+          {s.role === 'clerk' && <ExhibitChart series={series} />}
           {s.role === 'clerk' && <DocketPanel docket={docket} />}
         </section>
       ))}

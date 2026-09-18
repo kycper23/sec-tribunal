@@ -135,8 +135,13 @@ const DAY = 86_400_000
 const STALE_SERIES_DAYS = 3 * 365
 const STALE_QUARTER_DAYS = 550
 
-/** Render companyfacts into a compact, LLM-friendly brief. */
-export const buildBrief = (company: Company, facts: CompanyFacts): string => {
+/**
+ * The two-pass tag selection shared by `buildBrief` and `extractSeries`:
+ * pick the freshest candidate tag per metric, then drop stale series/quarters
+ * relative to the company-wide "as of" date. Pure refactor — same values
+ * `buildBrief` computed inline before, now reusable for the chart exhibit.
+ */
+const computeSeries = (facts: CompanyFacts): { series: Map<string, Series>; missing: string[] } => {
   const gaap = facts.facts['us-gaap'] ?? {}
   const series = new Map<string, Series>()
   const missing: string[] = []
@@ -184,6 +189,44 @@ export const buildBrief = (company: Company, facts: CompanyFacts): string => {
     }
     series.set(metric.label, { tag: pick.tag, annual, quarterly })
   }
+
+  return { series, missing }
+}
+
+/** One numeric point on an Exhibit A chart: fiscal-year end + value in USD. */
+export interface SeriesPoint {
+  period: string
+  value: number
+}
+
+/** A single chart-ready metric — annual figures only (steadier than quarters for a plate-sized plot). */
+export interface ChartSeries {
+  label: string
+  points: SeriesPoint[]
+}
+
+/** Curated subset of METRICS worth plotting on the antique Exhibit A chart. */
+const CHART_METRICS = ['Revenue', 'Net income', 'Operating cash flow']
+
+/**
+ * Numeric annual series for the Exhibit A chart — no text formatting, no
+ * agent-facing prose, just `{ period, value }` pairs the frontend can plot
+ * as a pure-SVG line. Reuses the exact same tag-selection/staleness logic as
+ * `buildBrief`, so the chart and the evidence brief the agents read from can
+ * never silently disagree.
+ */
+export const extractSeries = (facts: CompanyFacts): ChartSeries[] => {
+  const { series } = computeSeries(facts)
+  return CHART_METRICS.flatMap((label) => {
+    const s = series.get(label)
+    if (!s || s.annual.length < 2) return []
+    return [{ label, points: s.annual.map((v) => ({ period: v.end, value: v.val })) }]
+  })
+}
+
+/** Render companyfacts into a compact, LLM-friendly brief. */
+export const buildBrief = (company: Company, facts: CompanyFacts): string => {
+  const { series, missing } = computeSeries(facts)
 
   const lines: string[] = [
     `Company: ${facts.entityName || company.name} (ticker ${company.ticker}, CIK ${company.cik10})`,

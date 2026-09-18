@@ -41,6 +41,17 @@ export interface BillEntry {
   usage: CallUsage
 }
 
+/** Mirrors `src/sec/facts.ts` — one numeric annual metric for the Exhibit A chart. */
+export interface SeriesPoint {
+  period: string
+  value: number
+}
+
+export interface ChartSeries {
+  label: string
+  points: SeriesPoint[]
+}
+
 /** Mirrors `src/sec/events.ts` — the 8-K material-events docket. */
 export type Severity = 'red' | 'amber' | 'info'
 

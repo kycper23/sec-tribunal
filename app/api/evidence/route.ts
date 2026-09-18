@@ -6,7 +6,7 @@
 import { NextResponse } from 'next/server'
 import { fetchCompanyFacts, fetchSubmissions, resolveTicker } from '../../../src/sec/edgar.js'
 import { buildDocket, renderDocket, type Docket } from '../../../src/sec/events.js'
-import { buildBrief } from '../../../src/sec/facts.js'
+import { buildBrief, extractSeries, type ChartSeries } from '../../../src/sec/facts.js'
 import { findPeer } from '../../../src/tribunal/peers.js'
 import { asString, jsonError, withErrorHandling } from '../_lib.js'
 
@@ -20,7 +20,9 @@ export const POST = withErrorHandling(async (req: Request) => {
   const company = await resolveTicker(ticker)
   if (!company) return jsonError(`Unknown ticker "${ticker}" — not found in SEC EDGAR.`, 404)
 
-  let brief = buildBrief(company, await fetchCompanyFacts(company.cik10))
+  const companyFacts = await fetchCompanyFacts(company.cik10)
+  let brief = buildBrief(company, companyFacts)
+  const series: ChartSeries[] = extractSeries(companyFacts)
 
   // The 8-K docket is a bonus exhibit, never load-bearing: a hiccup on this
   // endpoint must not sink the whole trial, so it's fetched best-effort.
@@ -42,5 +44,5 @@ export const POST = withErrorHandling(async (req: Request) => {
     peerBrief = null
   }
 
-  return NextResponse.json({ company, peer: peerBrief ? peer : null, brief, peerBrief, docket })
+  return NextResponse.json({ company, peer: peerBrief ? peer : null, brief, peerBrief, docket, series })
 })

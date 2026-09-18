@@ -8,7 +8,7 @@
  * the platform supports it (mobile). No new dependencies.
  */
 import { CALL_LABEL, OUTCOME_LABEL, judgeOutcome, realityCall, tribunalCall, type Call } from '../prophecy'
-import type { RealityReport, Verdict } from '../trial'
+import { scoreColor, type RealityReport, type Verdict } from '../trial'
 
 const W = 1200
 const H = 630
@@ -24,8 +24,6 @@ const C = {
   red: '#A13C2C',
   green: '#3E6B4F',
 }
-
-const scoreCol = (score: number) => (score < 40 ? C.red : score < 65 ? '#A87718' : C.green)
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
@@ -57,7 +55,7 @@ function buildCardSVG(opts: {
     ['REALITY · REVENUE SINCE SEAL', actual ? CALL_LABEL[actual] : 'UNSETTLED', '', C.muted],
   ]
   const rowY = (i: number) => 330 + i * 62
-  const gaugeCol = scoreCol(score)
+  const gaugeCol = scoreColor(score)
   const circ = 2 * Math.PI * 74
   const arc = (score / 100) * circ
   const name = companyName.length > 26 ? `${companyName.slice(0, 25)}…` : companyName

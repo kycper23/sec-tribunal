@@ -71,7 +71,9 @@ function ProphecyOutcomeBlock({
         </tbody>
       </table>
       <div className="prophecy-stamp-row">
-        <span className={`stamp ${userRight ? 'SUSTAINED' : tribunalRight ? 'DISMISSED' : 'PARTIAL'}`}>
+        {/* Stamp inks: DISMISSED=green (you were right), SUSTAINED=red (the
+            tribunal beat you), PARTIAL=amber (reality fooled you both). */}
+        <span className={`stamp ${userRight ? 'DISMISSED' : tribunalRight ? 'SUSTAINED' : 'PARTIAL'}`}>
           {OUTCOME_LABEL[outcome]}
         </span>
       </div>

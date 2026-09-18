@@ -257,6 +257,8 @@ export default function Courtroom() {
         <Link href="/dossier/AAPL">Demo: AAPL</Link>
       </nav>
 
+      <AgentBench states={bench} />
+
       <form className="ticker-form" onSubmit={runTrial}>
         <input
           value={ticker}
@@ -275,12 +277,7 @@ export default function Courtroom() {
 
       <TrialProgress phase={phase} done={phaseDone} />
 
-      {(busy || speeches.length > 0) && (
-        <>
-          <AgentBench states={bench} />
-          <CourtBill entries={bill} />
-        </>
-      )}
+      {(busy || speeches.length > 0) && <CourtBill entries={bill} />}
 
       {speeches.map((s, i) => (
         <section key={i} className={`speech ${s.role}`}>

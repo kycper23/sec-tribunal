@@ -63,13 +63,39 @@ const CAST = [
   { key: 'judge', name: 'The Arbiter', sub: 'judgement' },
 ] as const
 
+type AgentKey = (typeof CAST)[number]['key']
+
+/** Shown when a sage's card is clicked — who they are, before the trial ever speaks. */
+const DESCRIPTION: Record<AgentKey, string> = {
+  prosecutor:
+    "The Skeptic trusts nothing but the filings. He builds the bear case from the company's own " +
+    '10-K/10-Q figures — margin decay, mounting debt, stalled growth — then returns after the ' +
+    'defense to press every crack left in their story.',
+  defense:
+    'The Advocate reads the same filings looking for context: industry headwinds, one-time charges, ' +
+    "a fair peer to compare against. He doesn't deny the numbers — he argues what they actually mean.",
+  judge:
+    'The Arbiter has the final word. He weighs each charge against its rebuttal, rules SUSTAINED, ' +
+    'DISMISSED or PARTIALLY VALID, and sets the Financial Health Score that closes the case.',
+}
+
 export function AgentBench({ states }: { states: BenchStates }) {
+  const [expanded, setExpanded] = useState<AgentKey | null>(null)
   return (
     <div className="bench">
       {CAST.map((agent) => {
         const state = states[agent.key]
+        const isOpen = expanded === agent.key
+        const descId = `bench-desc-${agent.key}`
         return (
-          <div key={agent.key} className={`bench-agent ${agent.key} ${state}`}>
+          <button
+            key={agent.key}
+            type="button"
+            className={`bench-agent ${agent.key} ${state}${isOpen ? ' expanded' : ''}`}
+            onClick={() => setExpanded((prev) => (prev === agent.key ? null : agent.key))}
+            aria-expanded={isOpen}
+            aria-controls={descId}
+          >
             <div className="bench-avatar">
               <AgentAvatar role={agent.key} size={40} />
             </div>
@@ -89,7 +115,10 @@ export function AgentBench({ states }: { states: BenchStates }) {
                 <span className="bench-status">{STATE_LABEL[state]}</span>
               )}
             </div>
-          </div>
+            <div className="bench-desc-wrap" id={descId}>
+              <p className="bench-desc">{DESCRIPTION[agent.key]}</p>
+            </div>
+          </button>
         )
       })}
     </div>

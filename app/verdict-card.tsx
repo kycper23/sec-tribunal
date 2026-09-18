@@ -47,7 +47,7 @@ const stampTilt = (i: number) => ((i * 47) % 5) - 2
 
 export function VerdictCard({ verdict, title = 'THE VERDICT' }: { verdict: Verdict; title?: string }) {
   return (
-    <section className="verdict-card">
+    <section className="verdict-card verdict-scroll">
       <h2>{title}</h2>
       <Gauge score={verdict.score} />
       <p>{verdict.summary}</p>

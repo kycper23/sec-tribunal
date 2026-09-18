@@ -177,7 +177,23 @@ body {
 .verdict-card {
   border: 1px solid var(--frame); outline: 1px solid var(--border-strong); outline-offset: 3px;
   border-radius: 0; padding: 1.8rem; margin-top: 2rem; background: var(--panel);
-  box-shadow: var(--shadow); animation: rise 0.5s ease both;
+  box-shadow: var(--shadow);
+}
+/* The verdict scroll: unfurls top-down like a decree being unrolled, then its
+   contents fade/rise in once the parchment is open — clip-path + scaleY only,
+   no new libraries. `transform-origin: top` keeps the roll anchored at the
+   top edge instead of expanding from the center. */
+.verdict-scroll {
+  transform-origin: top; animation: scroll-unfurl 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.verdict-scroll > * { animation: rise 0.5s ease 0.35s both; }
+@keyframes scroll-unfurl {
+  0% { transform: scaleY(0.02); clip-path: inset(0 0 100% 0); opacity: 0.4; }
+  55% { transform: scaleY(1); clip-path: inset(0 0 0 0); opacity: 1; }
+  100% { transform: scaleY(1); clip-path: inset(0 0 0 0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .verdict-scroll, .verdict-scroll > * { animation: none; }
 }
 .verdict-card h2 {
   color: var(--frame); letter-spacing: 0.2em; margin-top: 0; text-align: center;
@@ -210,7 +226,11 @@ body {
 .stamp.DISMISSED { color: var(--green); border: 1px solid color-mix(in srgb, var(--green) 50%, transparent); background: color-mix(in srgb, var(--green) 7%, transparent); }
 .stamp.PARTIAL { color: var(--amber); border: 1px solid color-mix(in srgb, var(--amber) 50%, transparent); background: color-mix(in srgb, var(--amber) 7%, transparent); }
 
-.actions { display: flex; gap: 0.7rem; justify-content: center; margin-top: 1.4rem; flex-wrap: wrap; }
+.actions {
+  display: flex; gap: 0.7rem; justify-content: center; margin-top: 1.4rem; flex-wrap: wrap;
+  animation: rise 0.5s ease 0.75s both;
+}
+@media (prefers-reduced-motion: reduce) { .actions { animation: none; } }
 .actions button {
   background: transparent; border: 1px solid var(--border-strong); color: var(--accent);
   padding: 0.55rem 1.2rem; border-radius: 0; cursor: pointer; font-family: var(--serif); font-size: 0.92rem;

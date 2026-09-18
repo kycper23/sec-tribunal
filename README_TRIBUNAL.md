@@ -45,7 +45,7 @@ npm run precompute TSLA INTC AAPL # regenerate demos/<TICKER>.json permalinks
 companies tried in parallel, verdicts side by side · `/dossier/TSLA|INTC|AAPL`
 — prerendered demo permalinks (instant, zero model calls).
 
-Model: `OPENROUTER_MODEL` env var, default `anthropic/claude-sonnet-4.5`.
+Model: `OPENROUTER_MODEL` env var, default `anthropic/claude-sonnet-5`.
 
 ## Architecture
 

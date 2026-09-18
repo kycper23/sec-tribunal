@@ -212,8 +212,20 @@ logice agentów/API/`src/sec/*`/`demos/*.json`, zero nowych zależności npm.
   (jeden komponent `VerdictCard`). `prefers-reduced-motion: reduce` wyłącza
   animacje.
 
-### Przełączenie modelu na sonnet-4.5 (`b4dbffe`)
+### Przełączenie modelu na sonnet-4.5 → sonnet-5 (`b4dbffe` → ten commit)
 Zob. notatkę w "Notatki techniczne" poniżej — zastępuje decyzję z 19.09.
+**Rewizja (19.09, wieczór):** OpenRouter oferuje teraz `anthropic/claude-sonnet-5`
+(1M kontekst, $2/$10 per M input/output tok — o 33% taniej niż 4.5's $3/$15,
+adaptive thinking). Test lokalny (`OPENROUTER_MODEL=anthropic/claude-sonnet-5
+pnpm tribunal TSLA`): **116 s total** (vs 166 s na 4.5), **$0.1528/rozprawa**
+(vs $0.1889), structured output Judge waliduje się przez Zod bez błędu,
+jakość argumentacji wyraźnie lepsza (rebuttal trafnie łapie "quarter later"
+niekonsekwencję w danych defense). Zero regresji, same korzyści → domyślny
+fallback w `src/tribunal/agents.ts` i `src/lib/openrouter.ts` zmieniony na
+`anthropic/claude-sonnet-5`; `.env.local` zaktualizowany. **Do zrobienia
+przed finalnym demo:** ustawić `OPENROUTER_MODEL=anthropic/claude-sonnet-5`
+na Vercel (dashboard → env vars), bo produkcja obecnie ma tam wpisane
+`anthropic/claude-sonnet-4.5` z poprzedniej rewizji.
 
 ## ❌ Wycięte / odłożone (decyzje)
 - **Streaming SSE** — wycięty: duży nakład, ława agentów + rotujące statusy

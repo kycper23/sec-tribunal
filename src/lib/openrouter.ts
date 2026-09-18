@@ -44,4 +44,4 @@ export const openrouterFetch = (path: string, init: RequestInit = {}) => {
 
 // `||` (not `??`) so an env var present but set to an empty string still
 // falls back to the default.
-export const DEFAULT_MODEL = process.env.OPENROUTER_MODEL || 'anthropic/claude-sonnet-4.5'
+export const DEFAULT_MODEL = process.env.OPENROUTER_MODEL || 'anthropic/claude-sonnet-5'

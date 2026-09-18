@@ -84,7 +84,7 @@ export const post = async <T,>(path: string, body: unknown): Promise<T> => {
   return data
 }
 
-export const scoreColor = (score: number) => (score < 40 ? '#f87171' : score < 65 ? '#fbbf24' : '#34d399')
+export const scoreColor = (score: number) => (score < 40 ? '#a13c2c' : score < 65 ? '#a87718' : '#3e6b4f')
 
 export const buildDossier = (
   company: Company,

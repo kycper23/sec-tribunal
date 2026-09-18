@@ -5,10 +5,10 @@
 export type AgentRole = 'prosecutor' | 'defense' | 'judge' | 'clerk'
 
 export const ROLE_COLOR: Record<AgentRole, string> = {
-  prosecutor: '#f87171',
-  defense: '#34d399',
-  judge: '#a78bfa',
-  clerk: '#8494ac',
+  prosecutor: '#a13c2c', // cinnabar — the Skeptic
+  defense: '#3e6b4f', // sage — the Advocate
+  judge: '#433d63', // indigo — the Arbiter
+  clerk: '#6b5b45', // sepia — the Scribe
 }
 
 const ICONS: Record<AgentRole, React.ReactNode> = {

@@ -1,8 +1,10 @@
 /**
- * The tribunal cast as engraved hooded sages — pure stroke SVG, no images, no
- * faces; each figure reads by silhouette. The prop (arm, cloak, scales, quill)
- * sits in a `.avatar-prop` group and is the only thing that animates while the
- * agent works — see globals.css.
+ * The tribunal cast. The three principal sages (Skeptic/Advocate/Arbiter) are
+ * shown as generated portrait plates — whimsical, storybook-styled renders,
+ * not photographs of real people (see src/gen-assets.ts). The Scribe, who
+ * has no portrait, falls back to the original engraved hooded silhouette
+ * whose prop (quill) is the only thing that animates while the agent
+ * works — see globals.css.
  */
 export type AgentRole = 'prosecutor' | 'defense' | 'judge' | 'clerk'
 
@@ -11,6 +13,13 @@ export const ROLE_COLOR: Record<AgentRole, string> = {
   defense: '#3e6b4f', // sage — the Advocate
   judge: '#433d63', // indigo — the Arbiter
   clerk: '#6b5b45', // sepia — the Scribe
+}
+
+/** Generated portrait plate per role — see public/ + src/gen-assets.ts. */
+const PORTRAIT: Partial<Record<AgentRole, string>> = {
+  prosecutor: '/sage-skeptic.jpg',
+  defense: '/sage-advocate.jpg',
+  judge: '/sage-arbiter.jpg',
 }
 
 /** Shared hooded head — the face is an ink void; sages are known by silhouette. */
@@ -83,6 +92,10 @@ const FIGURES: Record<AgentRole, React.ReactNode> = {
 }
 
 export function AgentAvatar({ role, size = 48 }: { role: AgentRole; size?: number }) {
+  const portrait = PORTRAIT[role]
+  if (portrait) {
+    return <img className="bench-portrait-img" src={portrait} alt="" width={size} height={size} aria-hidden="true" />
+  }
   return (
     <svg
       width={size}

@@ -48,6 +48,21 @@ body {
 
 .container { max-width: 860px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
 
+/* The frontispiece: a full engraved plate above the title page, framed like a
+   book illustration — double filet, small-caps caption below, no glow/radius. */
+.hero-plate {
+  margin: 0 0 1.75rem; animation: rise 0.55s ease both;
+}
+.hero-plate img {
+  display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover;
+  border: 1px solid var(--border-strong); box-shadow: 0 0 0 6px var(--bg), 0 0 0 7px var(--border-strong);
+  filter: sepia(0.12) contrast(1.03);
+}
+.hero-plate figcaption {
+  text-align: center; margin-top: 0.6rem; font-family: var(--mono); font-size: 0.7rem;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+}
+
 /* The masthead is the book's title page: double filet rules around the title. */
 .masthead { text-align: center; margin-bottom: 2.25rem; animation: rise 0.5s ease both; }
 .masthead h1 {
@@ -259,11 +274,14 @@ body {
 
 .bench-avatar {
   width: 62px; height: 62px; margin: 0 auto 0.55rem; border-radius: 50%;
-  display: grid; place-items: center;
+  display: grid; place-items: center; overflow: hidden;
   background: color-mix(in srgb, var(--role) 8%, transparent);
   border: 1px solid color-mix(in srgb, var(--role) 55%, transparent);
   outline: 1px solid color-mix(in srgb, var(--role) 30%, transparent); outline-offset: 3px;
   transition: border-color 0.35s;
+}
+.bench-portrait-img {
+  width: 100%; height: 100%; object-fit: cover; filter: sepia(0.1) contrast(1.03);
 }
 .bench-agent.thinking .bench-avatar { animation: pulse-role 1.6s ease-in-out infinite; }
 .bench-agent.speaking .bench-avatar { border-color: var(--role); outline-color: var(--role); }
@@ -323,6 +341,7 @@ body {
   .bench-agent { padding: 0.7rem 0.4rem 0.6rem; }
   .bench-avatar { width: 48px; height: 48px; }
   .bench-avatar svg { width: 30px; height: 30px; }
+  .hero-plate img { box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--border-strong); }
   .bench-status { font-size: 0.6rem; }
 }
 

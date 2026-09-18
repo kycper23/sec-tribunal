@@ -5,6 +5,7 @@
  * Each trial runs the same staged API chain as the main courtroom.
  */
 import { useState } from 'react'
+import { HeroPlate } from '../components/hero-plate'
 import { post, type Company, type Verdict } from '../trial'
 import { VerdictCard } from '../verdict-card'
 
@@ -78,6 +79,7 @@ export default function ComparePage() {
 
   return (
     <main className="container container-wide">
+      <HeroPlate />
       <header className="masthead">
         <div className="eyebrow">Double Trial · Head to Head</div>
         <h1>SEC Tribunal</h1>

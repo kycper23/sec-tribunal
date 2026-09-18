@@ -114,6 +114,22 @@ commit → push → weryfikacja produkcji:
    `/compare` i `/dossier`; `markdown.tsx` linie tabel. Konsumuje część
    Etapu 3.
 
+### Etap 4b — Wygenerowane ilustracje (frontispiece + portrety mędrców) — ZROBIONE
+`src/gen-assets.ts`: one-shot generator (OpenRouter `/api/v1/images`,
+`openai/gpt-image-1`) + `sharp` post-processing (crop/resize → JPEG
+mozjpeg, stepping quality 85→25 pod budżet bajtowy). 4 assety w `public/`:
+`scene-hero.jpg` (1536×864, ≤250KB) + `sage-skeptic.jpg`/`sage-advocate.jpg`/
+`sage-arbiter.jpg` (512×512, ≤100KB każdy, styl bajkowy/storybook zamiast
+fotorealizmu). Wpięte w UI: nowy `app/components/hero-plate.tsx`
+(`<HeroPlate/>` — oprawiona plansza tytułowa, podpis w mono) nad `masthead`
+na `/`, `/compare`, `/dossier/[ticker]`; `agent-avatars.tsx` — `AgentAvatar`
+renderuje portret JPG dla prosecutor/defense/judge (Scribe bez portretu →
+zostaje przy starej sylwetce SVG), CSS `.bench-portrait-img`/`.hero-plate`
+bez gradientów/glow/dużych radiusów (zgodnie z zasadami Etapu 4). Zero
+zmian w logice agentów/API/`src/sec/`. Zweryfikowane: typecheck + lint +
+build czyste, lokalny `next start` → HTML `/`, `/compare`, `/dossier/AAPL`
+zawiera `hero-plate`/`scene-hero.jpg`.
+
 ### Pakiet 2 — Raport śledczy klerka (deterministyczny, w kodzie)
 1. `src/sec/facts.ts`: wyeksportować `extractSeries(company, facts)`
    (refaktor z `buildBrief`, który dalej działa jak dziś) + typ `Series`.

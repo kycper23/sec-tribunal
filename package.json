@@ -20,6 +20,7 @@
     "pdf": "tsx src/examples/06-pdf.ts",
     "agent": "tsx src/examples/07-agent.ts",
     "tribunal": "tsx src/tribunal/index.ts",
+    "gen-assets": "tsx src/gen-assets.ts",
     "precompute": "tsx src/tribunal/precompute.ts",
     "brief": "tsx src/sec/preview.ts",
     "typecheck": "tsc --noEmit",
@@ -39,6 +40,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "eslint": "^9.35.0",
+    "sharp": "^0.35.4",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.43.0"

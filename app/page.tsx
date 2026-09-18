@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { AgentBench, type BenchStates } from './components/agent-bench'
 import { BillReceipt, CostBadge, CourtBill } from './components/court-bill'
 import { DocketPanel } from './components/docket'
+import { HeroPlate } from './components/hero-plate'
 import { Markdown } from './components/markdown'
 import { TrialProgress, type Phase } from './components/trial-progress'
 import {
@@ -240,6 +241,7 @@ export default function Courtroom() {
 
   return (
     <main className="container">
+      <HeroPlate />
       <header className="masthead">
         <div className="eyebrow">AI Courtroom · SEC EDGAR Evidence</div>
         <h1>SEC Tribunal</h1>

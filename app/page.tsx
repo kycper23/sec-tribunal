@@ -7,8 +7,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { AgentBench, type BenchStates } from './components/agent-bench'
+import { BillReceipt, CostBadge, CourtBill } from './components/court-bill'
 import { Markdown } from './components/markdown'
-import { buildDossier, post, type Company, type Speech, type Verdict } from './trial'
+import { buildDossier, post, type BillEntry, type CallUsage, type Company, type Speech, type Verdict } from './trial'
 import { VerdictCard } from './verdict-card'
 
 const BENCH_IDLE: BenchStates = { prosecutor: 'idle', defense: 'idle', judge: 'idle' }
@@ -44,6 +45,7 @@ export default function Courtroom() {
   const [verdict, setVerdict] = useState<Verdict | null>(null)
   const [company, setCompany] = useState<Company | null>(null)
   const [bench, setBench] = useState<BenchStates>(BENCH_IDLE)
+  const [bill, setBill] = useState<BillEntry[]>([])
   const dossierRef = useRef<string | null>(null)
 
   const addSpeech = (s: Speech) => setSpeeches((prev) => [...prev, s])
@@ -51,6 +53,10 @@ export default function Courtroom() {
     () => setSpeeches((prev) => prev.map((s, i) => (i === prev.length - 1 ? { ...s, done: true } : s))),
     [],
   )
+  const addBill = (label: string, usage?: CallUsage) => {
+    if (!usage) return
+    setBill((prev) => [...prev, { label, usage }])
+  }
 
   const runTrial = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -62,6 +68,7 @@ export default function Courtroom() {
     setVerdict(null)
     setCompany(null)
     setBench(BENCH_IDLE)
+    setBill([])
     dossierRef.current = null
 
     try {
@@ -83,41 +90,57 @@ export default function Courtroom() {
 
       setStatus('The prosecution has the floor…')
       setBench({ prosecutor: 'thinking', defense: 'idle', judge: 'idle' })
-      const pr = await post<{ bearCase: string }>('/api/prosecutor', { brief: ev.brief })
-      addSpeech({ role: 'prosecutor', title: 'The Prosecution', text: pr.bearCase, done: false })
+      const pr = await post<{ bearCase: string; usage?: CallUsage }>('/api/prosecutor', { brief: ev.brief })
+      addSpeech({ role: 'prosecutor', title: 'The Prosecution', text: pr.bearCase, done: false, usage: pr.usage })
+      addBill('Prosecutor', pr.usage)
 
       setStatus('The defense prepares…')
       setBench({ prosecutor: 'speaking', defense: 'thinking', judge: 'idle' })
-      const df = await post<{ defense: string }>('/api/defense', {
+      const df = await post<{ defense: string; usage?: CallUsage }>('/api/defense', {
         brief: ev.brief,
         bearCase: pr.bearCase,
         peerBrief: ev.peerBrief,
       })
       finishLast()
-      addSpeech({ role: 'defense', title: 'The Defense', text: df.defense, done: false })
+      addSpeech({ role: 'defense', title: 'The Defense', text: df.defense, done: false, usage: df.usage })
+      addBill('Defense', df.usage)
 
       setStatus('Cross-examination…')
       setBench({ prosecutor: 'thinking', defense: 'speaking', judge: 'idle' })
-      const rb = await post<{ rebuttal: string }>('/api/rebuttal', {
+      const rb = await post<{ rebuttal: string; usage?: CallUsage }>('/api/rebuttal', {
         brief: ev.brief,
         bearCase: pr.bearCase,
         defense: df.defense,
       })
       finishLast()
-      addSpeech({ role: 'prosecutor', title: 'The Prosecution — Rebuttal', text: rb.rebuttal, done: false })
+      addSpeech({
+        role: 'prosecutor',
+        title: 'The Prosecution — Rebuttal',
+        text: rb.rebuttal,
+        done: false,
+        usage: rb.usage,
+      })
+      addBill('Prosecutor (rebuttal)', rb.usage)
 
       setStatus('The judge deliberates…')
       setBench({ prosecutor: 'speaking', defense: 'done', judge: 'thinking' })
-      const jd = await post<{ verdict: Verdict }>('/api/judge', {
+      const jd = await post<{ verdict: Verdict; usage?: CallUsage }>('/api/judge', {
         bearCase: pr.bearCase,
         defense: df.defense,
         rebuttal: rb.rebuttal,
       })
       finishLast()
+      addBill('Judge', jd.usage)
       setVerdict(jd.verdict)
       setBench({ prosecutor: 'done', defense: 'done', judge: 'done' })
       setStatus('')
-      dossierRef.current = buildDossier(ev.company, pr.bearCase, df.defense, rb.rebuttal, jd.verdict)
+      const fullBill: BillEntry[] = [
+        ...(pr.usage ? [{ label: 'Prosecutor', usage: pr.usage }] : []),
+        ...(df.usage ? [{ label: 'Defense', usage: df.usage }] : []),
+        ...(rb.usage ? [{ label: 'Prosecutor (rebuttal)', usage: rb.usage }] : []),
+        ...(jd.usage ? [{ label: 'Judge', usage: jd.usage }] : []),
+      ]
+      dossierRef.current = buildDossier(ev.company, pr.bearCase, df.defense, rb.rebuttal, jd.verdict, fullBill)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'The trial was interrupted. Please retry.')
       setStatus('')
@@ -168,13 +191,19 @@ export default function Courtroom() {
       {status && <p className="status-line">{status}</p>}
       {error && <p className="error">{error}</p>}
 
-      {(busy || speeches.length > 0) && <AgentBench states={bench} />}
+      {(busy || speeches.length > 0) && (
+        <>
+          <AgentBench states={bench} />
+          <CourtBill entries={bill} />
+        </>
+      )}
 
       {speeches.map((s, i) => (
         <section key={i} className="speech">
           <div className="speech-head">
             <span className={`speech-role ${s.role}`}>{s.title}</span>
             {company && <span className="speech-sub">In re {company.name}</span>}
+            <CostBadge usage={s.usage} />
           </div>
           <Typewriter text={s.text} done={s.done} onDone={finishLast} />
         </section>
@@ -183,6 +212,7 @@ export default function Courtroom() {
       {verdict && company && (
         <>
           <VerdictCard verdict={verdict} />
+          <BillReceipt entries={bill} />
           <div className="actions">
             <button onClick={downloadDossier}>Download dossier (.md)</button>
           </div>

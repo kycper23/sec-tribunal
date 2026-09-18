@@ -9,5 +9,6 @@ export const POST = withErrorHandling(async (req: Request) => {
   const body = (await req.json().catch(() => ({}))) as Record<string, unknown>
   const brief = asString(body.brief)
   if (!brief) return jsonError('Missing "brief".')
-  return NextResponse.json({ bearCase: await runProsecutor(brief) })
+  const { bearCase, usage } = await runProsecutor(brief)
+  return NextResponse.json({ bearCase, usage })
 })

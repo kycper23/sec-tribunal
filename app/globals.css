@@ -258,3 +258,37 @@ body {
   .bench-avatar svg { width: 30px; height: 30px; }
   .bench-status { font-size: 0.6rem; }
 }
+
+/* ---- Court Bill: tokenized-credit cost of the trial ----------------------- */
+.court-bill {
+  display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+  margin: 0.9rem auto 0.2rem; padding: 0.45rem 1.1rem; width: fit-content;
+  border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 999px;
+  background: rgba(56, 189, 248, 0.06); font-family: var(--mono);
+  font-size: 0.78rem; letter-spacing: 0.06em; animation: rise 0.4s ease both;
+}
+.court-bill-label { color: var(--muted); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.14em; }
+.court-bill-amount { color: var(--accent); font-weight: 700; font-size: 0.92rem; }
+.court-bill-ticker { opacity: 0.6; }
+
+.cost-badge {
+  margin-left: auto; color: var(--muted); font-family: var(--mono); font-size: 0.68rem;
+  letter-spacing: 0.03em; border: 1px solid var(--border); border-radius: 999px;
+  padding: 0.15rem 0.55rem; white-space: nowrap;
+}
+
+.bill-receipt {
+  margin-top: 1.4rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border);
+  border-radius: 14px; background: linear-gradient(160deg, var(--panel-2), var(--panel));
+  animation: rise 0.5s ease both;
+}
+.bill-receipt h3 {
+  margin: 0 0 0.8rem; font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); text-align: center;
+}
+.bill-receipt table { width: 100%; border-collapse: collapse; font-size: 0.86rem; font-family: var(--mono); }
+.bill-receipt td { padding: 0.4rem 0.3rem; border-bottom: 1px dashed var(--border); }
+.bill-receipt td:last-child, .bill-receipt td:nth-child(2) { text-align: right; }
+.bill-receipt tr.priciest td:first-child::after { content: ' 💸'; }
+.bill-receipt tr.total td { border-top: 1px solid var(--border-strong); border-bottom: none; font-weight: 700; color: var(--accent); }
+.bill-footnote { margin: 0.7rem 0 0; color: var(--muted); font-size: 0.76rem; text-align: center; }

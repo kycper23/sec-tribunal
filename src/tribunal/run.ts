@@ -5,12 +5,29 @@
  */
 import { fetchCompanyFacts, resolveTicker, type Company } from '../sec/edgar.js'
 import { buildBrief } from '../sec/facts.js'
-import { runDefense, runJudge, runProsecutor, runProsecutorRebuttal, type VerdictData } from './agents.js'
+import {
+  runDefense,
+  runJudge,
+  runProsecutor,
+  runProsecutorRebuttal,
+  sumUsage,
+  type CallUsage,
+  type VerdictData,
+} from './agents.js'
 import { findPeer } from './peers.js'
 
 export interface TrialProgress {
   stage: 'edgar' | 'prosecutor' | 'defense' | 'rebuttal' | 'verdict'
   message: string
+}
+
+/** The Court Bill — real cost of the trial, fueled by tokenized $ORBIO credits. */
+export interface TrialUsage {
+  prosecutor: CallUsage
+  defense: CallUsage
+  rebuttal: CallUsage
+  judge: CallUsage
+  total: CallUsage
 }
 
 export interface TrialResult {
@@ -22,6 +39,7 @@ export interface TrialResult {
   defense: string
   rebuttal: string
   verdict: VerdictData
+  usage: TrialUsage
 }
 
 export class UnknownTickerError extends Error {
@@ -57,16 +75,24 @@ export const runTribunal = async (
   onProgress({ stage: 'edgar', message: `Evidence brief prepared (${brief.length} chars).` })
 
   onProgress({ stage: 'prosecutor', message: 'Building the bear case…' })
-  const bearCase = await runProsecutor(brief)
+  const { bearCase, usage: prosecutorUsage } = await runProsecutor(brief)
 
   onProgress({ stage: 'defense', message: 'Preparing the rebuttal…' })
-  const defense = await runDefense(brief, bearCase, peerBrief)
+  const { defense, usage: defenseUsage } = await runDefense(brief, bearCase, peerBrief)
 
   onProgress({ stage: 'rebuttal', message: 'The prosecution responds…' })
-  const rebuttal = await runProsecutorRebuttal(brief, bearCase, defense)
+  const { rebuttal, usage: rebuttalUsage } = await runProsecutorRebuttal(brief, bearCase, defense)
 
   onProgress({ stage: 'verdict', message: 'The judge is deliberating…' })
-  const verdict = await runJudge(bearCase, defense, rebuttal)
+  const { verdict, usage: judgeUsage } = await runJudge(bearCase, defense, rebuttal)
 
-  return { company, peer: peerBrief ? peer : null, brief, peerBrief, bearCase, defense, rebuttal, verdict }
+  const usage: TrialUsage = {
+    prosecutor: prosecutorUsage,
+    defense: defenseUsage,
+    rebuttal: rebuttalUsage,
+    judge: judgeUsage,
+    total: sumUsage([prosecutorUsage, defenseUsage, rebuttalUsage, judgeUsage]),
+  }
+
+  return { company, peer: peerBrief ? peer : null, brief, peerBrief, bearCase, defense, rebuttal, verdict, usage }
 }

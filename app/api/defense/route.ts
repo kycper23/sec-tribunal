@@ -11,5 +11,6 @@ export const POST = withErrorHandling(async (req: Request) => {
   const bearCase = asString(body.bearCase)
   if (!brief || !bearCase) return jsonError('Missing "brief" or "bearCase".')
   const peerBrief = asString(body.peerBrief) || null
-  return NextResponse.json({ defense: await runDefense(brief, bearCase, peerBrief) })
+  const { defense, usage } = await runDefense(brief, bearCase, peerBrief)
+  return NextResponse.json({ defense, usage })
 })

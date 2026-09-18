@@ -17,22 +17,75 @@ interface ChatMessage {
   content: string
 }
 
+/**
+ * The Court Bill — real cost of a model call, straight from Orbio's `usage`
+ * block (`usage.cost` is USD, funded by tokenized $ORBIO credits). Every
+ * field defaults to 0 so a gateway that omits `usage` degrades gracefully
+ * instead of breaking the trial.
+ */
+export interface CallUsage {
+  promptTokens: number
+  completionTokens: number
+  totalTokens: number
+  cachedTokens: number
+  cost: number
+}
+
+const ZERO_USAGE: CallUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0, cachedTokens: 0, cost: 0 }
+
+export const sumUsage = (entries: CallUsage[]): CallUsage =>
+  entries.reduce(
+    (acc, u) => ({
+      promptTokens: acc.promptTokens + u.promptTokens,
+      completionTokens: acc.completionTokens + u.completionTokens,
+      totalTokens: acc.totalTokens + u.totalTokens,
+      cachedTokens: acc.cachedTokens + u.cachedTokens,
+      cost: acc.cost + u.cost,
+    }),
+    ZERO_USAGE,
+  )
+
+interface CompletionResult {
+  content: string
+  usage: CallUsage
+}
+
 /** Retry transient failures (429 / 5xx) with exponential backoff — hackathon-week insurance. */
 const MAX_ATTEMPTS = 3
 
-const complete = async (messages: ChatMessage[], responseFormat?: object): Promise<string> => {
+const complete = async (messages: ChatMessage[], responseFormat?: object): Promise<CompletionResult> => {
   for (let attempt = 1; ; attempt++) {
     const res = await openrouterFetch('/chat/completions', {
       method: 'POST',
       body: JSON.stringify({
         model: MODEL,
         messages,
+        usage: { include: true },
         ...(responseFormat ? { response_format: responseFormat, provider: { require_parameters: true } } : {}),
       }),
     })
     if (res.ok) {
-      const data = (await res.json()) as { choices: Array<{ message: { content: string } }> }
-      return data.choices[0].message.content
+      const data = (await res.json()) as {
+        choices: Array<{ message: { content: string } }>
+        usage?: {
+          prompt_tokens?: number
+          completion_tokens?: number
+          total_tokens?: number
+          cost?: number
+          prompt_tokens_details?: { cached_tokens?: number }
+        }
+      }
+      const u = data.usage
+      const usage: CallUsage = u
+        ? {
+            promptTokens: u.prompt_tokens ?? 0,
+            completionTokens: u.completion_tokens ?? 0,
+            totalTokens: u.total_tokens ?? 0,
+            cachedTokens: u.prompt_tokens_details?.cached_tokens ?? 0,
+            cost: u.cost ?? 0,
+          }
+        : ZERO_USAGE
+      return { content: data.choices[0].message.content, usage }
     }
     const body = await res.text()
     const retryable = res.status === 429 || res.status >= 500
@@ -46,7 +99,7 @@ const complete = async (messages: ChatMessage[], responseFormat?: object): Promi
 // --- 0. Peer suggestion (one cheap call, used when the dictionary has no entry)
 
 export const askForPeerTicker = async (companyName: string, ticker: string): Promise<string | null> => {
-  const answer = await complete([
+  const { content } = await complete([
     {
       role: 'system',
       content:
@@ -54,14 +107,14 @@ export const askForPeerTicker = async (companyName: string, ticker: string): Pro
     },
     { role: 'user', content: `${companyName} (${ticker})` },
   ])
-  const candidate = answer.trim().toUpperCase().replace(/[^A-Z.-]/g, '')
+  const candidate = content.trim().toUpperCase().replace(/[^A-Z.-]/g, '')
   return candidate && candidate !== 'NONE' && candidate.length <= 6 ? candidate : null
 }
 
 // --- 1. Prosecutor -----------------------------------------------------------
 
-export const runProsecutor = (brief: string): Promise<string> =>
-  complete([
+export const runProsecutor = async (brief: string): Promise<{ bearCase: string; usage: CallUsage }> => {
+  const { content, usage } = await complete([
     {
       role: 'system',
       content: [
@@ -73,11 +126,17 @@ export const runProsecutor = (brief: string): Promise<string> =>
     },
     { role: 'user', content: `EXHIBIT A — Financial evidence from SEC EDGAR:\n\n${brief}` },
   ])
+  return { bearCase: content, usage }
+}
 
 // --- 2. Defense --------------------------------------------------------------
 
-export const runDefense = (brief: string, bearCase: string, peerBrief: string | null): Promise<string> =>
-  complete([
+export const runDefense = async (
+  brief: string,
+  bearCase: string,
+  peerBrief: string | null,
+): Promise<{ defense: string; usage: CallUsage }> => {
+  const { content, usage } = await complete([
     {
       role: 'system',
       content: [
@@ -99,11 +158,17 @@ export const runDefense = (brief: string, bearCase: string, peerBrief: string | 
       ].join('\n\n---\n\n'),
     },
   ])
+  return { defense: content, usage }
+}
 
 // --- 3. Prosecutor's rebuttal (cross-examination round) -----------------------
 
-export const runProsecutorRebuttal = (brief: string, bearCase: string, defense: string): Promise<string> =>
-  complete([
+export const runProsecutorRebuttal = async (
+  brief: string,
+  bearCase: string,
+  defense: string,
+): Promise<{ rebuttal: string; usage: CallUsage }> => {
+  const { content, usage } = await complete([
     {
       role: 'system',
       content: [
@@ -122,6 +187,8 @@ export const runProsecutorRebuttal = (brief: string, bearCase: string, defense: 
       ].join('\n\n---\n\n'),
     },
   ])
+  return { rebuttal: content, usage }
+}
 
 // --- 3. Judge (structured verdict) -------------------------------------------
 
@@ -140,8 +207,12 @@ export const Verdict = z.object({
 
 export type VerdictData = z.infer<typeof Verdict>
 
-export const runJudge = async (bearCase: string, defense: string, rebuttal: string): Promise<VerdictData> => {
-  const content = await complete(
+export const runJudge = async (
+  bearCase: string,
+  defense: string,
+  rebuttal: string,
+): Promise<{ verdict: VerdictData; usage: CallUsage }> => {
+  const { content, usage } = await complete(
     [
       {
         role: 'system',
@@ -162,5 +233,5 @@ export const runJudge = async (bearCase: string, defense: string, rebuttal: stri
       json_schema: { name: 'verdict', strict: true, schema: z.toJSONSchema(Verdict) },
     },
   )
-  return Verdict.parse(JSON.parse(content))
+  return { verdict: Verdict.parse(JSON.parse(content)), usage }
 }

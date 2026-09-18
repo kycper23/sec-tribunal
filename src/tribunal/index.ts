@@ -31,6 +31,11 @@ async function main(): Promise<void> {
     console.log(`[VERDICT] Financial Health Score: ${Math.round(trial.verdict.score)}/100`)
     for (const c of trial.verdict.charges) console.log(`[VERDICT] ${c.status}: ${c.charge}`)
 
+    const { total } = trial.usage
+    console.log(
+      `[BILL] 4 calls · ${total.totalTokens.toLocaleString('en-US')} tokens · $${total.cost.toFixed(4)} (tokenized $ORBIO credits)`,
+    )
+
     const path = await saveDossier(trial.company.ticker, renderDossier(trial))
     console.log(`\n[VERDICT] Dossier saved to ${path}`)
   } catch (err) {

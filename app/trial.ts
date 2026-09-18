@@ -19,12 +19,39 @@ export interface Verdict {
   recommendation: string
 }
 
+/** The Court Bill — real cost of one model call, straight from Orbio's usage data. */
+export interface CallUsage {
+  promptTokens: number
+  completionTokens: number
+  totalTokens: number
+  cachedTokens: number
+  cost: number
+}
+
 export interface Speech {
   role: 'clerk' | 'prosecutor' | 'defense' | 'judge'
   title: string
   text: string
   done: boolean
+  usage?: CallUsage
 }
+
+export interface BillEntry {
+  label: string
+  usage: CallUsage
+}
+
+export const sumBill = (entries: BillEntry[]): CallUsage =>
+  entries.reduce(
+    (acc, e) => ({
+      promptTokens: acc.promptTokens + e.usage.promptTokens,
+      completionTokens: acc.completionTokens + e.usage.completionTokens,
+      totalTokens: acc.totalTokens + e.usage.totalTokens,
+      cachedTokens: acc.cachedTokens + e.usage.cachedTokens,
+      cost: acc.cost + e.usage.cost,
+    }),
+    { promptTokens: 0, completionTokens: 0, totalTokens: 0, cachedTokens: 0, cost: 0 },
+  )
 
 export const post = async <T,>(path: string, body: unknown): Promise<T> => {
   const res = await fetch(path, {
@@ -45,6 +72,7 @@ export const buildDossier = (
   defense: string,
   rebuttal: string,
   verdict: Verdict,
+  bill?: BillEntry[],
 ): string =>
   [
     `# SEC Tribunal Dossier: ${company.name} (${company.ticker})`,
@@ -77,4 +105,17 @@ export const buildDossier = (
     '',
     verdict.recommendation,
     '',
+    ...(bill && bill.length
+      ? [
+          '### Court Bill',
+          '',
+          '| Agent | Tokens | Cost |',
+          '| --- | --- | --- |',
+          ...bill.map((e) => `| ${e.label} | ${e.usage.totalTokens.toLocaleString('en-US')} | $${e.usage.cost.toFixed(4)} |`),
+          `| **Total** | **${sumBill(bill).totalTokens.toLocaleString('en-US')}** | **$${sumBill(bill).cost.toFixed(4)}** |`,
+          '',
+          '*Fueled by tokenized $ORBIO credits — see [orbio.so](https://orbio.so).*',
+          '',
+        ]
+      : []),
   ].join('\n')

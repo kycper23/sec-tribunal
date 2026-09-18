@@ -11,5 +11,6 @@ export const POST = withErrorHandling(async (req: Request) => {
   const defense = asString(body.defense)
   const rebuttal = asString(body.rebuttal)
   if (!bearCase || !defense || !rebuttal) return jsonError('Missing "bearCase", "defense" or "rebuttal".')
-  return NextResponse.json({ verdict: await runJudge(bearCase, defense, rebuttal) })
+  const { verdict, usage } = await runJudge(bearCase, defense, rebuttal)
+  return NextResponse.json({ verdict, usage })
 })

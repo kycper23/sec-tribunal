@@ -8,7 +8,9 @@ import { resolve } from 'node:path'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { TrialResult } from '../../../src/tribunal/run.js'
+import { BillReceipt } from '../../components/court-bill'
 import { Markdown } from '../../components/markdown'
+import type { BillEntry } from '../../trial'
 import { VerdictCard } from '../../verdict-card'
 
 export const dynamicParams = false
@@ -75,6 +77,19 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
       ))}
 
       <VerdictCard verdict={demo.verdict} />
+
+      {demo.usage && (
+        <BillReceipt
+          entries={
+            [
+              { label: 'Prosecutor', usage: demo.usage.prosecutor },
+              { label: 'Defense', usage: demo.usage.defense },
+              { label: 'Prosecutor (rebuttal)', usage: demo.usage.rebuttal },
+              { label: 'Judge', usage: demo.usage.judge },
+            ] satisfies BillEntry[]
+          }
+        />
+      )}
 
       <div className="actions">
         <Link className="link-button" href="/">

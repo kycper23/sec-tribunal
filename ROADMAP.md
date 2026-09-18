@@ -330,7 +330,14 @@ typecheck/lint/build czyste.
   mount (`useEffect`) — SSR-safe, bez hydration mismatch.
 - CSS: `.prophecy-ledger*` w gramatyce księgi (mono liczby, filety).
 
-### Etap I — Prophecy Card: udostępnialna karta wyniku
+### Etap I — Prophecy Card: udostępnialna karta wyniku — ZROBIONE
+Zrealizowane wg planu poniżej: `app/components/prophecy-card.tsx`
+(`buildCardSVG` 1200×630 — paleta zhardcodowana z :root, systemowe
+Georgia/Courier New, pieczęć score jako stroke-dasharray arc, stamp wyniku
+z rotacją −2°, wariant "unsettled"; `svgToPng` przez Image+canvas 2x;
+`ProphecyCardActions` — Download PNG + Share gdy `navigator.canShare`),
+wpięta pod RevealBanner po reveal. CSS `.prophecy-card-actions`.
+typecheck/lint/build czyste, `/` renderuje się na `next start`.
 - Nowy `app/components/prophecy-card.tsx`: po reveal przycisk
   "Download prophecy card (PNG)" — buduje kartę 1200×630 jako string SVG
   (inline style, bez zewnętrznych fontów — `serif`/`monospace` systemowe;

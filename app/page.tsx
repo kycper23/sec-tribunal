@@ -13,6 +13,7 @@ import { DocketPanel } from './components/docket'
 import { ExhibitChart } from './components/exhibit-chart'
 import { HeroPlate } from './components/hero-plate'
 import { Markdown } from './components/markdown'
+import { ProphecyCardActions } from './components/prophecy-card'
 import { ProphecyLedger } from './components/prophecy-ledger'
 import { ProphecyPanel } from './components/prophecy-panel'
 import { RevealBanner } from './components/reveal-banner'
@@ -406,6 +407,16 @@ export default function Courtroom() {
               onReveal={breakSeal}
               userCall={userCall}
               verdict={verdict}
+            />
+          )}
+          {sealedCutoff && revealed && reality && (
+            <ProphecyCardActions
+              ticker={company.ticker}
+              companyName={company.name}
+              cutoff={sealedCutoff}
+              verdict={verdict}
+              reality={reality}
+              userCall={userCall}
             />
           )}
           <BillReceipt entries={bill} />

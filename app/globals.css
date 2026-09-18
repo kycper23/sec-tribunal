@@ -684,6 +684,22 @@ body {
   .prophecy-panel, .prophecy-outcome { animation: none; }
 }
 
+/* ---- Prophecy Card: shareable PNG of a settled blind trial ------------------ */
+.prophecy-card-actions {
+  display: flex; justify-content: center; gap: 0.7rem; margin: 0.9rem 0 0;
+  animation: rise 0.4s ease both;
+}
+.prophecy-card-actions button {
+  background: var(--panel); border: 1px solid var(--border-strong); border-radius: 0;
+  color: var(--text); font-family: var(--display); font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; font-size: 0.78rem; padding: 0.5rem 1.1rem; cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.prophecy-card-actions button:hover { border-color: var(--accent); color: var(--accent); }
+@media (prefers-reduced-motion: reduce) {
+  .prophecy-card-actions { animation: none; }
+}
+
 /* ---- The Prophecy Ledger: local track record of blind trials --------------- */
 .prophecy-ledger {
   margin: 2rem 0 0; padding: 1rem 1.2rem; border: 1px solid var(--border-strong);

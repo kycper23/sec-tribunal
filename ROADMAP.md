@@ -71,6 +71,42 @@
 
 ## 🔜 Do zrobienia (w tej kolejności)
 
+### Etap 4 — Redesign: "rada mędrców / ilustrowana księga" (PRIORYTET)
+Wyłącznie warstwa prezentacyjna. Nietykalne: nazwy funkcji agentów, schema
+Zod, system prompty, API routes, `src/sec/`, demos/*.json. Zakaz sygnatur
+"AI template": granat+neon, gradienty, glow, glassmorphism, radius 12–16px,
+lucide, emoji. Czytelność danych > motyw.
+Paleta (jasny pergamin): bg `#EDE4D0`, panel `#F6EFDF`, ink `#2A241B`, muted
+`#6E6250`, bordery `#C9BCA2`/`#8A7A5E`, mosiądz `#7C5F18`, rama `#3B3428`;
+role: Skeptic `#A13C2C`, Advocate `#3E6B4F`, Arbiter `#433D63`, Scribe
+`#6B5B45`; semantyka danych red/amber/green = `#A13C2C`/`#A87718`/`#3E6B4F`.
+Fonty (next/font/google): Spectral (tekst), Cormorant Garamond 600/700
+(nagłówki, caps), IBM Plex Mono (liczby/XBRL); Inter/JetBrains out.
+Border-radius 0 (max 2px badge). 5 commitów, każdy: typecheck + build →
+commit → push → weryfikacja produkcji:
+1. **Fundament**: `layout.tsx` (fonty), pełny sweep `globals.css` (`:root`,
+   tekstura papieru feTurbulence data-URI, likwidacja gradientów/glow/
+   radiusów i hardcodów pod dark theme — m.in. `.md strong` `#f1f5f9`,
+   `#051324` na przyciskach), `scoreColor()` w `app/trial.ts`.
+2. **Postaci**: `agent-avatars.tsx` — 4 sylwetki sztychowe w kapturach (bez
+   twarzy; animowany rekwizyt, nie postać: pióro Scribe'a, waga Arbitra
+   wyrównująca się przy done, ramię Skeptica, płaszcz Advocate'a) + nowy
+   `ROLE_COLOR`; `agent-bench.tsx` medaliony. Stany idle/thinking/speaking/
+   done bez zmian logicznych.
+3. **Etykiety + czystka emoji**: "The Skeptic — prosecution" itd. (bench,
+   `page.tsx`, `dossier/[ticker]/page.tsx`); usunąć 💸 (court-bill
+   `::after`), ⏳, ✓ Rested, 🏆 (compare). SUSTAINED/DISMISSED/PARTIAL bez
+   zmian treści.
+4. **Gramatyka księgi**: masthead jako karta tytułowa (podwójny filet,
+   wiersz rejestru w mono), inicjały `::first-letter` w kolorze roli,
+   fleurony ❦ między mowami, stopka-kolofon, kursor atramentowy, "↓ Live"
+   jako zakładka, rachunek jako paragon (perforacja dashed).
+5. **Werdykt-pieczęć**: gauge (conic-gradient zostaje) w grawerowanym
+   podwójnym ringu z napisem otokowym SVG textPath, stampy jako odbicia
+   tuszu (deterministyczna rotacja z indeksu — SSR-safe), spójność
+   `/compare` i `/dossier`; `markdown.tsx` linie tabel. Konsumuje część
+   Etapu 3.
+
 ### Pakiet 2 — Raport śledczy klerka (deterministyczny, w kodzie)
 1. `src/sec/facts.ts`: wyeksportować `extractSeries(company, facts)`
    (refaktor z `buildBrief`, który dalej działa jak dziś) + typ `Series`.
@@ -93,7 +129,7 @@
 5. Walidacja: `npm run brief` drukuje też raport; testy na TSLA/AAPL/INTC
    (sanity: AAPL wysoko, INTC nisko). Commit → push → weryfikacja produkcji.
 
-### Etap 3 — Dramaturgia werdyktu
+### Etap 3 — Dramaturgia werdyktu (częściowo skonsumowane przez Etap 4/5)
 `verdict-card.tsx`: gauge odlicza 0→score (rAF ~1.5 s), pieczątki
 SUSTAINED/DISMISSED/PARTIAL wbijane sekwencyjnie (scale+rotate), wiersze
 zarzutów wjeżdżają kolejno. Spójność stylu na `/compare` i `/dossier`.
@@ -126,6 +162,11 @@ zarzutów wjeżdżają kolejno. Spójność stylu na `/compare` i `/dossier`.
 
 ## Notatki techniczne
 - Czysty CSS (bez Tailwinda), zero nowych zależności npm.
+- Decyzja modelowa (19.09): zostajemy na fable-5 (zmierzone czasy, koszt
+  ~$0.83/rozprawa, stabilny structured output przez Zod). Ewentualny A/B
+  sonnet-5 dopiero po Etapie 4 + Pakiecie 2: jedna rozprawa lokalnie z
+  `OPENROUTER_MODEL` w `.env.local`, przełączenie na prod tylko przy
+  wyraźnie lepszej jakości i bezpiecznych czasach (odwracalne — env var).
 - Czasy na produkcji (fable-5): evidence ~1.5 s, prosecutor ~21 s, defense
   ~54 s, rebuttal ~41 s, judge ~32 s; `maxDuration=300`.
 - SEC wymaga User-Agent z e-mailem (`SEC_USER_AGENT` w `edgar.ts`).

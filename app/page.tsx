@@ -9,22 +9,41 @@ import Link from 'next/link'
 import { AgentBench, type BenchStates } from './components/agent-bench'
 import { BillReceipt, CostBadge, CourtBill } from './components/court-bill'
 import { Markdown } from './components/markdown'
+import { TrialProgress, type Phase } from './components/trial-progress'
 import { buildDossier, post, type BillEntry, type CallUsage, type Company, type Speech, type Verdict } from './trial'
 import { VerdictCard } from './verdict-card'
 
 const BENCH_IDLE: BenchStates = { prosecutor: 'idle', defense: 'idle', judge: 'idle' }
 
-function Typewriter({ text, done, onDone }: { text: string; done: boolean; onDone: () => void }) {
+/** How close to the bottom of the page (px) still counts as "following" live output. */
+const FOLLOW_THRESHOLD = 160
+
+function Typewriter({
+  text,
+  done,
+  onDone,
+  onTick,
+}: {
+  text: string
+  done: boolean
+  onDone: () => void
+  onTick?: () => void
+}) {
   const [shown, setShown] = useState(0)
   const onDoneRef = useRef(onDone)
   onDoneRef.current = onDone
+  const onTickRef = useRef(onTick)
+  onTickRef.current = onTick
   useEffect(() => {
     if (done || shown >= text.length) {
       if (!done && shown >= text.length) onDoneRef.current()
       return
     }
     const step = Math.max(2, Math.round(text.length / 400))
-    const id = setTimeout(() => setShown((s) => Math.min(s + step, text.length)), 12)
+    const id = setTimeout(() => {
+      setShown((s) => Math.min(s + step, text.length))
+      onTickRef.current?.()
+    }, 12)
     return () => clearTimeout(id)
   }, [shown, text, done])
   const visible = done ? text : text.slice(0, shown)
@@ -46,6 +65,10 @@ export default function Courtroom() {
   const [company, setCompany] = useState<Company | null>(null)
   const [bench, setBench] = useState<BenchStates>(BENCH_IDLE)
   const [bill, setBill] = useState<BillEntry[]>([])
+  const [phase, setPhase] = useState<Phase | null>(null)
+  const [phaseDone, setPhaseDone] = useState(false)
+  const [follow, setFollow] = useState(true)
+  const followRef = useRef(true)
   const dossierRef = useRef<string | null>(null)
 
   const addSpeech = (s: Speech) => setSpeeches((prev) => [...prev, s])
@@ -56,6 +79,30 @@ export default function Courtroom() {
   const addBill = (label: string, usage?: CallUsage) => {
     if (!usage) return
     setBill((prev) => [...prev, { label, usage }])
+  }
+
+  const scrollToBottom = useCallback(() => {
+    window.scrollTo(0, document.documentElement.scrollHeight)
+  }, [])
+
+  // Track whether the user is glued to the bottom of the page (i.e. "following"
+  // the live trial) so we don't yank their scroll position if they've scrolled
+  // up to re-read an earlier speech.
+  useEffect(() => {
+    const onScroll = () => {
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - FOLLOW_THRESHOLD
+      followRef.current = atBottom
+      setFollow(atBottom)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const jumpToLive = () => {
+    followRef.current = true
+    setFollow(true)
+    scrollToBottom()
   }
 
   const runTrial = async (e: React.FormEvent) => {
@@ -69,6 +116,10 @@ export default function Courtroom() {
     setCompany(null)
     setBench(BENCH_IDLE)
     setBill([])
+    setPhase('evidence')
+    setPhaseDone(false)
+    followRef.current = true
+    setFollow(true)
     dossierRef.current = null
 
     try {
@@ -87,14 +138,18 @@ export default function Courtroom() {
           (ev.peer ? `\nExhibit B entered: industry peer ${ev.peer.name} (${ev.peer.ticker}).` : ''),
         done: true,
       })
+      if (followRef.current) scrollToBottom()
 
       setStatus('The prosecution has the floor…')
+      setPhase('prosecution')
       setBench({ prosecutor: 'thinking', defense: 'idle', judge: 'idle' })
       const pr = await post<{ bearCase: string; usage?: CallUsage }>('/api/prosecutor', { brief: ev.brief })
       addSpeech({ role: 'prosecutor', title: 'The Prosecution', text: pr.bearCase, done: false, usage: pr.usage })
       addBill('Prosecutor', pr.usage)
+      if (followRef.current) scrollToBottom()
 
       setStatus('The defense prepares…')
+      setPhase('defense')
       setBench({ prosecutor: 'speaking', defense: 'thinking', judge: 'idle' })
       const df = await post<{ defense: string; usage?: CallUsage }>('/api/defense', {
         brief: ev.brief,
@@ -104,8 +159,10 @@ export default function Courtroom() {
       finishLast()
       addSpeech({ role: 'defense', title: 'The Defense', text: df.defense, done: false, usage: df.usage })
       addBill('Defense', df.usage)
+      if (followRef.current) scrollToBottom()
 
       setStatus('Cross-examination…')
+      setPhase('rebuttal')
       setBench({ prosecutor: 'thinking', defense: 'speaking', judge: 'idle' })
       const rb = await post<{ rebuttal: string; usage?: CallUsage }>('/api/rebuttal', {
         brief: ev.brief,
@@ -121,8 +178,10 @@ export default function Courtroom() {
         usage: rb.usage,
       })
       addBill('Prosecutor (rebuttal)', rb.usage)
+      if (followRef.current) scrollToBottom()
 
       setStatus('The judge deliberates…')
+      setPhase('verdict')
       setBench({ prosecutor: 'speaking', defense: 'done', judge: 'thinking' })
       const jd = await post<{ verdict: Verdict; usage?: CallUsage }>('/api/judge', {
         bearCase: pr.bearCase,
@@ -133,7 +192,9 @@ export default function Courtroom() {
       addBill('Judge', jd.usage)
       setVerdict(jd.verdict)
       setBench({ prosecutor: 'done', defense: 'done', judge: 'done' })
+      setPhaseDone(true)
       setStatus('')
+      if (followRef.current) scrollToBottom()
       const fullBill: BillEntry[] = [
         ...(pr.usage ? [{ label: 'Prosecutor', usage: pr.usage }] : []),
         ...(df.usage ? [{ label: 'Defense', usage: df.usage }] : []),
@@ -145,6 +206,7 @@ export default function Courtroom() {
       setError(err instanceof Error ? err.message : 'The trial was interrupted. Please retry.')
       setStatus('')
       setBench(BENCH_IDLE)
+      setPhase(null)
     } finally {
       setBusy(false)
     }
@@ -191,6 +253,8 @@ export default function Courtroom() {
       {status && <p className="status-line">{status}</p>}
       {error && <p className="error">{error}</p>}
 
+      <TrialProgress phase={phase} done={phaseDone} />
+
       {(busy || speeches.length > 0) && (
         <>
           <AgentBench states={bench} />
@@ -205,9 +269,20 @@ export default function Courtroom() {
             {company && <span className="speech-sub">In re {company.name}</span>}
             <CostBadge usage={s.usage} />
           </div>
-          <Typewriter text={s.text} done={s.done} onDone={finishLast} />
+          <Typewriter
+            text={s.text}
+            done={s.done}
+            onDone={finishLast}
+            onTick={() => followRef.current && scrollToBottom()}
+          />
         </section>
       ))}
+
+      {busy && !follow && (
+        <button type="button" className="live-btn" onClick={jumpToLive}>
+          ↓ Live
+        </button>
+      )}
 
       {verdict && company && (
         <>

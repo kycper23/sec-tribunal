@@ -259,6 +259,55 @@ body {
   .bench-status { font-size: 0.6rem; }
 }
 
+/* ---- Trial stepper: 5-phase progress -------------------------------------- */
+.stepper {
+  position: relative; display: flex; justify-content: space-between;
+  margin: 1.6rem 0 0.4rem; animation: rise 0.4s ease both;
+}
+.stepper::before {
+  content: ''; position: absolute; top: 12px; left: 5%; right: 5%; height: 2px;
+  background: var(--border); z-index: 0;
+}
+.stepper-fill {
+  position: absolute; top: 12px; left: 5%; height: 2px; background: var(--accent);
+  z-index: 1; transition: width 0.4s ease;
+}
+.step {
+  position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center;
+  gap: 0.4rem; flex: 1;
+}
+.step-dot {
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  font-family: var(--mono); font-size: 0.72rem; font-weight: 700; color: var(--muted);
+  background: var(--panel); border: 2px solid var(--border-strong); transition: all 0.3s ease;
+}
+.step-label {
+  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.05em; color: var(--muted);
+  text-transform: uppercase; text-align: center;
+}
+.step.complete .step-dot { background: var(--accent); border-color: var(--accent); color: #051324; }
+.step.complete .step-label { color: var(--text); }
+.step.active .step-dot {
+  border-color: var(--accent); color: var(--accent); animation: pulse-ring 1.6s ease-in-out infinite;
+}
+.step.active .step-label { color: var(--accent); }
+.step.pending .step-dot, .step.pending .step-label { opacity: 0.45; }
+
+.live-btn {
+  position: fixed; bottom: 1.6rem; right: 1.6rem; z-index: 20;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2)); color: #051324;
+  border: none; font-family: var(--sans); font-weight: 700; font-size: 0.85rem;
+  padding: 0.6rem 1.1rem; border-radius: 999px; cursor: pointer;
+  box-shadow: 0 6px 24px rgba(56, 189, 248, 0.35); animation: rise 0.3s ease both;
+  transition: transform 0.15s;
+}
+.live-btn:hover { transform: translateY(-1px); }
+
+@media (max-width: 640px) {
+  .step-label { font-size: 0.56rem; }
+  .step-dot { width: 22px; height: 22px; }
+}
+
 /* ---- Court Bill: tokenized-credit cost of the trial ----------------------- */
 .court-bill {
   display: flex; align-items: center; justify-content: center; gap: 0.55rem;

@@ -263,7 +263,7 @@ export default function Courtroom() {
         <Link href="/dossier/AAPL">Demo: AAPL</Link>
       </nav>
 
-      <AgentBench states={bench} />
+      <AgentBench states={bench} activeSpeech={speeches.length > 0 ? speeches[speeches.length - 1] : null} />
 
       <form className="ticker-form" onSubmit={runTrial}>
         <input

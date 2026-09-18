@@ -293,9 +293,24 @@ body {
 }
 .bench-agent {
   --role: var(--muted);
+  position: relative;
   background: var(--panel); font-family: inherit; color: var(--text); width: 100%;
   border: 1px solid var(--border); border-radius: 0; padding: 1rem 0.8rem 0.85rem;
-  text-align: center; cursor: pointer; transition: opacity 0.35s, border-color 0.35s, transform 0.35s;
+  text-align: center; cursor: pointer; transition: opacity 0.35s, border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+}
+
+/* Live discussion bubble: floats above the actively-speaking sage's card. */
+.speech-bubble {
+  position: absolute; left: 50%; bottom: calc(100% + 12px); transform: translateX(-50%);
+  width: max(180px, 100%); max-width: 220px; z-index: 2;
+  background: var(--panel); border: 1px solid var(--role); color: var(--text);
+  padding: 0.55rem 0.7rem; font-size: 0.72rem; font-style: italic; line-height: 1.35;
+  text-align: left; box-shadow: var(--shadow); animation: rise 0.3s ease both;
+}
+.speech-bubble::after {
+  content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0; border: 6px solid transparent; border-top-color: var(--role);
+  border-bottom: 0; margin-top: -1px;
 }
 .bench-agent:hover { border-color: color-mix(in srgb, var(--role) 45%, var(--border)); }
 .bench-agent:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -304,11 +319,15 @@ body {
 .bench-agent.defense { --role: var(--green); }
 .bench-agent.judge { --role: var(--violet); }
 
-.bench-agent.idle { opacity: 0.42; filter: saturate(0.4); }
+.bench-agent.idle { opacity: 0.55; filter: saturate(0.55); animation: breathe 4.5s ease-in-out infinite; }
 .bench-agent.done { opacity: 0.66; }
 .bench-agent.thinking, .bench-agent.speaking {
-  opacity: 1; border-color: color-mix(in srgb, var(--role) 60%, transparent);
-  transform: translateY(-2px);
+  opacity: 1; border-color: var(--role); box-shadow: 0 0 0 3px color-mix(in srgb, var(--role) 18%, transparent);
+  transform: translateY(-3px);
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
 }
 
 .bench-avatar {

@@ -6,6 +6,7 @@
  * long model calls feel like a live courtroom instead of dead air.
  */
 import { useEffect, useState } from 'react'
+import type { Speech } from '../trial'
 import { AgentAvatar } from './agent-avatars'
 
 export type AgentState = 'idle' | 'thinking' | 'speaking' | 'done'
@@ -79,14 +80,32 @@ const DESCRIPTION: Record<AgentKey, string> = {
     'DISMISSED or PARTIALLY VALID, and sets the Financial Health Score that closes the case.',
 }
 
-export function AgentBench({ states }: { states: BenchStates }) {
+/** First sentence (or ~120 chars) of a speech — a live "what they're saying" snippet in the bubble. */
+const snippet = (text: string): string => {
+  const firstSentence = text.match(/^.{20,160}?[.!?](?=\s|$)/)
+  const cut = firstSentence ? firstSentence[0] : text.slice(0, 120)
+  return cut.length < text.length ? `${cut.trim()}…` : cut.trim()
+}
+
+export function AgentBench({
+  states,
+  activeSpeech,
+}: {
+  states: BenchStates
+  /** The speech currently being typed out, if any — powers the live discussion bubble. */
+  activeSpeech?: Speech | null
+}) {
   const [expanded, setExpanded] = useState<AgentKey | null>(null)
+  const bubbleKey =
+    activeSpeech && !activeSpeech.done && activeSpeech.role in states ? (activeSpeech.role as AgentKey) : null
+
   return (
     <div className="bench">
       {CAST.map((agent) => {
         const state = states[agent.key]
         const isOpen = expanded === agent.key
         const descId = `bench-desc-${agent.key}`
+        const showBubble = bubbleKey === agent.key
         return (
           <button
             key={agent.key}
@@ -96,6 +115,11 @@ export function AgentBench({ states }: { states: BenchStates }) {
             aria-expanded={isOpen}
             aria-controls={descId}
           >
+            {showBubble && activeSpeech && (
+              <div className="speech-bubble" role="status">
+                {snippet(activeSpeech.text)}
+              </div>
+            )}
             <div className="bench-avatar">
               <AgentAvatar role={agent.key} size={40} />
             </div>

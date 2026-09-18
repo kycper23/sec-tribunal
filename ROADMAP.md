@@ -71,7 +71,14 @@
 
 ## 🔜 Do zrobienia (w tej kolejności)
 
-### Etap 4 — Redesign: "rada mędrców / ilustrowana księga" (PRIORYTET)
+### Etap 4 — Redesign: "rada mędrców / ilustrowana księga" — ZROBIONE
+Commity: `0bebac2` (plan), `cdd3c9b` (1/5 fundament), `7d117de` (2/5
+postaci), `687ddf1` (3/5 etykiety+emoji), `a00408a` (4/5 gramatyka księgi),
+5/5 werdykt-pieczęć — poniżej. Zweryfikowane: typecheck/build/lint czyste,
+lokalny `next start` renderuje `/`, `/compare`, `/dossier/AAPL` (seal,
+stampy, drop caps, Scribe w HTML). Werdykt-pieczęć: `Gauge` w `seal` (SVG
+double ring + textPath circumtext, `useId` dla unikalnych id na /compare),
+stampy z deterministyczną rotacją `((i*47)%5)-2`.
 Wyłącznie warstwa prezentacyjna. Nietykalne: nazwy funkcji agentów, schema
 Zod, system prompty, API routes, `src/sec/`, demos/*.json. Zakaz sygnatur
 "AI template": granat+neon, gradienty, glow, glassmorphism, radius 12–16px,

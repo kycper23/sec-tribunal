@@ -32,22 +32,18 @@
   `index.ts` CLI drukuje `[BILL] ...`. `demos/*.json` zregenerowane z realnym
   `usage` (np. AAPL: 4 wywołania, 36 552 tokenów, $0.8341). Zweryfikowane na
   produkcji: `/dossier/AAPL` pokazuje pokwitowanie z realnymi kwotami.
+- **Etap 2b — Stepper + auto-scroll** (`75404aa`): `app/components/trial-progress.tsx`
+  — stepper 5 faz Evidence → Prosecution → Defense → Rebuttal → Verdict
+  (complete ✓, active pulsujący, pending przygaszony, łącząca linia z fill).
+  `page.tsx`: stan `phase`/`phaseDone` ustawiany przy każdym wywołaniu API;
+  `followRef`/`follow` (próg 160 px od dołu, listener `scroll`) — `Typewriter`
+  dostaje `onTick`, który przy `follow` robi `window.scrollTo(bottom)`; scroll
+  też po każdej nowej mowie i po werdykcie. Pływający przycisk "↓ Live" gdy
+  `busy && !follow`. CSS: `.stepper`, `.step`, `.live-btn`. Zweryfikowane:
+  typecheck/build/lint czyste, lokalny `next start` renderuje `/` i
+  `/dossier/AAPL` bez błędów, produkcyjny CSS zawiera `.stepper`/`.live-btn`.
 
 ## 🔜 Do zrobienia (w tej kolejności)
-
-### Etap 2b — Stepper + auto-scroll
-1. Nowy `app/components/trial-progress.tsx`: stepper 5 faz
-   Evidence → Prosecution → Defense → Rebuttal → Verdict; kroki complete
-   (✓, wypełnione), active (pulsujący), pending (przygaszone); linia łącząca.
-   Stan `phase` trzymany w `page.tsx`, ustawiany przy każdym wywołaniu API,
-   po werdykcie `done`.
-2. Auto-scroll w `page.tsx`: ref `followRef` (czy user jest przy dole strony,
-   próg ~160 px, aktualizowany listenerem `scroll`); `Typewriter` dostaje
-   `onTick` → gdy follow, `window.scrollTo(bottom)` (instant, nie smooth —
-   tick co 12 ms). Scroll też przy nowej mowie i werdykcie. Gdy user
-   odscrolluje w górę → follow off; powrót na dół → follow on. Pływający
-   przycisk "↓ Live" widoczny gdy !follow && rozprawa trwa.
-3. CSS: `.stepper`, `.step`, `.live-btn`. Typecheck/build → commit → push.
 
 ### Pakiet 1 — Exhibit: kronika zdarzeń 8-K (docket)
 1. `src/sec/edgar.ts`: dodać `fetchSubmissions(cik10)` →

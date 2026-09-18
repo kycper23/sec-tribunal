@@ -168,6 +168,53 @@ zarzutów wjeżdżają kolejno. Spójność stylu na `/compare` i `/dossier`.
 - **Etap 6 — finał**: OG image (`ImageResponse`), merge README, GIF demo,
   A/B fable-5 vs sonnet-5 (tylko env var).
 
+### Etap 4c — Świątynia (interaktywna narracja UI) — ZROBIONE (Etapy A→B→E→C→D)
+Kolejność realizacji uzgodniona z użytkownikiem: A → B → E → C → D. Wszystkie
+etapy: edycja → typecheck/lint/build czyste → commit → push. Zero zmian w
+logice agentów/API/`src/sec/*`/`demos/*.json`, zero nowych zależności npm.
+
+- **Etap A — Brama świątyni** (`b4dbffe`): nowy
+  `app/components/temple-gate.tsx` — pełnoekranowa plansza wejściowa na `/`
+  (tło `scene-hero.jpg`, przycisk "Enter the Hall of the Tribunal"), raz na
+  sesję (`sessionStorage`), fade-out 0.65s przy wejściu. `/compare` i
+  `/dossier/[ticker]` bez zmian (statyczny `HeroPlate`, brak bramy — otwierają
+  się na gotowej sprawie, nie na świeżej sesji).
+- **Etap B — Sala mnichów** (`81e33db`): `AgentBench` przeniesiona nad
+  formularz i renderowana zawsze (stan idle widoczny od wejścia, nie tylko
+  w trakcie/po rozprawie). Karty mędrców klikalne (`useState` w
+  `agent-bench.tsx`) — rozwijają opis roli/charakteru (Skeptic/Advocate/
+  Arbiter) w panelu pod statusem, `grid-template-rows` transition, a11y
+  (`aria-expanded`/`aria-controls`).
+- **Etap E — Wykres Exhibit A** (`b2eb43e`): `src/sec/facts.ts` — czysty
+  refaktor (`computeSeries` wydzielone z `buildBrief`, zachowanie identyczne,
+  zweryfikowane typecheck/lint) + nowy eksport `extractSeries(facts)` →
+  `ChartSeries[]` (Revenue/Net income/Operating cash flow, roczne punkty
+  `{period, value}`). `/api/evidence` dokłada pole `series` do JSON,
+  `app/trial.ts` ma zwierciadlane typy `SeriesPoint`/`ChartSeries`. Nowy
+  `app/components/exhibit-chart.tsx` — ręcznie rysowany wykres liniowy SVG
+  (bez bibliotek) w stylu antycznej księgi rachunkowej (kreskowane linie
+  pomocnicze, opisy osi w mono, legenda), osadzony pod mową klerka na `/`.
+  Zweryfikowane end-to-end lokalnie: `POST /api/evidence {ticker:"AAPL"}`
+  zwraca poprawne serie liczbowe.
+- **Etap C — Żywa dyskusja** (`472b1be`): `agent-bench.tsx` — bąbelek mowy
+  (`.speech-bubble`) floatujący nad kartą aktualnie mówiącego mędrca, z
+  fragmentem tekstu (pierwsze zdanie/~120 znaków) z aktywnej mowy
+  (`activeSpeech` prop z `page.tsx`, ostatni element `speeches`). CSS:
+  animacja "oddychania" (`@keyframes breathe`) dla stanu idle zamiast
+  martwego przygaszenia, mocniejsze podświetlenie thinking/speaking
+  (`border-color: var(--role)` + `box-shadow`, większy `translateY`).
+- **Etap D — Zwój werdyktu** (`b296edc`): `verdict-card.tsx` — klasa
+  `.verdict-scroll` na `<section className="verdict-card">`; CSS
+  `@keyframes scroll-unfurl` (`scaleY` + `clip-path: inset()`, transform-origin
+  top) rozwija kartę werdyktu jak dekret, treść wewnątrz doklejona (`rise`
+  z delayem). Przycisk pobrania dossier (`.actions`) wjeżdża z opóźnieniem po
+  rozwinięciu zwoju. Współdzielone przez `/`, `/compare`, `/dossier/[ticker]`
+  (jeden komponent `VerdictCard`). `prefers-reduced-motion: reduce` wyłącza
+  animacje.
+
+### Przełączenie modelu na sonnet-4.5 (`b4dbffe`)
+Zob. notatkę w "Notatki techniczne" poniżej — zastępuje decyzję z 19.09.
+
 ## ❌ Wycięte / odłożone (decyzje)
 - **Streaming SSE** — wycięty: duży nakład, ława agentów + rotujące statusy
   już maskują czekanie; priorytet ma substancja analizy.

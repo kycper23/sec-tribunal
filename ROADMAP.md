@@ -268,6 +268,74 @@ nowy exhibit prezentacyjny do porównania z rzeczywistością.
   `futureSeries` poprawnie zawierają FY2022–FY2025; `/` renderuje
   `.blind-trial`/`.hourglass-icon` raz. typecheck/lint/build czyste.
 
+## 🔜 Do zrobienia — The Prophecy Engine, etapy G→H→I (w tej kolejności)
+
+Wspólne zasady dla wszystkich trzech etapów: zero zmian w agentach/Zod/
+promptach/API routes rozpraw; zero nowych zależności npm; rozstrzygnięcia
+wyłącznie deterministyczne (z `RealityReport`, nigdy z modelu); styl
+grawerowanej księgi (bez gradientów/glow/radiusów >2px, własne SVG zamiast
+emoji); `prefers-reduced-motion` przy każdej animacji. Każdy etap = osobny
+commit z pełnym cyklem typecheck+lint+build → push → weryfikacja produkcji.
+
+### Etap G — "Beat the Tribunal": proroctwo gracza + rozstrzygnięcie
+Gra: w blind trial gracz stawia proroctwo ZANIM zapadnie werdykt, trybunał
+"obstawia" implicite przez score, rzeczywistość rozstrzyga oboje.
+- Definicje (czysta arytmetyka, `app/prophecy.ts` — nowy moduł typów/helperów):
+  - `Call = 'rise' | 'fall'`; proroctwo dotyczy KIERUNKU Revenue po pieczęci.
+  - `tribunalCall(verdict)`: `score >= 50 → 'rise'`, inaczej `'fall'`.
+  - `realityCall(reality)`: znak `changePct` delty "Revenue" z `RealityReport`
+    (`> 0 → 'rise'`, `<= 0 → 'fall'`; `null` → brak rozstrzygnięcia — gra
+    nieaktywna, np. spółka bez danych po cutoff).
+  - `judgeOutcome(user, tribunal, reality)` → jeden z 4 wyników:
+    both-right / user-beats-tribunal / tribunal-beats-user / both-wrong.
+- UI: nowy `app/components/prophecy-panel.tsx` (`<ProphecyPanel/>`):
+  - Po mowie klerka (gdy `sealedCutoff` i trwa rozprawa) panel "Enter your
+    prophecy" z dwoma grawerowanymi przyciskami Rise/Fall (własne strzałki
+    SVG). Wybór zamyka się (lock) — nie można zmienić po obstawieniu;
+    można też nie obstawiać wcale (gra opcjonalna).
+  - Po "Break the seal": sekcja wyniku w `RevealBanner` — trzy wiersze
+    (Your prophecy / The Tribunal / Reality) + stamp z wynikiem
+    ("YOU BEAT THE TRIBUNAL" itd., stylem `.stamp` z verdict-card).
+- Stan w `page.tsx`: `userCall: Call | null` (reset przy nowej rozprawie),
+  przekazany do `RevealBanner`. `RevealBanner` dostaje też `verdict` (do
+  `tribunalCall`).
+- CSS: `.prophecy-panel`, `.prophecy-btn`, `.prophecy-outcome` — spójne z
+  `.blind-trial*`/`.reveal-banner`.
+
+### Etap H — Prophecy Ledger: track record w localStorage
+- Nowy `app/ledger.ts`: `LedgerEntry = {ts, ticker, cutoff, score, userCall,
+  tribunalCall, realityCall, outcome}`; `loadLedger()`/`appendLedger(entry)`
+  na kluczu `prophecy-ledger-v1` (try/catch na brak localStorage/SSR,
+  limit np. 50 wpisów FIFO).
+- Zapis: w `page.tsx` w momencie "Break the seal" (jedyny moment, gdy znamy
+  komplet: werdykt + reality + ewentualne proroctwo gracza).
+- UI: nowy `app/components/prophecy-ledger.tsx` (`<ProphecyLedger/>`):
+  panel-księga pod formularzem na `/` (widoczny tylko gdy są wpisy):
+  tally (rozprawy / trafność trybunału % / trafność gracza % / bilans
+  user-vs-tribunal) + wiersze ostatnich rozpraw (data, ticker, cutoff,
+  score, trzy calle, wynik). Przycisk "Clear the ledger". Render po
+  mount (`useEffect`) — SSR-safe, bez hydration mismatch.
+- CSS: `.prophecy-ledger*` w gramatyce księgi (mono liczby, filety).
+
+### Etap I — Prophecy Card: udostępnialna karta wyniku
+- Nowy `app/components/prophecy-card.tsx`: po reveal przycisk
+  "Download prophecy card (PNG)" — buduje kartę 1200×630 jako string SVG
+  (inline style, bez zewnętrznych fontów — `serif`/`monospace` systemowe;
+  pieczęć score jak `Gauge`, ticker, cutoff, trzy calle, stamp wyniku,
+  stopka "SEC Tribunal · The Prophecy Engine"), potem
+  `Blob(SVG) → Image → canvas.drawImage → canvas.toBlob(PNG) → download`.
+  Gdy `navigator.share` z plikami dostępny (mobile) — dodatkowo "Share".
+  Zero nowych zależności; deterministyczny rendering (żadnych Date.now()
+  w treści karty poza datą rozprawy).
+- Wpięcie: obok wyniku proroctwa w `RevealBanner` / pod nim na `/`.
+- CSS: `.prophecy-card-actions` (przyciski jak `.actions`).
+
+### Po etapach (checklista przed demo)
+- [ ] Vercel: `OPENROUTER_MODEL=anthropic/claude-sonnet-5` (dashboard) + redeploy — RĘCZNE.
+- [ ] Pełny przebieg na produkcji: blind trial → proroctwo → werdykt →
+      break the seal → wynik → wpis w ledger → download karty PNG.
+- [ ] README/opis projektu zaktualizowany o pivot "The Prophecy Engine".
+
 ## ❌ Wycięte / odłożone (decyzje)
 - **Streaming SSE** — wycięty: duży nakład, ława agentów + rotujące statusy
   już maskują czekanie; priorytet ma substancja analizy.

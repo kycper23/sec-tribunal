@@ -48,17 +48,27 @@ body {
 
 .container { max-width: 860px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
 
+/* The masthead is the book's title page: double filet rules around the title. */
 .masthead { text-align: center; margin-bottom: 2.25rem; animation: rise 0.5s ease both; }
+.masthead h1 {
+  border-top: 3px double var(--frame); border-bottom: 3px double var(--frame);
+  padding: 0.5rem 0; margin: 0 auto; max-width: 34rem;
+}
 .eyebrow {
   display: inline-block; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.22em;
   text-transform: uppercase; color: var(--accent); border-top: 1px solid var(--border-strong);
   border-bottom: 1px solid var(--border-strong); padding: 0.3rem 0.2rem; margin-bottom: 1rem;
 }
 .masthead h1 {
-  font-family: var(--display); font-size: 3.2rem; letter-spacing: 0.06em; margin: 0;
+  font-family: var(--display); font-size: 3.2rem; letter-spacing: 0.06em;
   font-weight: 600; line-height: 1.1; color: var(--frame); text-transform: uppercase;
 }
 .masthead p { color: var(--muted); margin: 0.7rem 0 0; font-size: 1.02rem; font-style: italic; }
+/* Case-register line — the archival ledger entry under a dossier title. */
+.case-register {
+  font-family: var(--mono); font-style: normal !important; font-size: 0.78rem !important;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+}
 
 .ticker-form { display: flex; gap: 0.7rem; justify-content: center; margin: 1.75rem 0 2.5rem; flex-wrap: wrap; }
 .ticker-form input {
@@ -88,9 +98,24 @@ body {
 }
 
 .speech {
-  background: var(--panel);
+  background: var(--panel); position: relative;
   border: 1px solid var(--border); border-radius: 0; padding: 1.25rem 1.5rem; margin: 1.4rem 0;
   box-shadow: var(--shadow); animation: rise 0.45s ease both;
+}
+/* Fleuron separator between consecutive speeches — chapters of the same book. */
+.speech + .speech { margin-top: 2.6rem; }
+.speech + .speech::before {
+  content: '❦'; position: absolute; top: -2.15rem; left: 50%; transform: translateX(-50%);
+  color: var(--border-strong); font-size: 1.05rem; line-height: 1;
+}
+/* Drop cap: the first letter of each speech, inked in the speaker's colour. */
+.speech.prosecutor { --role-ink: var(--red); }
+.speech.defense { --role-ink: var(--green); }
+.speech.judge { --role-ink: var(--violet); }
+.speech.clerk { --role-ink: var(--sepia); }
+.speech .md > p:first-child::first-letter {
+  font-family: var(--display); font-weight: 700; font-size: 3.1em; line-height: 0.8;
+  float: left; padding: 0.08em 0.12em 0 0; color: var(--role-ink, var(--frame));
 }
 .speech-head { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
 .speech-role {
@@ -169,7 +194,12 @@ body {
 }
 .actions button:hover { background: var(--frame); color: var(--panel); border-color: var(--frame); }
 
+/* Colophon — the closing mark of the volume. */
 .footer { text-align: center; color: var(--muted); font-size: 0.78rem; margin-top: 3.5rem; font-family: var(--mono); letter-spacing: 0.03em; }
+.footer::before {
+  content: '⁂'; display: block; color: var(--border-strong); font-size: 1rem;
+  margin-bottom: 0.6rem; font-family: var(--serif);
+}
 
 .container-wide { max-width: 1240px; }
 .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; align-items: start; }
@@ -399,6 +429,7 @@ body {
 
 .bill-receipt {
   margin-top: 1.4rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border);
+  border-top: 1px dashed var(--border-strong); border-bottom: 1px dashed var(--border-strong);
   border-radius: 0; background: var(--panel);
   animation: rise 0.5s ease both;
 }

@@ -279,7 +279,7 @@ export default function Courtroom() {
       )}
 
       {speeches.map((s, i) => (
-        <section key={i} className="speech">
+        <section key={i} className={`speech ${s.role}`}>
           <div className="speech-head">
             <span className={`speech-role ${s.role}`}>{s.title}</span>
             {company && <span className="speech-sub">In re {company.name}</span>}

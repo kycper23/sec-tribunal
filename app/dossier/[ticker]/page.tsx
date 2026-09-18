@@ -50,12 +50,13 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
       <header className="masthead">
         <div className="eyebrow">Precomputed Case File</div>
         <h1>SEC Tribunal</h1>
-        <p>
-          In re {demo.company.name} ({demo.company.ticker}) · CIK {demo.company.cik10} · tried {demo.generatedAt}
+        <p className="case-register">
+          Case No. {demo.company.cik10} · In re {demo.company.name} ({demo.company.ticker}) · tried{' '}
+          {demo.generatedAt}
         </p>
       </header>
 
-      <section className="speech">
+      <section className="speech clerk">
         <div className="speech-head">
           <span className="speech-role clerk">The Scribe — Clerk of the Tribunal</span>
         </div>
@@ -67,7 +68,7 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
       </section>
 
       {speeches.map((s, i) => (
-        <section key={i} className="speech">
+        <section key={i} className={`speech ${s.role}`}>
           <div className="speech-head">
             <span className={`speech-role ${s.role}`}>{s.title}</span>
             <span className="speech-sub">In re {demo.company.name}</span>

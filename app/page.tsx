@@ -13,6 +13,7 @@ import { DocketPanel } from './components/docket'
 import { ExhibitChart } from './components/exhibit-chart'
 import { HeroPlate } from './components/hero-plate'
 import { Markdown } from './components/markdown'
+import { ProphecyPanel } from './components/prophecy-panel'
 import { RevealBanner } from './components/reveal-banner'
 import { TempleGate } from './components/temple-gate'
 import { TrialProgress, type Phase } from './components/trial-progress'
@@ -29,6 +30,7 @@ import {
   type Verdict,
 } from './trial'
 import { VerdictCard } from './verdict-card'
+import type { Call } from './prophecy'
 
 /** Default seal date offered when Blind Trial is first switched on: one year back. */
 const defaultCutoff = (): string => {
@@ -102,6 +104,7 @@ export default function Courtroom() {
   const [reality, setReality] = useState<RealityReport | null>(null)
   const [revealed, setRevealed] = useState(false)
   const [futureSeries, setFutureSeries] = useState<ChartSeries[]>([])
+  const [userCall, setUserCall] = useState<Call | null>(null)
 
   const addSpeech = (s: Speech) => setSpeeches((prev) => [...prev, s])
   const finishLast = useCallback(
@@ -159,6 +162,7 @@ export default function Courtroom() {
     setSealedCutoff(sealAt)
     setReality(null)
     setRevealed(false)
+    setUserCall(null)
 
     try {
       setStatus(sealAt ? `The clerk is sealing the record at ${sealAt}…` : 'The clerk is gathering SEC filings…')
@@ -338,6 +342,14 @@ export default function Courtroom() {
           />
           {s.role === 'clerk' && <ExhibitChart series={series} future={revealed ? futureSeries : []} />}
           {s.role === 'clerk' && <DocketPanel docket={docket} />}
+          {s.role === 'clerk' && sealedCutoff && (
+            <ProphecyPanel
+              cutoff={sealedCutoff}
+              userCall={userCall}
+              onCall={setUserCall}
+              locked={verdict !== null}
+            />
+          )}
         </section>
       ))}
 
@@ -351,7 +363,13 @@ export default function Courtroom() {
         <>
           <VerdictCard verdict={verdict} />
           {sealedCutoff && (
-            <RevealBanner reality={reality} revealed={revealed} onReveal={() => setRevealed(true)} />
+            <RevealBanner
+              reality={reality}
+              revealed={revealed}
+              onReveal={() => setRevealed(true)}
+              userCall={userCall}
+              verdict={verdict}
+            />
           )}
           <BillReceipt entries={bill} />
           <div className="actions">

@@ -640,6 +640,49 @@ body {
 }
 .reveal-delta.up { color: var(--green); font-weight: 600; }
 .reveal-delta.down { color: var(--red); font-weight: 600; }
+
+/* ---- Beat the Tribunal: the player's prophecy ------------------------------
+   Entered after the clerk's evidence in a sealed trial, locked on selection,
+   settled deterministically against RealityReport after the seal breaks. */
+.prophecy-panel {
+  margin: 1rem 0 0; padding: 0.9rem 1.1rem; border: 1px dashed var(--border-strong);
+  border-radius: 0; background: var(--panel-2); animation: rise 0.4s ease both;
+}
+.prophecy-panel h3 {
+  margin: 0 0 0.4rem; font-family: var(--display); letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: 0.92rem; color: var(--frame);
+}
+.prophecy-panel p { margin: 0 0 0.7rem; color: var(--muted); font-size: 0.84rem; line-height: 1.55; }
+.prophecy-choices { display: flex; gap: 0.7rem; }
+.prophecy-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: var(--panel); border: 1px solid var(--border-strong); border-radius: 0;
+  padding: 0.6rem 1rem; cursor: pointer; color: var(--text);
+  font-family: var(--display); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: 0.85rem; transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.prophecy-btn.rise:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
+.prophecy-btn.fall:hover:not(:disabled) { border-color: var(--red); color: var(--red); }
+.prophecy-btn.chosen.rise {
+  border-color: var(--green); color: var(--green);
+  background: color-mix(in srgb, var(--green) 9%, var(--panel));
+}
+.prophecy-btn.chosen.fall {
+  border-color: var(--red); color: var(--red);
+  background: color-mix(in srgb, var(--red) 9%, var(--panel));
+}
+.prophecy-btn:disabled:not(.chosen) { opacity: 0.45; cursor: default; }
+.prophecy-btn:disabled.chosen { cursor: default; }
+.prophecy-locked {
+  margin: 0.65rem 0 0 !important; font-style: italic; font-size: 0.8rem !important;
+}
+.prophecy-outcome { margin-top: 1rem; animation: rise 0.4s ease both; }
+.prophecy-stamp-row { text-align: center; margin-top: 0.9rem; }
+.prophecy-stamp-row .stamp { font-size: 0.9rem; padding: 0.35rem 1rem; }
+.prophecy-unsettled { margin: 0.9rem 0 0; color: var(--muted); font-style: italic; font-size: 0.84rem; }
+@media (prefers-reduced-motion: reduce) {
+  .prophecy-panel, .prophecy-outcome { animation: none; }
+}
 .docket-badge.red { color: var(--red); border-color: color-mix(in srgb, var(--red) 50%, transparent); }
 .docket-badge.amber { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 50%, transparent); }
 .docket-labels { color: var(--text); }

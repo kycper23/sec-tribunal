@@ -277,7 +277,14 @@ grawerowanej księgi (bez gradientów/glow/radiusów >2px, własne SVG zamiast
 emoji); `prefers-reduced-motion` przy każdej animacji. Każdy etap = osobny
 commit z pełnym cyklem typecheck+lint+build → push → weryfikacja produkcji.
 
-### Etap G — "Beat the Tribunal": proroctwo gracza + rozstrzygnięcie
+### Etap G — "Beat the Tribunal": proroctwo gracza + rozstrzygnięcie — ZROBIONE
+Zrealizowane wg planu poniżej: `app/prophecy.ts` (Call/tribunalCall/
+realityCall/judgeOutcome/OUTCOME_LABEL), `app/components/prophecy-panel.tsx`
+(Rise/Fall z własnymi strzałkami SVG, lock po wyborze i po werdykcie),
+`RevealBanner` rozszerzony o `ProphecyOutcomeBlock` (3 wiersze + stamp
+wyniku; "unsettled" gdy reality nie może rozstrzygnąć), stan `userCall`
+w `page.tsx` (reset przy nowej rozprawie), CSS `.prophecy-*`.
+typecheck/lint/build czyste.
 Gra: w blind trial gracz stawia proroctwo ZANIM zapadnie werdykt, trybunał
 "obstawia" implicite przez score, rzeczywistość rozstrzyga oboje.
 - Definicje (czysta arytmetyka, `app/prophecy.ts` — nowy moduł typów/helperów):

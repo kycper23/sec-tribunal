@@ -250,6 +250,42 @@ body {
   .container { padding-top: 2rem; }
 }
 
+/* ---- Temple gate: full-screen entry plate on `/`, once per session -------- */
+.temple-gate {
+  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center;
+  background: var(--frame); animation: rise 0.4s ease both;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.temple-gate-closing { opacity: 0; }
+.temple-gate-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: sepia(0.18) contrast(1.05) brightness(0.55);
+}
+.temple-gate-panel {
+  position: relative; z-index: 1; text-align: center; max-width: 30rem; margin: 0 1.25rem;
+  padding: 2.2rem 2rem; background: var(--panel);
+  border: 1px solid var(--border-strong); outline: 1px solid var(--border-strong); outline-offset: 4px;
+  animation: rise 0.6s ease 0.1s both;
+}
+.temple-gate-panel h1 {
+  font-family: var(--display); font-size: 2.4rem; letter-spacing: 0.06em; font-weight: 600;
+  line-height: 1.1; color: var(--frame); text-transform: uppercase; margin: 0.6rem 0;
+  border-top: 3px double var(--frame); border-bottom: 3px double var(--frame); padding: 0.5rem 0;
+}
+.temple-gate-panel p { color: var(--muted); font-style: italic; margin: 0.8rem 0 1.4rem; }
+.temple-gate-cta {
+  background: var(--frame); color: var(--panel); border: 1px solid var(--frame);
+  font-size: 0.95rem; padding: 0.75rem 1.6rem; border-radius: 0; cursor: pointer;
+  font-family: var(--serif); font-weight: 600; letter-spacing: 0.02em;
+  transition: background 0.2s, border-color 0.2s;
+}
+.temple-gate-cta:hover { background: var(--accent); border-color: var(--accent); }
+
+@media (max-width: 640px) {
+  .temple-gate-panel { padding: 1.6rem 1.25rem; }
+  .temple-gate-panel h1 { font-size: 1.7rem; }
+}
+
 /* ---- Agents' bench -------------------------------------------------------- */
 .bench {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.9rem;

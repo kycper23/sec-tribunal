@@ -192,6 +192,15 @@ zarzutów wjeżdżają kolejno. Spójność stylu na `/compare` i `/dossier`.
   wyraźnie lepszej jakości i bezpiecznych czasach (odwracalne — env var).
 - Czasy na produkcji (fable-5): evidence ~1.5 s, prosecutor ~21 s, defense
   ~54 s, rebuttal ~41 s, judge ~32 s; `maxDuration=300`.
+- **Przełączenie na sonnet-4.5** (18/19.09, rewizja decyzji powyżej):
+  test lokalny (`pnpm tribunal TSLA`, `.env.local` z
+  `OPENROUTER_MODEL=anthropic/claude-sonnet-4.5`) — 4 calls, ~166 s total
+  (bezpiecznie pod `maxDuration=300`), $0.1889/rozprawa (**taniej** niż
+  fable-5), structured output Judge nadal waliduje się przez Zod bez
+  błędu, jakość mów wyraźnie lepsza (precyzyjne cytowania Exhibit A,
+  spójna numeracja charge'ów w rebuttal/verdict). Fallback w
+  `src/tribunal/agents.ts` zmieniony na `anthropic/claude-sonnet-4.5`;
+  `OPENROUTER_MODEL` ustawiony też na Vercel (produkcja).
 - SEC wymaga User-Agent z e-mailem (`SEC_USER_AGENT` w `edgar.ts`).
 - PowerShell: JSON z unicode słać jako bajty UTF-8; curl.exe zamiast aliasu.
 - W Vercel `OPENROUTER_MODEL` jest pustym stringiem (kod odporny przez `||`).

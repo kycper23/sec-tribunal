@@ -11,6 +11,7 @@ import { BillReceipt, CostBadge, CourtBill } from './components/court-bill'
 import { DocketPanel } from './components/docket'
 import { HeroPlate } from './components/hero-plate'
 import { Markdown } from './components/markdown'
+import { TempleGate } from './components/temple-gate'
 import { TrialProgress, type Phase } from './components/trial-progress'
 import {
   buildDossier,
@@ -241,6 +242,7 @@ export default function Courtroom() {
 
   return (
     <main className="container">
+      <TempleGate />
       <HeroPlate />
       <header className="masthead">
         <div className="eyebrow">AI Courtroom · SEC EDGAR Evidence</div>

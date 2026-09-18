@@ -79,6 +79,16 @@ const fmtPoint = (v: FactValue): string => `${v.end}: ${fmtMoney(v.val)}`
 
 const pct = (num: number, den: number): string => `${((num / den) * 100).toFixed(1)}%`
 
+/**
+ * Blind-trial gate: was this fact actually knowable by `cutoff`? Keyed off
+ * `filed` (the SEC filing date), NOT `end` (the reporting-period date) —
+ * a FY2022 10-K might cover a period ending 2022-12-31 but wasn't filed (and
+ * thus wasn't public) until ~February 2023. Grading it as "known" on
+ * 2023-01-01 would be look-ahead bias. Falls back to `end` only for the rare
+ * fact with no `filed` field at all. No cutoff = everything known (today).
+ */
+const knownBy = (v: FactValue, cutoff: string | undefined): boolean => !cutoff || (v.filed ?? v.end) <= cutoff
+
 interface Series {
   tag: string
   annual: FactValue[]
@@ -141,7 +151,10 @@ const STALE_QUARTER_DAYS = 550
  * relative to the company-wide "as of" date. Pure refactor — same values
  * `buildBrief` computed inline before, now reusable for the chart exhibit.
  */
-const computeSeries = (facts: CompanyFacts): { series: Map<string, Series>; missing: string[] } => {
+const computeSeries = (
+  facts: CompanyFacts,
+  cutoff?: string,
+): { series: Map<string, Series>; missing: string[] } => {
   const gaap = facts.facts['us-gaap'] ?? {}
   const series = new Map<string, Series>()
   const missing: string[] = []
@@ -152,7 +165,7 @@ const computeSeries = (facts: CompanyFacts): { series: Map<string, Series>; miss
   for (const metric of METRICS) {
     let best: { tag: string; values: FactValue[]; latest: number } | null = null
     for (const tag of metric.tags) {
-      const raw = gaap[tag]?.units?.USD
+      const raw = gaap[tag]?.units?.USD?.filter((v) => knownBy(v, cutoff))
       if (!raw?.length) continue
       const values = dedupe(raw)
       const latest = Date.parse(values[values.length - 1].end)
@@ -215,8 +228,8 @@ const CHART_METRICS = ['Revenue', 'Net income', 'Operating cash flow']
  * `buildBrief`, so the chart and the evidence brief the agents read from can
  * never silently disagree.
  */
-export const extractSeries = (facts: CompanyFacts): ChartSeries[] => {
-  const { series } = computeSeries(facts)
+export const extractSeries = (facts: CompanyFacts, cutoff?: string): ChartSeries[] => {
+  const { series } = computeSeries(facts, cutoff)
   return CHART_METRICS.flatMap((label) => {
     const s = series.get(label)
     if (!s || s.annual.length < 2) return []
@@ -224,13 +237,83 @@ export const extractSeries = (facts: CompanyFacts): ChartSeries[] => {
   })
 }
 
+/**
+ * "The Reveal" exhibit: the annual points that were filed AFTER the cutoff —
+ * i.e. what actually happened next, hidden from both the jury and the agents
+ * during a blind trial. Same tag-selection logic as `extractSeries` so the
+ * two halves of the chart (known / revealed) always splice onto one series.
+ */
+export const extractFutureSeries = (facts: CompanyFacts, cutoff: string): ChartSeries[] => {
+  const { series: full } = computeSeries(facts) // no cutoff = everything ever filed
+  return CHART_METRICS.flatMap((label) => {
+    const s = full.get(label)
+    if (!s) return []
+    const future = s.annual.filter((v) => (v.filed ?? v.end) > cutoff)
+    if (!future.length) return []
+    return [{ label, points: future.map((v) => ({ period: v.end, value: v.val })) }]
+  })
+}
+
+/** One metric's "what the jury knew" vs. "what actually happened next" — pure arithmetic, no model call. */
+export interface RealityDelta {
+  label: string
+  cutoffPeriod: string | null
+  cutoffValue: number | null
+  latestPeriod: string | null
+  latestValue: number | null
+  changePct: number | null
+}
+
+export interface RealityReport {
+  cutoff: string
+  deltas: RealityDelta[]
+}
+
+/**
+ * "The Reveal", quantified: for each headline metric, the last annual figure
+ * the tribunal was actually allowed to see (as of `cutoff`) versus the last
+ * annual figure filed since — real-world ground truth the agents never
+ * touched. Purely deterministic (no LLM), so it can be trusted as the
+ * arbiter of a bet's outcome.
+ */
+export const buildRealityReport = (facts: CompanyFacts, cutoff: string): RealityReport => {
+  const { series: known } = computeSeries(facts, cutoff)
+  const { series: full } = computeSeries(facts)
+  const deltas: RealityDelta[] = CHART_METRICS.map((label) => {
+    const cutoffPoint = known.get(label)?.annual.at(-1) ?? null
+    const latestPoint = full.get(label)?.annual.at(-1) ?? null
+    const cutoffValue = cutoffPoint?.val ?? null
+    const latestValue = latestPoint?.val ?? null
+    const changePct =
+      cutoffValue !== null && latestValue !== null && cutoffValue !== 0
+        ? ((latestValue - cutoffValue) / Math.abs(cutoffValue)) * 100
+        : null
+    return {
+      label,
+      cutoffPeriod: cutoffPoint?.end ?? null,
+      cutoffValue,
+      latestPeriod: latestPoint?.end ?? null,
+      latestValue,
+      changePct,
+    }
+  })
+  return { cutoff, deltas }
+}
+
 /** Render companyfacts into a compact, LLM-friendly brief. */
-export const buildBrief = (company: Company, facts: CompanyFacts): string => {
-  const { series, missing } = computeSeries(facts)
+export const buildBrief = (company: Company, facts: CompanyFacts, cutoff?: string): string => {
+  const { series, missing } = computeSeries(facts, cutoff)
 
   const lines: string[] = [
     `Company: ${facts.entityName || company.name} (ticker ${company.ticker}, CIK ${company.cik10})`,
     'Source: SEC EDGAR XBRL companyfacts — figures exactly as filed in 10-K / 10-Q reports. All values in USD.',
+    ...(cutoff
+      ? [
+          `BLIND TRIAL: this tribunal is sealed at ${cutoff}. Every figure below was actually filed with the` +
+            ' SEC on or before that date — nothing filed after it is included, even if it exists in the historical' +
+            ' record. Argue only from what was knowable at the time; do not speculate about what came later.',
+        ]
+      : []),
     '',
   ]
   for (const metric of METRICS) {

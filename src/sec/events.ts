@@ -64,17 +64,23 @@ const DAY = 86_400_000
 const WINDOW_DAYS = 550 // ~18 months
 const MAX_EVENTS = 14
 
-/** Filter the submissions feed down to a triaged 8-K docket for the last ~18 months. */
-export const buildDocket = (subs: Submissions): Docket => {
+/**
+ * Filter the submissions feed down to a triaged 8-K docket for the last
+ * ~18 months. `cutoff` (YYYY-MM-DD) seals a blind trial at a point in the
+ * past: the window becomes "the 18 months before cutoff", and any filing
+ * dated after cutoff — i.e. not yet public at trial time — is excluded.
+ */
+export const buildDocket = (subs: Submissions, cutoff?: string): Docket => {
   const recent = subs.filings.recent
-  const now = Date.now()
+  const now = cutoff ? Date.parse(cutoff) : Date.now()
   const cik = String(Number(subs.cik))
   const events: DocketEvent[] = []
   let lateFilings = 0
 
   for (let i = 0; i < recent.form.length; i++) {
     const filingDate = recent.filingDate[i]
-    if (!filingDate || now - Date.parse(filingDate) > WINDOW_DAYS * DAY) continue
+    if (!filingDate || (cutoff && filingDate > cutoff)) continue
+    if (now - Date.parse(filingDate) > WINDOW_DAYS * DAY) continue
 
     const form = recent.form[i]
     if (form === 'NT 10-K' || form === 'NT 10-Q') {

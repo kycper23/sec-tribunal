@@ -227,6 +227,47 @@ przed finalnym demo:** ustawić `OPENROUTER_MODEL=anthropic/claude-sonnet-5`
 na Vercel (dashboard → env vars), bo produkcja obecnie ma tam wpisane
 `anthropic/claude-sonnet-4.5` z poprzedniej rewizji.
 
+### The Prophecy Engine — Etap F: Blind Trial backend + UI (ten commit)
+Pivot: SEC Tribunal staje się interaktywnym blind-backtestem. Zero zmian w
+logice agentów/Zod — wyłącznie zaostrzenie tego, co widzą (data gate) +
+nowy exhibit prezentacyjny do porównania z rzeczywistością.
+- `src/sec/facts.ts`: `knownBy(v, cutoff)` — brama "czy to było znane do
+  `cutoff`", kluczowana po `filed` (data złożenia w SEC), NIE po `end`
+  (data okresu) — unika look-ahead bias (10-K za FY2022 mógł kończyć się
+  2022-12-31, ale nie był publiczny przed ~lutym 2023). `computeSeries`/
+  `extractSeries`/`buildBrief` przyjmują opcjonalny `cutoff`; `buildBrief`
+  dokleja linię "BLIND TRIAL: sealed at {cutoff}…" gdy cutoff jest ustawiony.
+  Nowe czyste funkcje (bez wywołań modelu): `extractFutureSeries(facts,
+  cutoff)` — punkty złożone PO cutoff ("Reveal" do wykresu),
+  `buildRealityReport(facts, cutoff)` → `RealityReport`/`RealityDelta` —
+  deterministyczne delty znane-vs-rzeczywiste per metryka (Revenue/Net
+  income/OCF), do zaufania jako arbiter werdyktu w przyszłym scoringu.
+- `src/sec/events.ts`: `buildDocket(subs, cutoff?)` pieczętuje okno 18 mies.
+  na `cutoff` i wyklucza filing'i złożone po nim.
+- `app/api/evidence/route.ts`: przyjmuje `cutoff` (walidacja `CUTOFF_RE =
+  /^\d{4}-\d{2}-\d{2}$/`), przekazuje do `buildBrief`/`extractSeries`/
+  `buildDocket`/peer brief; liczy `reality`/`futureSeries` gdy cutoff podany
+  (nigdy nie trafiają do briefu agentów — tylko do JSON dla UI reveal).
+- UI: nowy `app/components/blind-trial-toggle.tsx` (`<BlindTrialToggle/>`
+  — przełącznik z własną ikoną klepsydry SVG + `<input type="date">` na
+  datę pieczętowania, domyślnie rok wstecz), wpięty nad formularz na `/`.
+  Cała strona dostaje `.sealed-courtroom` (filter: sepia) podczas trwania/
+  wyświetlania zapieczętowanej rozprawy — usuwane po "złamaniu pieczęci".
+  Nowy `app/components/reveal-banner.tsx` (`<RevealBanner/>`) — przycisk
+  "Break the seal" po werdykcie, potem tabela znane-vs-rzeczywiste z
+  `buildRealityReport`, kolory red/green po znaku zmiany. `exhibit-chart.tsx`
+  dostał opcjonalny prop `future` — punkty z `extractFutureSeries` dorysowane
+  jako przerywana kontynuacja tej samej linii/koloru (nie nowy wykres).
+  `app/trial.ts` ma zwierciadlane typy `RealityDelta`/`RealityReport`.
+  CSS: `.blind-trial*`, `.sealed-courtroom`, `.reveal-banner`/`.reveal-table`,
+  `.exhibit-reveal*` — bez gradientów/glow/dużych radiusów, `sand-fall`
+  animacja klepsydry wyłączana przez `prefers-reduced-motion`.
+  Zweryfikowane end-to-end lokalnie (`next start`): `POST /api/evidence
+  {ticker:"AAPL", cutoff:"2022-06-30"}` → brief z linią BLIND TRIAL, `series`
+  ucięte na FY2021 (FY2022 10-K złożony po cutoff), `reality.deltas` i
+  `futureSeries` poprawnie zawierają FY2022–FY2025; `/` renderuje
+  `.blind-trial`/`.hourglass-icon` raz. typecheck/lint/build czyste.
+
 ## ❌ Wycięte / odłożone (decyzje)
 - **Streaming SSE** — wycięty: duży nakład, ława agentów + rotujące statusy
   już maskują czekanie; priorytet ma substancja analizy.

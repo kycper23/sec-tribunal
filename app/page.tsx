@@ -7,11 +7,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { AgentBench, type BenchStates } from './components/agent-bench'
+import { BlindTrialToggle } from './components/blind-trial-toggle'
 import { BillReceipt, CostBadge, CourtBill } from './components/court-bill'
 import { DocketPanel } from './components/docket'
 import { ExhibitChart } from './components/exhibit-chart'
 import { HeroPlate } from './components/hero-plate'
 import { Markdown } from './components/markdown'
+import { RevealBanner } from './components/reveal-banner'
 import { TempleGate } from './components/temple-gate'
 import { TrialProgress, type Phase } from './components/trial-progress'
 import {
@@ -22,10 +24,18 @@ import {
   type ChartSeries,
   type Company,
   type Docket,
+  type RealityReport,
   type Speech,
   type Verdict,
 } from './trial'
 import { VerdictCard } from './verdict-card'
+
+/** Default seal date offered when Blind Trial is first switched on: one year back. */
+const defaultCutoff = (): string => {
+  const d = new Date()
+  d.setFullYear(d.getFullYear() - 1)
+  return d.toISOString().slice(0, 10)
+}
 
 const BENCH_IDLE: BenchStates = { prosecutor: 'idle', defense: 'idle', judge: 'idle' }
 
@@ -86,6 +96,12 @@ export default function Courtroom() {
   const [follow, setFollow] = useState(true)
   const followRef = useRef(true)
   const dossierRef = useRef<string | null>(null)
+  const [blindTrial, setBlindTrial] = useState(false)
+  const [cutoff, setCutoff] = useState(defaultCutoff)
+  const [sealedCutoff, setSealedCutoff] = useState<string | null>(null)
+  const [reality, setReality] = useState<RealityReport | null>(null)
+  const [revealed, setRevealed] = useState(false)
+  const [futureSeries, setFutureSeries] = useState<ChartSeries[]>([])
 
   const addSpeech = (s: Speech) => setSpeeches((prev) => [...prev, s])
   const finishLast = useCallback(
@@ -139,9 +155,13 @@ export default function Courtroom() {
     followRef.current = true
     setFollow(true)
     dossierRef.current = null
+    const sealAt = blindTrial ? cutoff : null
+    setSealedCutoff(sealAt)
+    setReality(null)
+    setRevealed(false)
 
     try {
-      setStatus('The clerk is gathering SEC filings…')
+      setStatus(sealAt ? `The clerk is sealing the record at ${sealAt}…` : 'The clerk is gathering SEC filings…')
       const ev = await post<{
         company: Company
         peer: Company | null
@@ -149,10 +169,14 @@ export default function Courtroom() {
         peerBrief: string | null
         docket: Docket | null
         series: ChartSeries[]
-      }>('/api/evidence', { ticker: t })
+        reality: RealityReport | null
+        futureSeries: ChartSeries[]
+      }>('/api/evidence', { ticker: t, ...(sealAt ? { cutoff: sealAt } : {}) })
       setCompany(ev.company)
       setDocket(ev.docket)
       setSeries(ev.series)
+      setReality(ev.reality)
+      setFutureSeries(ev.futureSeries ?? [])
       addSpeech({
         role: 'clerk',
         title: 'The Scribe — Clerk of the Tribunal',
@@ -247,13 +271,19 @@ export default function Courtroom() {
   }
 
   return (
-    <main className="container">
+    <main className={`container${sealedCutoff && !revealed ? ' sealed-courtroom' : ''}`}>
       <TempleGate />
       <HeroPlate />
       <header className="masthead">
         <div className="eyebrow">AI Courtroom · SEC EDGAR Evidence</div>
         <h1>SEC Tribunal</h1>
-        <p>Three AI agents put a public company on trial — evidence: real SEC EDGAR filings.</p>
+        <p>
+          {sealedCutoff
+            ? revealed
+              ? `Seal broken — the record was sealed at ${sealedCutoff}; reality is now unlocked below.`
+              : `Sealed at ${sealedCutoff} — the tribunal argues blind, as if it never happened.`
+            : 'Three AI agents put a public company on trial — evidence: real SEC EDGAR filings.'}
+        </p>
       </header>
 
       <nav className="nav-links">
@@ -265,6 +295,14 @@ export default function Courtroom() {
 
       <AgentBench states={bench} activeSpeech={speeches.length > 0 ? speeches[speeches.length - 1] : null} />
 
+      <BlindTrialToggle
+        enabled={blindTrial}
+        cutoff={cutoff}
+        onToggle={setBlindTrial}
+        onCutoffChange={setCutoff}
+        disabled={busy}
+      />
+
       <form className="ticker-form" onSubmit={runTrial}>
         <input
           value={ticker}
@@ -274,7 +312,7 @@ export default function Courtroom() {
           aria-label="Stock ticker"
         />
         <button type="submit" disabled={busy}>
-          {busy ? 'In session…' : 'Put on Trial'}
+          {busy ? 'In session…' : blindTrial ? 'Seal the Tribunal' : 'Put on Trial'}
         </button>
       </form>
 
@@ -298,7 +336,7 @@ export default function Courtroom() {
             onDone={finishLast}
             onTick={() => followRef.current && scrollToBottom()}
           />
-          {s.role === 'clerk' && <ExhibitChart series={series} />}
+          {s.role === 'clerk' && <ExhibitChart series={series} future={revealed ? futureSeries : []} />}
           {s.role === 'clerk' && <DocketPanel docket={docket} />}
         </section>
       ))}
@@ -312,6 +350,9 @@ export default function Courtroom() {
       {verdict && company && (
         <>
           <VerdictCard verdict={verdict} />
+          {sealedCutoff && (
+            <RevealBanner reality={reality} revealed={revealed} onReveal={() => setRevealed(true)} />
+          )}
           <BillReceipt entries={bill} />
           <div className="actions">
             <button onClick={downloadDossier}>Download dossier (.md)</button>

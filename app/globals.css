@@ -512,6 +512,14 @@ body {
 }
 .exhibit-legend li { display: flex; align-items: center; gap: 0.4rem; }
 .exhibit-swatch { width: 10px; height: 10px; border-radius: 50%; background: currentColor; display: inline-block; }
+/* The Reveal overlay on Exhibit A: same colour, dashed, so it reads as an
+   "unlocked" continuation of the known ledger rather than a new dataset. */
+.exhibit-series.exhibit-reveal path { stroke-dasharray: 4 3; opacity: 0.85; }
+.exhibit-series.exhibit-reveal circle { opacity: 0.85; }
+.exhibit-reveal-legend { color: var(--muted); }
+.exhibit-reveal-legend .exhibit-swatch {
+  background: none; border: 1.5px dashed var(--muted); width: 9px; height: 9px; border-radius: 50%;
+}
 
 /* ---- Filings Docket: 8-K material events ---------------------------------- */
 .docket {
@@ -549,6 +557,89 @@ body {
   padding: 0.08rem 0.45rem; border-radius: 2px; white-space: nowrap; border: 1px solid var(--border);
   color: var(--muted);
 }
+
+/* ---- The Prophecy Engine: Blind Trial seal --------------------------------
+   Sealing the tribunal at a past date is the pivot's central ritual: the
+   whole page tints toward sepia/vignette while sealed, as if the reader has
+   stepped back into an old newspaper's pages — pure CSS filter, no new deps,
+   `prefers-reduced-motion` drops the transition to an instant swap. */
+.blind-trial {
+  max-width: 30rem; margin: 0 auto 1.4rem; animation: rise 0.4s ease both;
+}
+.blind-trial-switch {
+  width: 100%; display: flex; align-items: center; gap: 0.7rem; text-align: left;
+  background: var(--panel); border: 1px solid var(--border-strong); border-radius: 0;
+  padding: 0.65rem 0.9rem; cursor: pointer; color: var(--text); font-family: inherit;
+  transition: border-color 0.2s, background 0.2s;
+}
+.blind-trial-switch:disabled { opacity: 0.55; cursor: wait; }
+.blind-trial.active .blind-trial-switch {
+  border-color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, var(--panel));
+}
+.hourglass-icon { color: var(--muted); flex-shrink: 0; transition: color 0.3s; }
+.blind-trial.active .hourglass-icon { color: var(--accent); }
+.hourglass-icon.sealed .hourglass-sand { animation: sand-fall 2.6s ease-in-out infinite; }
+@keyframes sand-fall {
+  0%, 100% { opacity: 0.85; transform: translateY(0); }
+  50% { opacity: 0.35; transform: translateY(1.5px); }
+}
+.blind-trial-title {
+  display: block; font-family: var(--display); font-weight: 600; font-size: 0.92rem; letter-spacing: 0.02em;
+}
+.blind-trial-hint { display: block; color: var(--muted); font-size: 0.76rem; margin-top: 0.15rem; }
+.blind-trial-date {
+  margin-top: 0.6rem; padding: 0.75rem 0.9rem; border: 1px dashed var(--border-strong);
+  border-radius: 0; background: var(--panel-2); animation: rise 0.3s ease both;
+}
+.blind-trial-date label {
+  display: block; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem;
+}
+.blind-trial-date input {
+  background: var(--panel); border: 1px solid var(--border-strong); color: var(--text);
+  font-family: var(--mono); font-size: 0.92rem; padding: 0.45rem 0.6rem; border-radius: 0; width: 100%;
+}
+.blind-trial-date input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.blind-trial-note {
+  margin: 0.55rem 0 0; color: var(--muted); font-size: 0.78rem; font-style: italic; line-height: 1.5;
+}
+
+/* Sealed courtroom: while a blind trial is running/rendered, the whole page
+   tints sepia — the visual tell that we've stepped back in time. */
+.sealed-courtroom {
+  filter: sepia(0.35) contrast(1.02) brightness(0.98); transition: filter 0.9s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sealed-courtroom { transition: none; }
+  .hourglass-icon.sealed .hourglass-sand { animation: none; }
+}
+
+/* The Reveal: banner that breaks the seal after a blind verdict, showing what
+   actually happened next — deterministic ground truth, never model-generated. */
+.reveal-banner {
+  margin: 1.6rem 0; padding: 1rem 1.2rem; border: 1px solid var(--accent); border-radius: 0;
+  background: color-mix(in srgb, var(--accent) 8%, var(--panel)); animation: rise 0.4s ease both;
+}
+.reveal-banner h3 {
+  margin: 0 0 0.5rem; font-family: var(--display); letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: 1rem; color: var(--frame);
+}
+.reveal-banner button {
+  background: var(--frame); color: var(--panel); border: 1px solid var(--frame);
+  font-family: var(--display); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.55rem 1.3rem; border-radius: 0; cursor: pointer; font-size: 0.85rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+.reveal-banner button:hover { background: var(--accent); border-color: var(--accent); }
+.reveal-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin-top: 0.8rem; }
+.reveal-table th, .reveal-table td {
+  border: 1px solid var(--border); padding: 0.5rem 0.65rem; text-align: left; vertical-align: top;
+}
+.reveal-table th {
+  color: var(--muted); font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.reveal-delta.up { color: var(--green); font-weight: 600; }
+.reveal-delta.down { color: var(--red); font-weight: 600; }
 .docket-badge.red { color: var(--red); border-color: color-mix(in srgb, var(--red) 50%, transparent); }
 .docket-badge.amber { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 50%, transparent); }
 .docket-labels { color: var(--text); }

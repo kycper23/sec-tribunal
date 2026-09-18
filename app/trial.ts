@@ -52,6 +52,21 @@ export interface ChartSeries {
   points: SeriesPoint[]
 }
 
+/** Mirrors `src/sec/facts.ts` — "The Reveal": known-at-cutoff vs. what actually happened next. */
+export interface RealityDelta {
+  label: string
+  cutoffPeriod: string | null
+  cutoffValue: number | null
+  latestPeriod: string | null
+  latestValue: number | null
+  changePct: number | null
+}
+
+export interface RealityReport {
+  cutoff: string
+  deltas: RealityDelta[]
+}
+
 /** Mirrors `src/sec/events.ts` — the 8-K material-events docket. */
 export type Severity = 'red' | 'amber' | 'info'
 

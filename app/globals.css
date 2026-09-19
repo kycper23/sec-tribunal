@@ -1396,3 +1396,35 @@ body {
   .charges .stamp { transform: rotate(var(--stamp-tilt, 0deg)); }
 }
 
+/* --- Ruling scroll hint: appears under Exhibit A once the report is
+   revealed, nudging the user that the verdict follows further down. Hides
+   itself once scrolled past. --- */
+.ruling-scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 24px 0;
+  color: #B8862B;
+  font-family: monospace;
+  font-size: 14px;
+  text-align: center;
+}
+.ruling-scroll-arrow {
+  font-size: 24px;
+  line-height: 1;
+  animation: ruling-scroll-bounce 2s ease-in-out infinite;
+}
+.ruling-scroll-label {
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+@keyframes ruling-scroll-bounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+  100% { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ruling-scroll-arrow { animation: none; }
+}
+

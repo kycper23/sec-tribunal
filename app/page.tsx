@@ -200,6 +200,10 @@ export default function Courtroom() {
   // Scroll hint: tells the user there's more beneath the first screen.
   // Hides itself once they've scrolled past it — no need for it after that.
   const [showScrollHint, setShowScrollHint] = useState(true)
+  // Ruling hint: once the report is revealed, points the user past Exhibit A
+  // toward the verdict further down. Disappears for good once scrolled past.
+  const [showRulingHint, setShowRulingHint] = useState(true)
+  const rulingHintRef = useRef<HTMLDivElement>(null)
 
   // The ledger lives in localStorage: read only after mount so the server
   // render (empty) always matches the first client render.
@@ -210,6 +214,19 @@ export default function Courtroom() {
   // Scroll hint listener: hide the ↓ prompt once the user has scrolled.
   useEffect(() => {
     const onScroll = () => setShowScrollHint(window.scrollY <= 100)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Ruling hint listener: hide the "scroll for the ruling" arrow once the
+  // user has scrolled past it — no need to keep nudging after that.
+  useEffect(() => {
+    const onScroll = () => {
+      const el = rulingHintRef.current
+      if (!el) return
+      setShowRulingHint(el.getBoundingClientRect().bottom > 0)
+    }
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -660,6 +677,12 @@ export default function Courtroom() {
             onTick={() => followRef.current && scrollToBottom()}
           />
           {s.role === 'clerk' && <ExhibitChart series={series} future={revealed ? futureSeries : []} />}
+          {s.role === 'clerk' && reportRevealed && showRulingHint && (
+            <div ref={rulingHintRef} className="ruling-scroll-hint" aria-hidden="true">
+              <span className="ruling-scroll-arrow">↓</span>
+              <span className="ruling-scroll-label">scroll for the ruling</span>
+            </div>
+          )}
           {s.role === 'clerk' && <DocketPanel docket={docket} />}
           {s.role === 'clerk' && sealedCutoff && (
             <ProphecyPanel

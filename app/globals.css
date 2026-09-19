@@ -954,3 +954,18 @@ body {
 .bill-receipt tr.priciest td { color: var(--accent); font-weight: 600; }
 .bill-receipt tr.total td { border-top: 1px solid var(--border-strong); border-bottom: none; font-weight: 700; color: var(--accent); }
 .bill-footnote { margin: 0.7rem 0 0; color: var(--muted); font-size: 0.76rem; text-align: center; }
+
+/* --- Trial timer bar: elapsed mm:ss + phase, shown above the bench --- */
+.trial-timer-bar {
+  font-family: monospace;
+  color: #ede4d0;
+  background: rgba(20, 14, 10, 0.92);
+  border-radius: 0;
+  text-align: center;
+  margin: 1rem auto;
+  padding: 0.5rem 1rem;
+  width: fit-content;
+  max-width: 90%;
+  letter-spacing: 0.02em;
+}
+

@@ -43,6 +43,31 @@ const defaultCutoff = (): string => {
 
 const BENCH_IDLE: BenchStates = { prosecutor: 'idle', defense: 'idle', judge: 'idle' }
 
+/** mm:ss for the elapsed-time readout. */
+const formatElapsed = (totalSeconds: number): string => {
+  const m = Math.floor(totalSeconds / 60)
+  const s = totalSeconds % 60
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+}
+
+/** Human phase description shown above the bench while the trial is in session. */
+const phaseLabel = (phase: Phase | null): string => {
+  switch (phase) {
+    case 'evidence':
+      return 'The Scribe is gathering evidence…'
+    case 'prosecution':
+      return 'The Skeptic is building the case…'
+    case 'defense':
+      return 'The Advocate is preparing the defense…'
+    case 'rebuttal':
+      return 'The Skeptic is replying…'
+    case 'verdict':
+      return 'The Arbiter is deliberating…'
+    default:
+      return 'The tribunal is in session…'
+  }
+}
+
 /** How close to the bottom of the page (px) still counts as "following" live output. */
 const FOLLOW_THRESHOLD = 160
 
@@ -97,6 +122,8 @@ export default function Courtroom() {
   const [series, setSeries] = useState<ChartSeries[]>([])
   const [phase, setPhase] = useState<Phase | null>(null)
   const [phaseDone, setPhaseDone] = useState(false)
+  const [elapsed, setElapsed] = useState(0)
+  const elapsedTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const [follow, setFollow] = useState(true)
   const followRef = useRef(true)
   const dossierRef = useRef<string | null>(null)
@@ -124,6 +151,24 @@ export default function Courtroom() {
     if (!usage) return
     setBill((prev) => [...prev, { label, usage }])
   }
+
+  const stopElapsedTimer = useCallback(() => {
+    if (elapsedTimerRef.current !== null) {
+      clearInterval(elapsedTimerRef.current)
+      elapsedTimerRef.current = null
+    }
+  }, [])
+
+  const startElapsedTimer = useCallback(() => {
+    stopElapsedTimer()
+    setElapsed(0)
+    elapsedTimerRef.current = setInterval(() => {
+      setElapsed((s) => s + 1)
+    }, 1000)
+  }, [stopElapsedTimer])
+
+  // Always clear the interval when the courtroom unmounts.
+  useEffect(() => stopElapsedTimer, [stopElapsedTimer])
 
   const scrollToBottom = useCallback(() => {
     window.scrollTo(0, document.documentElement.scrollHeight)
@@ -192,6 +237,7 @@ export default function Courtroom() {
     setSeries([])
     setPhase('evidence')
     setPhaseDone(false)
+    startElapsedTimer()
     followRef.current = true
     setFollow(true)
     dossierRef.current = null
@@ -283,6 +329,7 @@ export default function Courtroom() {
       setBench({ prosecutor: 'done', defense: 'done', judge: 'done' })
       setPhaseDone(true)
       setStatus('')
+      stopElapsedTimer()
       if (followRef.current) scrollToBottom()
       const fullBill: BillEntry[] = [
         ...(pr.usage ? [{ label: 'Prosecutor', usage: pr.usage }] : []),
@@ -296,6 +343,7 @@ export default function Courtroom() {
       setStatus('')
       setBench(BENCH_IDLE)
       setPhase(null)
+      stopElapsedTimer()
     } finally {
       setBusy(false)
     }
@@ -332,6 +380,12 @@ export default function Courtroom() {
         <Link href="/dossier/INTC">Demo: INTC</Link>
         <Link href="/dossier/AAPL">Demo: AAPL</Link>
       </nav>
+
+      {busy && !verdict && (
+        <div className="trial-timer-bar">
+          {phaseLabel(phase)} {formatElapsed(elapsed)}
+        </div>
+      )}
 
       <AgentBench states={bench} activeSpeech={speeches.length > 0 ? speeches[speeches.length - 1] : null} />
 

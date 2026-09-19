@@ -15,6 +15,13 @@ const fmtCost = (n: number) => `$${n.toFixed(4)}`
 const fmtTok = (n: number) => n.toLocaleString('en-US')
 
 /**
+ * Model used per agent role. Mirrors `src/tribunal/agents.ts`: the
+ * argumentative rounds (prosecutor/defense/rebuttal) run on the fast model,
+ * while the judge keeps the higher-quality model for its structured verdict.
+ */
+const modelForLabel = (label: string): string => (label === 'Judge' ? 'fable-5' : 'sonnet-5')
+
+/**
  * Small mono badge shown in a speech header: "2,431 tok · $0.0182".
  * Gated on `totalTokens` (not `cost`) — a free or fully-cached call still
  * has a real token count worth showing; hiding it entirely would quietly
@@ -75,17 +82,19 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
           {entries.map((e, i) => (
             <tr key={i} className={e === priciest ? 'priciest' : undefined}>
               <td>{e.label}</td>
+              <td>{modelForLabel(e.label)}</td>
               <td>{fmtTok(e.usage.totalTokens)} tok</td>
               <td>{fmtCost(e.usage.cost)}</td>
             </tr>
           ))}
           <tr className="total">
             <td>Total</td>
+            <td></td>
             <td>{fmtTok(total.totalTokens)} tok</td>
             <td>{fmtCost(total.cost)}</td>
           </tr>
           <tr className="orbio-savings">
-            <td colSpan={3}>
+            <td colSpan={4}>
               Through Orbio: {fmtCost(total.cost)} · list price: {fmtCost(listPrice)} · saved{' '}
               <span style={{ color: '#3E6B4F' }}>
                 {fmtCost(saved)} (22.5%)
@@ -94,6 +103,7 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
           </tr>
         </tbody>
       </table>
+      <p className="bill-multimodel">One Orbio key · multiple models · no subscriptions</p>
       <p className="bill-footnote">
         {entries.length} model calls · fueled by tokenized $ORBIO credits · {priciest.label} argued the most
         expensively.

@@ -533,7 +533,7 @@ export default function Courtroom() {
         </div>
       )}
 
-      <div ref={benchRef}>
+      <div ref={benchRef} style={{ scrollMarginTop: 120 }}>
         <AgentBench
           states={bench}
           activeSpeech={speeches.length > 0 ? speeches[speeches.length - 1] : null}

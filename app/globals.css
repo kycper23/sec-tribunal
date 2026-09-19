@@ -152,6 +152,23 @@ body {
 .speech-role.clerk { color: var(--sepia); border-color: var(--border-strong); background: color-mix(in srgb, var(--sepia) 7%, transparent); }
 .speech-sub { color: var(--muted); font-size: 0.78rem; font-family: var(--mono); }
 .speech-body { font-size: 0.97rem; white-space: pre-wrap; }
+
+/* Speeches as collapsed <details>: only the role + first sentence show until opened. */
+.speech > summary.speech-head {
+  cursor: pointer; list-style: none; margin-bottom: 0;
+}
+.speech > summary.speech-head::-webkit-details-marker { display: none; }
+.speech > summary.speech-head::before {
+  content: '▸'; color: var(--muted); font-size: 0.8rem; margin-right: 0.2rem; transition: transform 0.2s;
+}
+.speech[open] > summary.speech-head::before { transform: rotate(90deg); }
+.speech[open] > summary.speech-head { margin-bottom: 0.6rem; }
+.speech-preview {
+  color: var(--muted); font-style: italic; font-size: 0.86rem; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; flex: 1 1 auto; min-width: 0;
+}
+.speech[open] .speech-preview { display: none; }
+.speech > .speech-body { margin-top: 0.6rem; }
 .cursor { display: inline-block; width: 0.55em; height: 1.1em; vertical-align: text-bottom; background: var(--text); animation: blink 0.9s steps(1) infinite; border-radius: 0; }
 @keyframes blink { 50% { opacity: 0; } }
 

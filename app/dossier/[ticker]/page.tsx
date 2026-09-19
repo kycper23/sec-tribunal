@@ -34,10 +34,28 @@ const loadDemo = async (ticker: string): Promise<Demo | null> => {
   }
 }
 
+/** Plain-text preview for a collapsed speech's <summary> — strips markdown noise, keeps the first sentence. */
+const firstSentence = (markdown: string): string => {
+  const clean = markdown
+    .split('\n')
+    .filter((line) => !/^#{1,6}\s/.test(line.trim()) && line.trim() !== '---')
+    .join(' ')
+    .replace(/\*\*/g, '')
+    .replace(/\*/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+  const match = clean.match(/^.*?[.!?](?=\s|$)/)
+  return (match ? match[0] : clean.slice(0, 140)).trim()
+}
+
 export default async function DossierPage({ params }: { params: Promise<{ ticker: string }> }) {
   const { ticker } = await params
   const demo = await loadDemo(ticker.toUpperCase())
   if (!demo) notFound()
+
+  const scribeIntro =
+    'Exhibit A: XBRL financial facts from SEC EDGAR 10-K/10-Q filings.' +
+    (demo.peer ? ` Exhibit B: industry peer ${demo.peer.name} (${demo.peer.ticker}).` : '')
 
   const speeches = [
     { role: 'prosecutor', title: 'The Skeptic — Prosecution', text: demo.bearCase },
@@ -56,30 +74,28 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
         </p>
       </header>
 
-      <section className="speech clerk">
-        <div className="speech-head">
+      <VerdictCard verdict={demo.verdict} />
+
+      <details className="speech clerk">
+        <summary className="speech-head">
           <span className="speech-role clerk">The Scribe — Clerk of the Tribunal</span>
-        </div>
-        <div className="speech-body">
-          Exhibit A: XBRL financial facts from SEC EDGAR 10-K/10-Q filings.
-          {demo.peer ? ` Exhibit B: industry peer ${demo.peer.name} (${demo.peer.ticker}).` : ''}
-        </div>
+          <span className="speech-preview">{firstSentence(scribeIntro)}</span>
+        </summary>
+        <div className="speech-body">{scribeIntro}</div>
         <DocketPanel docket={demo.docket} />
-      </section>
+      </details>
 
       {speeches.map((s, i) => (
-        <section key={i} className={`speech ${s.role}`}>
-          <div className="speech-head">
+        <details key={i} className={`speech ${s.role}`}>
+          <summary className="speech-head">
             <span className={`speech-role ${s.role}`}>{s.title}</span>
-            <span className="speech-sub">In re {demo.company.name}</span>
-          </div>
+            <span className="speech-preview">{firstSentence(s.text)}</span>
+          </summary>
           <div className="speech-body">
             <Markdown text={s.text} />
           </div>
-        </section>
+        </details>
       ))}
-
-      <VerdictCard verdict={demo.verdict} />
 
       {demo.usage && (
         <BillReceipt

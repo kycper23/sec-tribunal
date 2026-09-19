@@ -80,11 +80,22 @@ const DESCRIPTION: Record<AgentKey, string> = {
     'DISMISSED or PARTIALLY VALID, and sets the Financial Health Score that closes the case.',
 }
 
-/** First sentence (or ~120 chars) of a speech — a live "what they're saying" snippet in the bubble. */
+/** Strip markdown markers (**, ###, ---, #) so raw formatting never leaks into the speech bubble. */
+const stripMarkdown = (text: string): string =>
+  text
+    .replace(/\*\*/g, '')
+    .replace(/^-{3,}\s*$/gm, '')
+    .replace(/#/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+/** First full sentence (up to the period), capped at 100 chars with an ellipsis if longer — a live
+ * "what they're saying" snippet in the bubble. */
 const snippet = (text: string): string => {
-  const firstSentence = text.match(/^.{20,160}?[.!?](?=\s|$)/)
-  const cut = firstSentence ? firstSentence[0] : text.slice(0, 120)
-  return cut.length < text.length ? `${cut.trim()}…` : cut.trim()
+  const clean = stripMarkdown(text)
+  const firstSentence = clean.match(/^[^.!?]*[.!?]/)
+  const sentence = (firstSentence ? firstSentence[0] : clean).trim()
+  return sentence.length > 100 ? `${sentence.slice(0, 100)}…` : sentence
 }
 
 export function AgentBench({

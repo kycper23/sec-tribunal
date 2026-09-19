@@ -469,9 +469,7 @@ export default function Courtroom() {
 
       <nav className="nav-links">
         <Link href="/compare">Double trial (compare two tickers)</Link>
-        <Link href="/dossier/TSLA">Demo: TSLA</Link>
-        <Link href="/dossier/INTC">Demo: INTC</Link>
-        <Link href="/dossier/AAPL">Demo: AAPL</Link>
+        <Link href="/dossier/TSLA">Example trial: TSLA</Link>
       </nav>
 
       <section className="how-it-works" aria-label="How the tribunal works">

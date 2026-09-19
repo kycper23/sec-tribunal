@@ -10,7 +10,11 @@ import { openrouterFetch } from '../lib/openrouter.js'
 // falls back to the default — Vercel dashboards make it easy to add a key
 // with a blank value, which would otherwise send an empty "model" to the
 // gateway and fail with "A model is required."
-const MODEL = process.env.OPENROUTER_MODEL || 'anthropic/claude-sonnet-5'
+// Split models per role to cut trial latency (~150s end-to-end): the
+// argumentative rounds (prosecutor/defense/rebuttal) run on a faster model,
+// while the judge keeps the higher-quality model for its structured verdict.
+const MODEL_FAST = process.env.OPENROUTER_MODEL_FAST || 'anthropic/claude-sonnet-5'
+const MODEL_JUDGE = process.env.OPENROUTER_MODEL_JUDGE || 'anthropic/claude-fable-5'
 
 interface ChatMessage {
   role: 'system' | 'user'
@@ -53,12 +57,16 @@ interface CompletionResult {
 /** Retry transient failures (429 / 5xx) with exponential backoff — hackathon-week insurance. */
 const MAX_ATTEMPTS = 3
 
-const complete = async (messages: ChatMessage[], responseFormat?: object): Promise<CompletionResult> => {
+const complete = async (
+  messages: ChatMessage[],
+  responseFormat?: object,
+  model: string = MODEL_FAST,
+): Promise<CompletionResult> => {
   for (let attempt = 1; ; attempt++) {
     const res = await openrouterFetch('/chat/completions', {
       method: 'POST',
       body: JSON.stringify({
-        model: MODEL,
+        model,
         messages,
         usage: { include: true },
         ...(responseFormat ? { response_format: responseFormat, provider: { require_parameters: true } } : {}),
@@ -122,7 +130,8 @@ export const runProsecutor = async (brief: string): Promise<{ bearCase: string; 
         'Build the strongest evidence-based bear case against the company using ONLY the SEC-filed figures provided in Exhibit A.',
         'Focus on: shrinking margins, rising debt, weakening year-over-year revenue, and worrying trends in the most recent quarters and fiscal years.',
         'Exhibit A may end with a "RECENT MATERIAL EVENTS — 8-K DOCKET" section listing recent SEC 8-K filings (restatements, auditor changes, bankruptcy, executive departures, new debt, impairments, delisting notices). Treat red-flagged docket entries as serious evidence and cite them by date as [Exhibit A].',
-        'Present 3 to 6 numbered charges. Each charge must cite specific figures and periods, referencing the evidence as [Exhibit A]. Do not invent numbers. Be sharp but factual.',
+        'Present AT MOST 4 numbered charges — quality over quantity. Each charge must be AT MOST 3 sentences and cite specific figures and periods, referencing the evidence as [Exhibit A]. Do not invent numbers. Be sharp but factual.',
+        'Do not use opening formulas such as "May it please the Tribunal" or "In re:" — start directly with the first charge.',
       ].join(' '),
     },
     { role: 'user', content: `EXHIBIT A — Financial evidence from SEC EDGAR:\n\n${brief}` },
@@ -146,9 +155,10 @@ export const runDefense = async (
         peerBrief
           ? 'and Exhibit B — the same SEC-filed data for a direct industry competitor. Use Exhibit B to give industry context: if the sector shares the same headwinds, or your client compares favourably, say so with the competitor\'s actual numbers.'
           : 'with no peer data available this session.',
-        'Rebut each charge by number: industry context, deliberate growth investment, one-off costs, balance-sheet strength, improving recent trends. Reference evidence as [Exhibit A] and [Exhibit B].',
+        'Rebut AT MOST 4 charges by number — pick the ones you can win. Each rebuttal must be AT MOST 3 sentences: industry context, deliberate growth investment, one-off costs, balance-sheet strength, improving recent trends. Reference evidence as [Exhibit A] and [Exhibit B].',
         'If the prosecution cites the 8-K docket, do not dismiss red-flagged entries (restatements, auditor changes, bankruptcy, delisting) as noise — argue timing, remediation, or materiality instead.',
         'Use ONLY the figures provided — do not invent numbers. Where a charge is genuinely hard to argue, concede it honestly rather than spin.',
+        'Do not use opening formulas such as "May it please the Tribunal" or "In re:" — start directly with the first rebuttal.',
       ].join(' '),
     },
     {
@@ -175,9 +185,10 @@ export const runProsecutorRebuttal = async (
       role: 'system',
       content: [
         'You are the Prosecutor in the SEC Tribunal, returning for a short rebuttal after the defense has spoken.',
-        'Pick the 2-3 WEAKEST points of the defense and dismantle them with specific figures from Exhibit A.',
+        'Pick AT MOST 4 of the WEAKEST points of the defense and dismantle them with specific figures from Exhibit A. Each point must be AT MOST 3 sentences.',
         'If the defense conceded a charge, note it for the record. If a defense point is genuinely strong, do not pretend otherwise — drop it and focus where you can win.',
-        'Be brief: a few sharp paragraphs, not a repeat of the original case. Do not invent numbers.',
+        'Be brief: a few sharp points, not a repeat of the original case. Do not invent numbers.',
+        'Do not use opening formulas such as "May it please the Tribunal" or "In re:" — start directly with the first point.',
       ].join(' '),
     },
     {
@@ -222,6 +233,7 @@ export const runJudge = async (
           'You are the Judge of the SEC Tribunal. Weigh the prosecution\'s case, the defense, and the prosecution\'s closing rebuttal impartially.',
           'For each original prosecution charge, decide: SUSTAINED (the concern stands), DISMISSED (the defense convincingly refuted it), or PARTIALLY VALID.',
           'Give weight to concessions on either side and to which arguments survived cross-examination.',
+          'Write the "summary" field as 2 to 3 short paragraphs separated by a blank line ("\\n\\n") — never one dense block of text. The first paragraph must be a single-sentence conclusion (the ruling in one line). Each following paragraph must be 2 to 3 sentences of reasoning that supports it.',
           'Then assign a Financial Health Score from 1 to 100 and give an investor-facing recommendation. Base everything strictly on the arguments and figures presented.',
         ].join(' '),
       },
@@ -234,6 +246,7 @@ export const runJudge = async (
       type: 'json_schema',
       json_schema: { name: 'verdict', strict: true, schema: z.toJSONSchema(Verdict) },
     },
+    MODEL_JUDGE,
   )
   return { verdict: Verdict.parse(JSON.parse(content)), usage }
 }

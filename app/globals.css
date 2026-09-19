@@ -785,18 +785,18 @@ body {
 }
 
 .bench-stage .bench-agent.defense {
-  left: 8%;
+  left: 12%;
   z-index: 2;
 }
 
 .bench-stage .bench-agent.prosecutor {
-  right: 8%;
+  right: 12%;
   z-index: 2;
 }
 
 .bench-stage .bench-agent.judge {
   left: 50%;
-  bottom: 96px;
+  bottom: 60px;
   transform: translateX(-50%);
   z-index: 3;
 }
@@ -817,7 +817,8 @@ body {
 .bench-portrait > * {
   image-rendering: pixelated;
   border-radius: 0;
-  box-shadow: 0 0 50px 25px rgba(12, 8, 5, 0.85);
+  -webkit-mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 55%, transparent 100%);
   transition: transform 0.4s ease, filter 0.4s ease;
 }
 

@@ -451,11 +451,16 @@ export default function Courtroom() {
     }
   }
 
-  /** Unhides the speeches/report section and smooth-scrolls straight to the verdict. */
+  /** Unhides the speeches/report section and smooth-scrolls straight to the verdict.
+   *  Manual offset scroll instead of scrollIntoView: scroll-margin-top isn't reliable
+   *  across browsers here, so the landing position is computed explicitly. */
   const revealReport = () => {
     setReportRevealed(true)
     requestAnimationFrame(() => {
-      verdictRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const el = verdictRef.current
+      if (!el) return
+      const top = el.getBoundingClientRect().top + window.scrollY - 100
+      window.scrollTo({ top, behavior: 'smooth' })
     })
   }
 

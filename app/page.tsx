@@ -140,6 +140,12 @@ export default function Courtroom() {
   // Set the instant "Seal the Tribunal" is clicked; the actual trial only
   // starts once a rise/fall choice clears it.
   const [pendingTicker, setPendingTicker] = useState<string | null>(null)
+  // Reveal gate for the speeches/report section: hidden entirely while the
+  // trial is busy (only the bench scene + timer show), then gated behind a
+  // "READ THE RULING" button once the verdict lands, so the user always
+  // notices the trial finished instead of it silently rendering off-screen.
+  const [reportRevealed, setReportRevealed] = useState(false)
+  const verdictRef = useRef<HTMLDivElement>(null)
 
   // The ledger lives in localStorage: read only after mount so the server
   // render (empty) always matches the first client render.
@@ -273,6 +279,7 @@ export default function Courtroom() {
     setSealedCutoff(sealAt)
     setReality(null)
     setRevealed(false)
+    setReportRevealed(false)
     if (!sealAt) setUserCall(null)
 
     try {
@@ -377,6 +384,14 @@ export default function Courtroom() {
     }
   }
 
+  /** Unhides the speeches/report section and smooth-scrolls straight to the verdict. */
+  const revealReport = () => {
+    setReportRevealed(true)
+    requestAnimationFrame(() => {
+      verdictRef.current?.scrollIntoView({ behavior: 'smooth' })
+    })
+  }
+
   const downloadDossier = () => {
     if (!dossierRef.current || !company) return
     const blob = new Blob([dossierRef.current], { type: 'text/markdown' })
@@ -425,6 +440,14 @@ export default function Courtroom() {
         sticky={busy && !verdict}
       />
 
+      {!busy && verdict && !reportRevealed && (
+        <div className="ruling-reveal">
+          <button type="button" className="ruling-reveal-btn" onClick={revealReport}>
+            READ THE RULING ↓
+          </button>
+        </div>
+      )}
+
       <BlindTrialToggle
         enabled={blindTrial}
         cutoff={cutoff}
@@ -454,6 +477,15 @@ export default function Courtroom() {
       {status && <p className="status-line">{status}</p>}
       {error && <p className="error">{error}</p>}
 
+      {/*
+       * Speeches + report are rendered here but visually collapsed
+       * (display: none) while the trial is busy — during that phase the
+       * bench scene + elapsed-time counter above are the only visible
+       * signal that something is happening. Once the verdict lands the
+       * "READ THE RULING" button flips `reportRevealed` and this section
+       * becomes visible again.
+       */}
+      <div className={busy || (verdict && !reportRevealed) ? 'trial-report trial-report-hidden' : 'trial-report'}>
       <TrialProgress phase={phase} done={phaseDone} />
 
       {(busy || speeches.length > 0) && <CourtBill entries={bill} />}
@@ -491,7 +523,7 @@ export default function Courtroom() {
       )}
 
       {verdict && company && (
-        <>
+        <div ref={verdictRef}>
           <VerdictCard verdict={verdict} />
           {sealedCutoff && (
             <RevealBanner
@@ -516,8 +548,9 @@ export default function Courtroom() {
           <div className="actions">
             <button onClick={downloadDossier}>Download dossier (.md)</button>
           </div>
-        </>
+        </div>
       )}
+      </div>
 
       <ProphecyLedger entries={ledger} onClear={wipeLedger} />
 

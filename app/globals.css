@@ -1115,3 +1115,33 @@ body {
 .prophecy-modal .prophecy-choices { gap: 1rem; }
 .prophecy-modal .prophecy-btn { padding: 0.85rem 1rem; font-size: 0.9rem; }
 
+/* --- Trial report reveal: hide speeches/report while the trial is busy, then
+   gate them behind a "READ THE RULING" button once the verdict lands, so the
+   user isn't left staring at the bench wondering if the report ever showed up. --- */
+.trial-report-hidden {
+  display: none;
+}
+
+.ruling-reveal {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.ruling-reveal-btn {
+  background: #b8862b;
+  color: #1c1913;
+  padding: 16px 32px;
+  font-size: 18px;
+  border: none;
+  border-radius: 0;
+  font-family: var(--display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.ruling-reveal-btn:hover {
+  background: #cf9a35;
+}
+

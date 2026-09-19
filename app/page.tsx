@@ -50,6 +50,28 @@ const formatElapsed = (totalSeconds: number): string => {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
+/** Five-phase ordering used by the phase progress bar (mirrors the stepper's own steps). */
+const PHASE_ORDER: Phase[] = ['evidence', 'prosecution', 'defense', 'rebuttal', 'verdict']
+
+/** 1-based phase number of the active phase (0 when no trial is running). */
+const phaseNumber = (phase: Phase | null): number => {
+  if (!phase) return 0
+  const i = PHASE_ORDER.indexOf(phase)
+  return i < 0 ? 0 : i + 1
+}
+
+/**
+ * How many of the five phases are fully finished — the active phase itself
+ * doesn't count until it's done, so the bar advances in discrete 1/5 steps
+ * as each phase wraps up rather than tracking a made-up percentage.
+ */
+const completedPhaseCount = (phase: Phase | null, done: boolean): number => {
+  if (done) return PHASE_ORDER.length
+  if (!phase) return 0
+  const i = PHASE_ORDER.indexOf(phase)
+  return i < 0 ? 0 : i
+}
+
 /** Human phase description shown above the bench while the trial is in session. */
 const phaseLabel = (phase: Phase | null): string => {
   switch (phase) {
@@ -560,8 +582,16 @@ export default function Courtroom() {
       )}
 
       {busy && !verdict && (
-        <div className="trial-timer-bar">
-          {phaseLabel(phase)} {formatElapsed(elapsed)}
+        <div className="trial-phase-progress">
+          <div className="trial-phase-progress-bar">
+            <div
+              className="trial-phase-progress-fill"
+              style={{ width: `${(completedPhaseCount(phase, phaseDone) / PHASE_ORDER.length) * 100}%` }}
+            />
+          </div>
+          <p className="trial-phase-progress-label">
+            Phase {phaseNumber(phase)} of {PHASE_ORDER.length} · {phaseLabel(phase)} {formatElapsed(elapsed)}
+          </p>
         </div>
       )}
 

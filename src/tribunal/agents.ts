@@ -57,21 +57,56 @@ interface CompletionResult {
 /** Retry transient failures (429 / 5xx) with exponential backoff — hackathon-week insurance. */
 const MAX_ATTEMPTS = 3
 
+/**
+ * Hard ceiling on a single model call. Without this, a hung upstream request
+ * just rides the route's `maxDuration` (up to 300s) with zero feedback until
+ * the platform kills the function — the user sees a generic timeout, not a
+ * useful message. Aborting client-side lets us surface a clear error instead.
+ */
+const COMPLETION_TIMEOUT_MS = 90_000
+
 const complete = async (
   messages: ChatMessage[],
   responseFormat?: object,
   model: string = MODEL_FAST,
 ): Promise<CompletionResult> => {
   for (let attempt = 1; ; attempt++) {
-    const res = await openrouterFetch('/chat/completions', {
-      method: 'POST',
-      body: JSON.stringify({
-        model,
-        messages,
-        usage: { include: true },
-        ...(responseFormat ? { response_format: responseFormat, provider: { require_parameters: true } } : {}),
-      }),
-    })
+    let res: Response
+    try {
+      res = await openrouterFetch('/chat/completions', {
+        method: 'POST',
+        signal: AbortSignal.timeout(COMPLETION_TIMEOUT_MS),
+        body: JSON.stringify({
+          model,
+          messages,
+          usage: { include: true },
+          ...(responseFormat ? { response_format: responseFormat, provider: { require_parameters: true } } : {}),
+        }),
+      })
+    } catch (err) {
+      // AbortSignal.timeout fires a DOMException named "TimeoutError" — not
+      // transient in any useful sense (the upstream is unresponsive), so
+      // surface a clear message immediately instead of burning the retry
+      // budget on more multi-minute hangs.
+      if (err instanceof Error && err.name === 'TimeoutError') {
+        throw new Error(
+          `The tribunal timed out waiting for a response after ${COMPLETION_TIMEOUT_MS / 1000}s. Please retry.`,
+        )
+      }
+      // Network-level failure (DNS hiccup, connection reset) — no HTTP
+      // response was ever received, so there's no res.status to check.
+      // Treat it the same as a retryable 5xx instead of letting it sink the
+      // whole trial on a transient blip. Configuration errors (e.g. a
+      // missing API key, thrown synchronously by openrouterFetch before it
+      // ever calls fetch) are not transient, so they skip the retry loop.
+      if (err instanceof Error && err.message.includes('OPENROUTER_API_KEY')) throw err
+      if (attempt >= MAX_ATTEMPTS) throw err instanceof Error ? err : new Error(String(err))
+      const delayMs = 1500 * 2 ** (attempt - 1)
+      const reason = err instanceof Error ? err.message : String(err)
+      console.warn(`  (model call network error "${reason}"; retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delayMs} ms)`)
+      await new Promise((r) => setTimeout(r, delayMs))
+      continue
+    }
     if (res.ok) {
       const data = (await res.json()) as {
         choices: Array<{ message: { content: string } }>
@@ -233,7 +268,7 @@ export const runJudge = async (
           'You are the Judge of the SEC Tribunal. Weigh the prosecution\'s case, the defense, and the prosecution\'s closing rebuttal impartially.',
           'For each original prosecution charge, decide: SUSTAINED (the concern stands), DISMISSED (the defense convincingly refuted it), or PARTIALLY VALID.',
           'Give weight to concessions on either side and to which arguments survived cross-examination.',
-          'Write the "summary" field as 2 to 3 short paragraphs separated by a blank line ("\\n\\n") — never one dense block of text. The first paragraph must be a single-sentence conclusion (the ruling in one line). Each following paragraph must be 2 to 3 sentences of reasoning that supports it.',
+          'Write the "summary" field as 2 to 3 short paragraphs, each 2 to 3 sentences, separated by a blank line ("\\n\\n") — never one dense block of text.',
           'Then assign a Financial Health Score from 1 to 100 and give an investor-facing recommendation. Base everything strictly on the arguments and figures presented.',
         ].join(' '),
       },

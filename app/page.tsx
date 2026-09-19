@@ -195,6 +195,7 @@ export default function Courtroom() {
   // notices the trial finished instead of it silently rendering off-screen.
   const [reportRevealed, setReportRevealed] = useState(false)
   const verdictRef = useRef<HTMLDivElement>(null)
+  const reportRef = useRef<HTMLDivElement>(null)
   const benchRef = useRef<HTMLDivElement>(null)
   // Scroll hint: tells the user there's more beneath the first screen.
   // Hides itself once they've scrolled past it — no need for it after that.
@@ -451,13 +452,14 @@ export default function Courtroom() {
     }
   }
 
-  /** Unhides the speeches/report section and smooth-scrolls straight to the verdict.
+  /** Unhides the speeches/report section and smooth-scrolls straight to the top of
+   *  the report (phase stepper, Court Bill, Scribe's speech + Exhibit A chart).
    *  Manual offset scroll instead of scrollIntoView: scroll-margin-top isn't reliable
    *  across browsers here, so the landing position is computed explicitly. */
   const revealReport = () => {
     setReportRevealed(true)
     requestAnimationFrame(() => {
-      const el = verdictRef.current
+      const el = reportRef.current
       if (!el) return
       const top = el.getBoundingClientRect().top + window.scrollY - 100
       window.scrollTo({ top, behavior: 'smooth' })
@@ -639,7 +641,7 @@ export default function Courtroom() {
        * "READ THE RULING" button flips `reportRevealed` and this section
        * becomes visible again.
        */}
-      <div className={busy || (verdict && !reportRevealed) ? 'trial-report trial-report-hidden' : 'trial-report'}>
+      <div ref={reportRef} className={busy || (verdict && !reportRevealed) ? 'trial-report trial-report-hidden' : 'trial-report'}>
       <TrialProgress phase={phase} done={phaseDone} />
 
       {(busy || speeches.length > 0) && <CourtBill entries={bill} />}

@@ -9,89 +9,296 @@
     "cik10": "0000789019",
     "name": "MICROSOFT CORP"
   },
-  "brief": "Company: Apple Inc. (ticker AAPL, CIK 0000320193)\nSource: SEC EDGAR XBRL companyfacts — figures exactly as filed in 10-K / 10-Q reports. All values in USD.\n\nRevenue [us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax]:\n  Annual (10-K, FY end): 2021-09-25: $365.82B | 2022-09-24: $394.33B | 2023-09-30: $383.29B | 2024-09-28: $391.04B | 2025-09-27: $416.16B\n  Recent quarters (10-Q, period end): 2025-03-29: $95.36B | 2025-06-28: $94.04B | 2025-12-27: $143.76B | 2026-03-28: $111.18B | 2026-06-27: $109.42B\n\nGross profit [us-gaap:GrossProfit]:\n  Annual (10-K, FY end): 2021-09-25: $152.84B | 2022-09-24: $170.78B | 2023-09-30: $169.15B | 2024-09-28: $180.68B | 2025-09-27: $195.20B\n  Recent quarters (10-Q, period end): 2025-03-29: $44.87B | 2025-06-28: $43.72B | 2025-12-27: $69.23B | 2026-03-28: $54.78B | 2026-06-27: $54.77B\n\nOperating income [us-gaap:OperatingIncomeLoss]:\n  Annual (10-K, FY end): 2021-09-25: $108.95B | 2022-09-24: $119.44B | 2023-09-30: $114.30B | 2024-09-28: $123.22B | 2025-09-27: $133.05B\n  Recent quarters (10-Q, period end): 2025-03-29: $29.59B | 2025-06-28: $28.20B | 2025-12-27: $50.85B | 2026-03-28: $35.88B | 2026-06-27: $35.70B\n\nNet income [us-gaap:NetIncomeLoss]:\n  Annual (10-K, FY end): 2021-09-25: $94.68B | 2022-09-24: $99.80B | 2023-09-30: $97.00B | 2024-09-28: $93.74B | 2025-09-27: $112.01B\n  Recent quarters (10-Q, period end): 2025-03-29: $24.78B | 2025-06-28: $23.43B | 2025-12-27: $42.10B | 2026-03-28: $29.58B | 2026-06-27: $29.79B\n\nOperating cash flow [us-gaap:NetCashProvidedByUsedInOperatingActivities]:\n  Annual (10-K, FY end): 2021-09-25: $104.04B | 2022-09-24: $122.15B | 2023-09-30: $110.54B | 2024-09-28: $118.25B | 2025-09-27: $111.48B\n  Recent quarters (10-Q, period end): 2024-12-28: $29.93B | 2025-12-27: $53.92B\n\nR&D expense [us-gaap:ResearchAndDevelopmentExpense]:\n  Annual (10-K, FY end): 2021-09-25: $21.91B | 2022-09-24: $26.25B | 2023-09-30: $29.91B | 2024-09-28: $31.37B | 2025-09-27: $34.55B\n  Recent quarters (10-Q, period end): 2025-03-29: $8.55B | 2025-06-28: $8.87B | 2025-12-27: $10.89B | 2026-03-28: $11.42B | 2026-06-27: $11.73B\n\nInterest expense [us-gaap:InterestExpense]:\n  Annual (10-K, FY end): 2019-09-28: $3.58B | 2020-09-26: $2.87B | 2021-09-25: $2.65B | 2022-09-24: $2.93B | 2023-09-30: $3.93B\n\nTotal assets [us-gaap:Assets]:\n  Annual (10-K, FY end): 2020-09-26: $323.89B | 2021-09-25: $351.00B | 2022-09-24: $352.75B | 2023-09-30: $352.58B | 2024-09-28: $364.98B\n  Recent quarters (10-Q, period end): 2025-06-28: $331.50B | 2025-09-27: $359.24B | 2025-12-27: $379.30B | 2026-03-28: $371.08B | 2026-06-27: $383.27B\n\nTotal liabilities [us-gaap:Liabilities]:\n  Annual (10-K, FY end): 2020-09-26: $258.55B | 2021-09-25: $287.91B | 2022-09-24: $302.08B | 2023-09-30: $290.44B | 2024-09-28: $308.03B\n  Recent quarters (10-Q, period end): 2025-06-28: $265.67B | 2025-09-27: $285.51B | 2025-12-27: $291.11B | 2026-03-28: $264.59B | 2026-06-27: $275.75B\n\nLong-term debt [us-gaap:LongTermDebtNoncurrent]:\n  Annual (10-K, FY end): 2020-09-26: $98.67B | 2021-09-25: $109.11B | 2022-09-24: $98.96B | 2023-09-30: $95.28B | 2024-09-28: $85.75B\n  Recent quarters (10-Q, period end): 2025-06-28: $82.43B | 2025-09-27: $78.33B | 2025-12-27: $76.69B | 2026-03-28: $74.40B | 2026-06-27: $71.34B\n\nStockholders equity [us-gaap:StockholdersEquity]:\n  Annual (10-K, FY end): 2019-09-28: $90.49B | 2020-09-26: $65.34B | 2021-09-25: $63.09B | 2022-09-24: $50.67B | 2023-09-30: $62.15B\n  Recent quarters (10-Q, period end): 2025-06-28: $65.83B | 2025-09-27: $73.73B | 2025-12-27: $88.19B | 2026-03-28: $106.49B | 2026-06-27: $107.52B\n\nCash & equivalents [us-gaap:CashAndCashEquivalentsAtCarryingValue]:\n  Annual (10-K, FY end): 2020-09-26: $38.02B | 2021-09-25: $34.94B | 2022-09-24: $23.65B | 2023-09-30: $29.96B | 2024-09-28: $29.94B\n  Recent quarters (10-Q, period end): 2025-06-28: $36.27B | 2025-09-27: $35.93B | 2025-12-27: $45.32B | 2026-03-28: $45.57B | 2026-06-27: $39.54B\n\nDerived ratios — annual:\n  2021-09-25: gross margin 41.8%, operating margin 29.8%, net margin 25.9%, LT-debt/equity 1.73\n  2022-09-24: gross margin 43.3%, operating margin 30.3%, net margin 25.3%, revenue YoY 7.8%, LT-debt/equity 1.95\n  2023-09-30: gross margin 44.1%, operating margin 29.8%, net margin 25.3%, revenue YoY -2.8%, LT-debt/equity 1.53\n  2024-09-28: gross margin 46.2%, operating margin 31.5%, net margin 24.0%, revenue YoY 2.0%\n  2025-09-27: gross margin 46.9%, operating margin 32.0%, net margin 26.9%, revenue YoY 6.4%\n\nDerived ratios — recent quarters:\n  2025-03-29: gross margin 47.1%, operating margin 31.0%, net margin 26.0%\n  2025-06-28: gross margin 46.5%, operating margin 30.0%, net margin 24.9%, LT-debt/equity 1.25\n  2025-12-27: gross margin 48.2%, operating margin 35.4%, net margin 29.3%, LT-debt/equity 0.87\n  2026-03-28: gross margin 49.3%, operating margin 32.3%, net margin 26.6%, revenue YoY 16.6%, LT-debt/equity 0.70\n  2026-06-27: gross margin 50.1%, operating margin 32.6%, net margin 27.2%, revenue YoY 16.4%, LT-debt/equity 0.66",
+  "brief": "Company: Apple Inc. (ticker AAPL, CIK 0000320193)\nSource: SEC EDGAR XBRL companyfacts — figures exactly as filed in 10-K / 10-Q reports. All values in USD.\n\nRevenue [us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax]:\n  Annual (10-K, FY end): 2021-09-25: $365.82B | 2022-09-24: $394.33B | 2023-09-30: $383.29B | 2024-09-28: $391.04B | 2025-09-27: $416.16B\n  Recent quarters (10-Q, period end): 2025-03-29: $95.36B | 2025-06-28: $94.04B | 2025-12-27: $143.76B | 2026-03-28: $111.18B | 2026-06-27: $109.42B\n\nGross profit [us-gaap:GrossProfit]:\n  Annual (10-K, FY end): 2021-09-25: $152.84B | 2022-09-24: $170.78B | 2023-09-30: $169.15B | 2024-09-28: $180.68B | 2025-09-27: $195.20B\n  Recent quarters (10-Q, period end): 2025-03-29: $44.87B | 2025-06-28: $43.72B | 2025-12-27: $69.23B | 2026-03-28: $54.78B | 2026-06-27: $54.77B\n\nOperating income [us-gaap:OperatingIncomeLoss]:\n  Annual (10-K, FY end): 2021-09-25: $108.95B | 2022-09-24: $119.44B | 2023-09-30: $114.30B | 2024-09-28: $123.22B | 2025-09-27: $133.05B\n  Recent quarters (10-Q, period end): 2025-03-29: $29.59B | 2025-06-28: $28.20B | 2025-12-27: $50.85B | 2026-03-28: $35.88B | 2026-06-27: $35.70B\n\nNet income [us-gaap:NetIncomeLoss]:\n  Annual (10-K, FY end): 2021-09-25: $94.68B | 2022-09-24: $99.80B | 2023-09-30: $97.00B | 2024-09-28: $93.74B | 2025-09-27: $112.01B\n  Recent quarters (10-Q, period end): 2025-03-29: $24.78B | 2025-06-28: $23.43B | 2025-12-27: $42.10B | 2026-03-28: $29.58B | 2026-06-27: $29.79B\n\nOperating cash flow [us-gaap:NetCashProvidedByUsedInOperatingActivities]:\n  Annual (10-K, FY end): 2021-09-25: $104.04B | 2022-09-24: $122.15B | 2023-09-30: $110.54B | 2024-09-28: $118.25B | 2025-09-27: $111.48B\n  Recent quarters (10-Q, period end): 2024-12-28: $29.93B | 2025-12-27: $53.92B\n\nR&D expense [us-gaap:ResearchAndDevelopmentExpense]:\n  Annual (10-K, FY end): 2021-09-25: $21.91B | 2022-09-24: $26.25B | 2023-09-30: $29.91B | 2024-09-28: $31.37B | 2025-09-27: $34.55B\n  Recent quarters (10-Q, period end): 2025-03-29: $8.55B | 2025-06-28: $8.87B | 2025-12-27: $10.89B | 2026-03-28: $11.42B | 2026-06-27: $11.73B\n\nInterest expense [us-gaap:InterestExpense]:\n  Annual (10-K, FY end): 2019-09-28: $3.58B | 2020-09-26: $2.87B | 2021-09-25: $2.65B | 2022-09-24: $2.93B | 2023-09-30: $3.93B\n\nTotal assets [us-gaap:Assets]:\n  Annual (10-K, FY end): 2020-09-26: $323.89B | 2021-09-25: $351.00B | 2022-09-24: $352.75B | 2023-09-30: $352.58B | 2024-09-28: $364.98B\n  Recent quarters (10-Q, period end): 2025-06-28: $331.50B | 2025-09-27: $359.24B | 2025-12-27: $379.30B | 2026-03-28: $371.08B | 2026-06-27: $383.27B\n\nTotal liabilities [us-gaap:Liabilities]:\n  Annual (10-K, FY end): 2020-09-26: $258.55B | 2021-09-25: $287.91B | 2022-09-24: $302.08B | 2023-09-30: $290.44B | 2024-09-28: $308.03B\n  Recent quarters (10-Q, period end): 2025-06-28: $265.67B | 2025-09-27: $285.51B | 2025-12-27: $291.11B | 2026-03-28: $264.59B | 2026-06-27: $275.75B\n\nLong-term debt [us-gaap:LongTermDebtNoncurrent]:\n  Annual (10-K, FY end): 2020-09-26: $98.67B | 2021-09-25: $109.11B | 2022-09-24: $98.96B | 2023-09-30: $95.28B | 2024-09-28: $85.75B\n  Recent quarters (10-Q, period end): 2025-06-28: $82.43B | 2025-09-27: $78.33B | 2025-12-27: $76.69B | 2026-03-28: $74.40B | 2026-06-27: $71.34B\n\nStockholders equity [us-gaap:StockholdersEquity]:\n  Annual (10-K, FY end): 2019-09-28: $90.49B | 2020-09-26: $65.34B | 2021-09-25: $63.09B | 2022-09-24: $50.67B | 2023-09-30: $62.15B\n  Recent quarters (10-Q, period end): 2025-06-28: $65.83B | 2025-09-27: $73.73B | 2025-12-27: $88.19B | 2026-03-28: $106.49B | 2026-06-27: $107.52B\n\nCash & equivalents [us-gaap:CashAndCashEquivalentsAtCarryingValue]:\n  Annual (10-K, FY end): 2020-09-26: $38.02B | 2021-09-25: $34.94B | 2022-09-24: $23.65B | 2023-09-30: $29.96B | 2024-09-28: $29.94B\n  Recent quarters (10-Q, period end): 2025-06-28: $36.27B | 2025-09-27: $35.93B | 2025-12-27: $45.32B | 2026-03-28: $45.57B | 2026-06-27: $39.54B\n\nDerived ratios — annual:\n  2021-09-25: gross margin 41.8%, operating margin 29.8%, net margin 25.9%, LT-debt/equity 1.73\n  2022-09-24: gross margin 43.3%, operating margin 30.3%, net margin 25.3%, revenue YoY 7.8%, LT-debt/equity 1.95\n  2023-09-30: gross margin 44.1%, operating margin 29.8%, net margin 25.3%, revenue YoY -2.8%, LT-debt/equity 1.53\n  2024-09-28: gross margin 46.2%, operating margin 31.5%, net margin 24.0%, revenue YoY 2.0%\n  2025-09-27: gross margin 46.9%, operating margin 32.0%, net margin 26.9%, revenue YoY 6.4%\n\nDerived ratios — recent quarters:\n  2025-03-29: gross margin 47.1%, operating margin 31.0%, net margin 26.0%\n  2025-06-28: gross margin 46.5%, operating margin 30.0%, net margin 24.9%, LT-debt/equity 1.25\n  2025-12-27: gross margin 48.2%, operating margin 35.4%, net margin 29.3%, LT-debt/equity 0.87\n  2026-03-28: gross margin 49.3%, operating margin 32.3%, net margin 26.6%, revenue YoY 16.6%, LT-debt/equity 0.70\n  2026-06-27: gross margin 50.1%, operating margin 32.6%, net margin 27.2%, revenue YoY 16.4%, LT-debt/equity 0.66\n\nRECENT MATERIAL EVENTS — 8-K DOCKET (last ~18 months, SEC EDGAR):\n\n- 2026-09-01 [AMBER] Departure/appointment of directors or officers (Item 5.02)\n- 2026-07-30 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2026-04-30 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2026-04-20 [AMBER] Departure/appointment of directors or officers (Item 5.02)\n- 2026-02-24 [INFO] Submission of matters to a vote of security holders; Financial statements and exhibits (Item 5.07, 9.01)\n- 2026-01-29 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2026-01-02 [AMBER] Departure/appointment of directors or officers (Item 5.02)\n- 2025-12-05 [AMBER] Departure/appointment of directors or officers (Item 5.02)\n- 2025-10-30 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2025-07-31 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2025-07-25 [AMBER] Departure/appointment of directors or officers (Item 5.02)\n- 2025-07-09 [AMBER] Departure/appointment of directors or officers (Item 5.02)\n- 2025-05-12 [INFO] Other events; Financial statements and exhibits (Item 8.01, 9.01)\n- 2025-05-01 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n\nSeverity tally: 0 red flag(s), 6 amber flag(s), 8 routine disclosure(s).",
   "peerBrief": "Company: MICROSOFT CORPORATION (ticker MSFT, CIK 0000789019)\nSource: SEC EDGAR XBRL companyfacts — figures exactly as filed in 10-K / 10-Q reports. All values in USD.\n\nRevenue [us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax]:\n  Annual (10-K, FY end): 2021-06-30: $168.09B | 2023-06-30: $211.91B | 2024-06-30: $245.12B | 2025-06-30: $281.72B | 2026-06-30: $331.84B\n  Recent quarters (10-Q, period end): 2024-12-31: $69.63B | 2025-03-31: $70.07B | 2025-09-30: $77.67B | 2025-12-31: $81.27B | 2026-03-31: $82.89B\n\nGross profit [us-gaap:GrossProfit]:\n  Annual (10-K, FY end): 2021-06-30: $115.86B | 2023-06-30: $146.05B | 2024-06-30: $171.01B | 2025-06-30: $193.89B | 2026-06-30: $225.47B\n  Recent quarters (10-Q, period end): 2024-12-31: $47.83B | 2025-03-31: $48.15B | 2025-09-30: $53.63B | 2025-12-31: $55.30B | 2026-03-31: $56.06B\n\nOperating income [us-gaap:OperatingIncomeLoss]:\n  Annual (10-K, FY end): 2021-06-30: $69.92B | 2023-06-30: $88.52B | 2024-06-30: $109.43B | 2025-06-30: $128.53B | 2026-06-30: $155.24B\n  Recent quarters (10-Q, period end): 2024-12-31: $31.65B | 2025-03-31: $32.00B | 2025-09-30: $37.96B | 2025-12-31: $38.27B | 2026-03-31: $38.40B\n\nNet income [us-gaap:NetIncomeLoss]:\n  Annual (10-K, FY end): 2021-06-30: $61.27B | 2023-06-30: $72.36B | 2024-06-30: $88.14B | 2025-06-30: $101.83B | 2026-06-30: $133.75B\n  Recent quarters (10-Q, period end): 2024-12-31: $24.11B | 2025-03-31: $25.82B | 2025-09-30: $27.75B | 2025-12-31: $38.46B | 2026-03-31: $31.78B\n\nOperating cash flow [us-gaap:NetCashProvidedByUsedInOperatingActivities]:\n  Annual (10-K, FY end): 2021-06-30: $76.74B | 2023-06-30: $87.58B | 2024-06-30: $118.55B | 2025-06-30: $136.16B | 2026-06-30: $182.94B\n  Recent quarters (10-Q, period end): 2024-12-31: $22.29B | 2025-03-31: $37.04B | 2025-09-30: $45.06B | 2025-12-31: $35.76B | 2026-03-31: $46.68B\n\nR&D expense [us-gaap:ResearchAndDevelopmentExpense]:\n  Annual (10-K, FY end): 2021-06-30: $20.72B | 2023-06-30: $27.20B | 2024-06-30: $29.51B | 2025-06-30: $32.49B | 2026-06-30: $35.56B\n  Recent quarters (10-Q, period end): 2024-12-31: $7.92B | 2025-03-31: $8.20B | 2025-09-30: $8.15B | 2025-12-31: $8.50B | 2026-03-31: $8.91B\n\nInterest expense [us-gaap:InterestExpense]:\n  Annual (10-K, FY end): 2020-06-30: $2.59B | 2021-06-30: $2.35B\n\nTotal assets [us-gaap:Assets]:\n  Annual (10-K, FY end): 2021-06-30: $333.78B | 2022-06-30: $364.84B | 2024-06-30: $512.16B | 2025-06-30: $619.00B | 2026-06-30: $758.38B\n  Recent quarters (10-Q, period end): 2024-12-31: $533.90B | 2025-03-31: $562.62B | 2025-09-30: $636.35B | 2025-12-31: $665.30B | 2026-03-31: $694.23B\n\nTotal liabilities [us-gaap:Liabilities]:\n  Annual (10-K, FY end): 2021-06-30: $191.79B | 2022-06-30: $198.30B | 2024-06-30: $243.69B | 2025-06-30: $275.52B | 2026-06-30: $315.99B\n  Recent quarters (10-Q, period end): 2024-12-31: $231.20B | 2025-03-31: $240.73B | 2025-09-30: $273.27B | 2025-12-31: $274.43B | 2026-03-31: $279.86B\n\nLong-term debt [us-gaap:LongTermDebtNoncurrent]:\n  Annual (10-K, FY end): 2021-06-30: $50.07B | 2022-06-30: $47.03B | 2024-06-30: $42.69B | 2025-06-30: $40.15B | 2026-06-30: $31.07B\n  Recent quarters (10-Q, period end): 2024-12-31: $39.72B | 2025-03-31: $39.88B | 2025-09-30: $35.38B | 2025-12-31: $35.42B | 2026-03-31: $31.42B\n\nStockholders equity [us-gaap:StockholdersEquity]:\n  Annual (10-K, FY end): 2021-06-30: $141.99B | 2023-06-30: $206.22B | 2024-06-30: $268.48B | 2025-06-30: $343.48B | 2026-06-30: $442.39B\n  Recent quarters (10-Q, period end): 2024-12-31: $302.69B | 2025-03-31: $321.89B | 2025-09-30: $363.08B | 2025-12-31: $390.88B | 2026-03-31: $414.37B\n\nCash & equivalents [us-gaap:CashAndCashEquivalentsAtCarryingValue]:\n  Annual (10-K, FY end): 2021-06-30: $14.22B | 2022-06-30: $13.93B | 2024-06-30: $18.32B | 2025-06-30: $30.24B | 2026-06-30: $20.93B\n  Recent quarters (10-Q, period end): 2024-12-31: $17.48B | 2025-03-31: $28.83B | 2025-09-30: $28.85B | 2025-12-31: $24.30B | 2026-03-31: $32.10B\n\nDerived ratios — annual:\n  2021-06-30: gross margin 68.9%, operating margin 41.6%, net margin 36.5%, LT-debt/equity 0.35\n  2023-06-30: gross margin 68.9%, operating margin 41.8%, net margin 34.1%, revenue YoY 26.1%\n  2024-06-30: gross margin 69.8%, operating margin 44.6%, net margin 36.0%, revenue YoY 15.7%, LT-debt/equity 0.16\n  2025-06-30: gross margin 68.8%, operating margin 45.6%, net margin 36.1%, revenue YoY 14.9%, LT-debt/equity 0.12\n  2026-06-30: gross margin 67.9%, operating margin 46.8%, net margin 40.3%, revenue YoY 17.8%, LT-debt/equity 0.07\n\nDerived ratios — recent quarters:\n  2024-12-31: gross margin 68.7%, operating margin 45.5%, net margin 34.6%, LT-debt/equity 0.13\n  2025-03-31: gross margin 68.7%, operating margin 45.7%, net margin 36.9%, LT-debt/equity 0.12\n  2025-09-30: gross margin 69.0%, operating margin 48.9%, net margin 35.7%, LT-debt/equity 0.10\n  2025-12-31: gross margin 68.0%, operating margin 47.1%, net margin 47.3%, revenue YoY 16.7%, LT-debt/equity 0.09\n  2026-03-31: gross margin 67.6%, operating margin 46.3%, net margin 38.3%, revenue YoY 18.3%, LT-debt/equity 0.08",
-  "bearCase": "# THE PROSECUTION'S BEAR CASE: SEC TRIBUNAL v. APPLE INC. (AAPL)\n\n*May it please the Tribunal. The defense will parade headline growth. The Prosecution asks you to look beneath it — at the cash, the cost structure, and the multi-year record. The evidence, all of it filed under oath with the SEC, follows.*\n\n---\n\n**CHARGE 1: Deteriorating Earnings Quality — Cash Flow Diverging From Reported Profits**\n\nIn FY2025, the defendant reported net income of $112.01B — yet operating cash flow *fell* to $111.48B, down from $118.25B in FY2024 [Exhibit A]. For the first time in this record, cash generation trails reported net income. Worse, FY2025 operating cash flow remains **below the FY2022 peak of $122.15B** — three fiscal years later, with $21.8B more in revenue, the company converts *less* of it into cash. Profits are being reported; cash is not keeping pace. The Tribunal should ask why.\n\n**CHARGE 2: A Documented History of Revenue Fragility — Growth That Stalls Without Warning**\n\nFY2023 revenue *declined* 2.8% to $383.29B, and FY2024 recovered a mere 2.0% [Exhibit A] — two consecutive years of effectively stagnant top line at a company priced for growth. And within the most recent quarters, the pattern of sequential erosion persists: revenue fell from $95.36B (Q ending 2025-03-29) to $94.04B (2025-06-28), and again from $111.18B (2026-03-28) to $109.42B (2026-06-27) [Exhibit A]. YoY growth itself is decelerating at the margin: 16.6% then 16.4% [Exhibit A]. This company has stalled before. The filings prove it can stall again.\n\n**CHARGE 3: A Multi-Year Net Income Slide the Defense Would Prefer You Forget**\n\nNet income fell for two consecutive fiscal years: $99.80B (FY2022) → $97.00B (FY2023) → $93.74B (FY2024) — a cumulative decline of over $6B, with net margin compressing from 25.3% to 24.0% [Exhibit A]. Quarterly net margin has also retreated from its 29.3% peak (Q ending 2025-12-27) to 26.6% and 27.2% in the two quarters since, while operating margin dropped from 35.4% to 32.3% [Exhibit A]. Peak profitability is behind, not ahead.\n\n**CHARGE 4: An Escalating R&D Burden With Diminishing Returns**\n\nR&D expense has exploded 58% — from $21.91B (FY2021) to $34.55B (FY2025) — while revenue grew only ~13.8% over the same span ($365.82B → $416.16B) [Exhibit A]. Quarterly R&D continues climbing relentlessly: $8.55B → $8.87B → $10.89B → $11.42B → $11.73B [Exhibit A]. The defendant is spending ever more to innovate and harvesting proportionally less. That is the cost structure of a company running to stand still.\n\n**CHARGE 5: Rising Interest Costs and a Historically Hollowed-Out Balance Sheet**\n\nInterest expense surged 48% from $2.65B (FY2021) to $3.93B (FY2023) [Exhibit A]. Stockholders' equity was gutted from $90.49B (FY2019) to just $50.67B (FY2022), driving LT-debt/equity to a precarious 1.95 in FY2022 [Exhibit A] — the legacy of buyback-driven capital return prioritized over balance-sheet strength. Total liabilities climbed from $258.55B (FY2020) to $308.03B (FY2024), and in the latest quarter rose again, from $264.59B to $275.75B [Exhibit A].\n\n**CHARGE 6: Cash Reserves Under Renewed Pressure**\n\nCash and equivalents collapsed from $38.02B (FY2020) to $23.65B (FY2022), and in the most recent quarter fell again — from $45.57B (2026-03-28) to $39.54B (2026-06-27), a $6B single-quarter drawdown [Exhibit A], occurring in the same quarter liabilities rose by $11B. Liquidity is moving in the wrong direction precisely when costs are rising.\n\n---\n\n**SUMMATION:** Stalling revenue with a proven history of outright decline, two years of falling net income, cash flow now lagging paper profits, runaway R&D costs, and a balance sheet with a documented record of leverage abuse and cash depletion. The Prosecution rests. [Exhibit A]",
-  "defense": "# DEFENSE REBUTTAL: SEC TRIBUNAL v. APPLE INC. (AAPL)\n\n*May it please the Tribunal. The Prosecution has assembled a case from selectively framed peaks, seasonal artifacts, and stale data points. The Defense will answer each charge with the same filed numbers — and with the record of the industry's closest comparable, Microsoft Corporation [Exhibit B].*\n\n---\n\n## CHARGE 1: \"Cash Flow Diverging From Profits\" — A $0.53B \"Divergence\" on $416B of Revenue\n\nThe Prosecution's headline \"divergence\" is FY2025 operating cash flow of $111.48B against net income of $112.01B [Exhibit A]. That is a gap of roughly half a billion dollars — **0.5% of net income** — on a company converting **26.8 cents of every revenue dollar into operating cash**. This is not deteriorating earnings quality; it is rounding-error parity.\n\nThe recent trend directly refutes the charge: the quarter ending 2025-12-27 produced **$53.92B in operating cash flow, up from $29.93B in the comparable quarter ending 2024-12-28** [Exhibit A] — an 80% increase — and that quarter's cash flow *exceeded* its net income of $42.10B by nearly $12B. Cash is running *ahead* of paper profits in the most recent data, not behind.\n\n**Honest concession:** FY2025 annual OCF of $111.48B does sit below the FY2022 peak of $122.15B [Exhibit A]. The Defense concedes the annual figure was soft. But the most recent quarterly trajectory shows the recovery already underway.\n\n---\n\n## CHARGE 2: \"Revenue Fragility\" — Confusing Seasonality With Stalling\n\nThe \"sequential erosion\" the Prosecution cites — $111.18B (2026-03-28) falling to $109.42B (2026-06-27) — is Apple's well-documented seasonal cadence: the December quarter ($143.76B) dwarfs all others every year [Exhibit A]. Sequential comparisons across those quarters are analytically meaningless. On the correct year-over-year basis, the two most recent quarters grew **16.6% and 16.4%** [Exhibit A] — growth rates fully in line with Microsoft's own recent quarters of **16.7% and 18.3%** [Exhibit B]. A \"deceleration\" of 0.2 percentage points is noise, not a trend.\n\n**Honest concession:** FY2023's -2.8% and FY2024's +2.0% were genuinely weak years [Exhibit A], and the Defense will not pretend otherwise — particularly when Microsoft grew 26.1% in FY2023 [Exhibit B]. Different business models faced different cycles. But the record since is unambiguous: FY2025 revenue of **$416.16B, up 6.4%** and an all-time high, followed by two consecutive quarters of 16%+ growth [Exhibit A]. The company that \"stalled\" has re-accelerated, on the record, under oath.\n\n---\n\n## CHARGE 3: \"Multi-Year Net Income Slide\" — A Slide That Ended in a Record\n\nYes, net income dipped from $99.80B (FY2022) to $93.74B (FY2024). The Prosecution stops the tape there. FY2025 net income was **$112.01B — the highest in the entire filed record — with net margin of 26.9%, also the highest annual figure in the record** [Exhibit A]. Charging a company with a \"slide\" that culminated in an all-time high is prosecuting history, not the defendant before you.\n\nThe quarterly \"retreat\" from 29.3% margin (Q ending 2025-12-27) to 26.6% and 27.2% is, again, the December-quarter seasonal peak normalizing. The proper comparison: the quarters ending 2026-03-28 and 2026-06-27 posted net margins of **26.6% and 27.2%, versus 26.0% and 24.9% in the same quarters a year earlier** [Exhibit A]. Margins are *expanding* year-over-year, every quarter.\n\nAs for peer context: Microsoft's net margins are structurally higher (36-40% [Exhibit B]) because it sells software; Apple sells hardware. The relevant comparison is trajectory — and Apple's gross margin has climbed from 41.8% (FY2021) to 46.9% (FY2025) to **50.1% in the latest quarter** [Exhibit A], an extraordinary structural improvement for a hardware business.\n\n---\n\n## CHARGE 4: \"Escalating R&D With Diminishing Returns\" — This Is the Industry's Table Stakes, and Apple's Returns Are Visible\n\nR&D growth is not an Apple pathology; it is the sector. Microsoft's R&D rose from **$20.72B (FY2021) to $35.56B (FY2026)** — a 72% increase, *steeper* than Apple's 58% [Exhibit A, Exhibit B]. Moreover, Apple's FY2025 R&D of $34.55B represents roughly **8.3% of its $416.16B revenue**, while Microsoft's $32.49B FY2025 R&D represents roughly **11.5% of its $281.72B revenue** [Exhibit A, Exhibit B]. Apple carries a *lighter* R&D burden than its peer, not a heavier one.\n\nAnd \"diminishing returns\"? The returns are on the income statement: gross margin up from 41.8% to 50.1%, operating margin from 29.8% to 32.6%, record revenue, record net income [Exhibit A]. That is deliberate growth investment producing measurable structural improvement — the opposite of running to stand still.\n\n---\n\n## CHARGE 5: \"Hollowed-Out Balance Sheet\" — The Prosecution Is Reading FY2022 Filings in FY2026\n\nEvery balance-sheet figure the Prosecution cites is years stale. The current record:\n\n- **Long-term debt has fallen from $109.11B (FY2021) to $71.34B** in the latest quarter — a 35% reduction [Exhibit A].\n- **Stockholders' equity has more than doubled from the $50.67B FY2022 trough to $107.52B** [Exhibit A].\n- **LT-debt/equity has collapsed from 1.95 to 0.66** [Exhibit A].\n\nThe interest expense \"surge\" to $3.93B (FY2023) [Exhibit A] coincided with a rising-rate environment and is covered roughly **29 times over** by FY2023 operating income of $114.30B. That is not distress; that is not even discomfort. The low equity of FY2022 reflected deliberate capital return to shareholders, not losses — and the company has since rebuilt equity while *simultaneously* retiring debt. The trend on every metric charged runs in the defendant's favor.\n\nThe Defense notes Microsoft's LT-debt/equity of 0.07-0.12 [Exhibit B] is lower — Apple's 0.66 is higher than its peer's, and we acknowledge it. But a ratio that has fallen from 1.95 to 0.66 while equity doubled is a balance sheet being *strengthened*, quarter after filed quarter.\n\n---\n\n## CHARGE 6: \"Cash Under Pressure\" — Cash Is Up 67% From Its Trough and Exceeds the Peer's\n\nThe $23.65B figure is from FY2022. The latest quarter shows **$39.54B** — up 67% from that trough and up 32% from FY2024's $29.94B [Exhibit A]. The single-quarter move from $45.57B to $39.54B is ordinary treasury variation for a company generating over $50B of operating cash in a single quarter [Exhibit A]; note the prior year saw quarter-end cash fluctuate similarly ($45.32B → $45.57B → $39.54B, all *above* every annual figure since FY2020).\n\nFor context: Microsoft — a company the Prosecution would presumably call healthy — closed FY2026 with **$20.93B in cash** and has run between $13.93B and $32.10B throughout the record [Exhibit B]. Apple's \"pressured\" cash position exceeds its peer's in nearly every period. Large-cap treasuries deliberately minimize idle cash; that is capital discipline, not liquidity strain.\n\n---\n\n## SUMMATION\n\nThe Prosecution's case rests on FY2022-2024 — a period the defendant has already answered with record revenue ($416.16B), record net income ($112.01B",
-  "rebuttal": "# PROSECUTION'S REBUTTAL\n\n*May it please the Tribunal. The Prosecution will not re-argue every charge. Several of the defense's answers are sound — the seasonality point on sequential quarters is well taken, and the balance-sheet deleveraging from 1.95 to 0.66 LT-debt/equity is genuine. We drop those lines of attack. But two pillars of the defense collapse on inspection, and the record of concessions must be entered.*\n\n---\n\n**FOR THE RECORD — CONCESSIONS BY THE DEFENSE:**\n\n1. On Charge 1, the defense concedes FY2025 operating cash flow of $111.48B remains *below* the FY2022 peak of $122.15B — its words: \"the annual figure was soft.\"\n2. On Charge 2, the defense concedes FY2023 (-2.8%) and FY2024 (+2.0%) were \"genuinely weak years.\"\n3. On Charge 5, the defense acknowledges its leverage ratio of 0.66 exceeds its peer's.\n\nThese are admitted facts. The Tribunal need not litigate them further.\n\n---\n\n**REBUTTAL 1: The Cash Flow \"Recovery\" Rests on a Single Quarter — the Annual Record Rests on Three Years of Decline in Conversion**\n\nThe defense answers a three-fiscal-year annual trend with exactly one quarterly comparison ($53.92B vs. $29.93B) — the *only* two quarterly cash flow figures in the entire exhibit. One data point is not a trajectory; it is a straw.\n\nThe annual record is unrebutted: in FY2022, Apple converted $394.33B of revenue into $122.15B of operating cash — and cash flow ran at **1.22x net income** ($122.15B vs. $99.80B). In FY2025, on $416.16B of revenue — $21.8B *more* — it produced $111.48B, and cash flow fell to **0.995x net income** ($111.48B vs. $112.01B). Cash conversion of revenue declined from roughly 31% to 26.8%. The defense calls the sub-1.0x figure \"rounding-error parity.\" The Prosecution calls it what the trend shows: the first year in the filed record where reported profit exceeded cash generated, at the end of a multi-year erosion the defense has already conceded.\n\n**REBUTTAL 2: The R&D Charge Is Not Answered — It Is Confirmed by the Defense's Own Showcase Quarters**\n\nThe defense parades the two most recent quarters as proof of \"re-acceleration.\" Examine them. Revenue grew 16.6% and 16.4% year-over-year. R&D in those same quarters grew from $8.55B to $11.42B (**+33.6%**) and from $8.87B to $11.73B (**+32.2%**) [Exhibit A]. In the very quarters the defense selects as its best evidence, R&D is growing at **twice the rate of revenue**. Annually, R&D intensity has climbed from 6.0% of revenue (FY2021: $21.91B / $365.82B) to 8.3% (FY2025: $34.55B / $416.16B) — a rising burden, not a stable one.\n\nThe comparison to a software peer's R&D ratio answers a question no one asked. The charge is Apple's trajectory, and Apple's trajectory — by the defense's own hand-picked quarters — is accelerating cost growth against decelerating revenue growth. Margins are up today; the cost engine driving future margins is compounding at 32-34% a year. The Tribunal may do that arithmetic itself.\n\n---\n\n**CLOSING:** The defense won the seasonality skirmish and the balance-sheet skirmish. It conceded two weak revenue years and a cash flow peak three years behind us. And on earnings quality and cost structure, its rebuttal consists of one quarter of cash flow and two quarters in which R&D outgrew revenue two-to-one. The core of the case stands. [Exhibit A]",
-  "verdict": {
-    "summary": "The prosecution charged Apple with deteriorating earnings quality, revenue fragility, a net income slide, runaway R&D costs, a hollowed-out balance sheet, and pressured liquidity. The defense demonstrated that most charges rested on stale FY2022-2024 data or seasonal artifacts, with FY2025 delivering record revenue ($416.16B) and record net income ($112.01B), while the prosecution's rebuttal preserved narrower concerns on cash conversion and R&D cost trajectory. The Tribunal dismisses the balance-sheet, liquidity, and net-income charges, sustains partial concerns on cash flow, revenue history, and R&D intensity, and finds the company financially strong overall.",
-    "charges": [
+  "docket": {
+    "events": [
       {
-        "charge": "FY2025 operating cash flow ($111.48B) fell below net income ($112.01B) for the first time and remains under the FY2022 peak of $122.15B despite $21.8B more revenue.",
-        "rebuttal": "The gap is only 0.5% of net income, and the most recent quarter's OCF of $53.92B (up 80% YoY) exceeded net income by nearly $12B, though the defense conceded the annual figure was soft.",
-        "status": "PARTIALLY VALID"
+        "date": "2026-09-01",
+        "form": "8-K/A",
+        "items": [
+          "5.02"
+        ],
+        "labels": [
+          "Departure/appointment of directors or officers"
+        ],
+        "severity": "amber",
+        "accessionNumber": "0001140361-26-035325",
+        "primaryDocument": "ef20081427_8ka.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036126035325/ef20081427_8ka.htm"
       },
       {
-        "charge": "Revenue declined 2.8% in FY2023, grew only 2.0% in FY2024, and recent sequential quarterly declines plus marginal YoY deceleration (16.6% to 16.4%) show growth can stall again.",
-        "rebuttal": "Sequential declines are Apple's documented seasonal cadence, YoY growth of 16%+ matches Microsoft's, and FY2025 hit a record $416.16B, up 6.4% — though the defense conceded FY2023-24 were genuinely weak years.",
-        "status": "PARTIALLY VALID"
+        "date": "2026-07-30",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0000320193-26-000018",
+        "primaryDocument": "aapl-20260730.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/aapl-20260730.htm"
       },
       {
-        "charge": "Net income fell two consecutive years ($99.80B FY2022 to $93.74B FY2024) with net margin compressing from 25.3% to 24.0%, and quarterly margins have retreated from their peak.",
-        "rebuttal": "The slide ended in an all-time-record FY2025 net income of $112.01B at a record 26.9% margin, quarterly margins are expanding year-over-year (26.6%/27.2% vs. 26.0%/24.9%), and the cited 'retreat' is seasonal normalization.",
-        "status": "DISMISSED"
+        "date": "2026-04-30",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0000320193-26-000011",
+        "primaryDocument": "aapl-20260430.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000011/aapl-20260430.htm"
       },
       {
-        "charge": "R&D exploded 58% ($21.91B to $34.55B) while revenue grew only ~13.8%, and in the most recent quarters R&D grew 32-34% YoY — twice the rate of revenue — indicating diminishing returns.",
-        "rebuttal": "R&D intensity of 8.3% is lighter than Microsoft's 11.5%, sector-wide R&D growth is comparable, and the returns are visible in gross margin expanding from 41.8% to 50.1% — though the accelerating cost trajectory itself went unrefuted.",
-        "status": "PARTIALLY VALID"
+        "date": "2026-04-20",
+        "form": "8-K",
+        "items": [
+          "5.02"
+        ],
+        "labels": [
+          "Departure/appointment of directors or officers"
+        ],
+        "severity": "amber",
+        "accessionNumber": "0001140361-26-015711",
+        "primaryDocument": "ef20071035_8k.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036126015711/ef20071035_8k.htm"
       },
       {
-        "charge": "Interest expense surged 48%, equity was gutted to $50.67B by FY2022 driving LT-debt/equity to 1.95, and liabilities continue rising.",
-        "rebuttal": "The figures are years stale: long-term debt has fallen 35% to $71.34B, equity has more than doubled to $107.52B, LT-debt/equity has collapsed to 0.66, and interest is covered ~29x by operating income — a point the prosecution explicitly conceded and dropped.",
-        "status": "DISMISSED"
+        "date": "2026-02-24",
+        "form": "8-K",
+        "items": [
+          "5.07",
+          "9.01"
+        ],
+        "labels": [
+          "Submission of matters to a vote of security holders",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001140361-26-006577",
+        "primaryDocument": "ef20060722_8k.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036126006577/ef20060722_8k.htm"
       },
       {
-        "charge": "Cash collapsed from $38.02B (FY2020) to $23.65B (FY2022) and fell $6B in the most recent quarter while liabilities rose $11B.",
-        "rebuttal": "Current cash of $39.54B is up 67% from the stale FY2022 trough, exceeds Microsoft's $20.93B, and the single-quarter move is ordinary treasury variation for a company generating $50B+ of quarterly operating cash.",
-        "status": "DISMISSED"
+        "date": "2026-01-29",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0000320193-26-000005",
+        "primaryDocument": "aapl-20260129.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000005/aapl-20260129.htm"
       },
       {
-        "charge": "Prosecution's rebuttal: the cash flow 'recovery' rests on a single quarterly comparison while annual cash conversion fell from 1.22x net income (FY2022) to 0.995x (FY2025) and from ~31% to 26.8% of revenue.",
-        "rebuttal": "The defense's only counter is one quarterly data point of strong OCF; the multi-year annual conversion decline stands unrebutted on the filed record.",
-        "status": "SUSTAINED"
+        "date": "2026-01-02",
+        "form": "8-K",
+        "items": [
+          "5.02"
+        ],
+        "labels": [
+          "Departure/appointment of directors or officers"
+        ],
+        "severity": "amber",
+        "accessionNumber": "0001140361-26-000199",
+        "primaryDocument": "ef20060722_8k.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036126000199/ef20060722_8k.htm"
+      },
+      {
+        "date": "2025-12-05",
+        "form": "8-K",
+        "items": [
+          "5.02"
+        ],
+        "labels": [
+          "Departure/appointment of directors or officers"
+        ],
+        "severity": "amber",
+        "accessionNumber": "0001140361-25-044561",
+        "primaryDocument": "ef20060722_8k.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036125044561/ef20060722_8k.htm"
+      },
+      {
+        "date": "2025-10-30",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0000320193-25-000077",
+        "primaryDocument": "aapl-20251030.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000077/aapl-20251030.htm"
+      },
+      {
+        "date": "2025-07-31",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0000320193-25-000071",
+        "primaryDocument": "aapl-20250731.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000071/aapl-20250731.htm"
+      },
+      {
+        "date": "2025-07-25",
+        "form": "8-K",
+        "items": [
+          "5.02"
+        ],
+        "labels": [
+          "Departure/appointment of directors or officers"
+        ],
+        "severity": "amber",
+        "accessionNumber": "0001140361-25-027340",
+        "primaryDocument": "ef20052355_8k.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036125027340/ef20052355_8k.htm"
+      },
+      {
+        "date": "2025-07-09",
+        "form": "8-K",
+        "items": [
+          "5.02"
+        ],
+        "labels": [
+          "Departure/appointment of directors or officers"
+        ],
+        "severity": "amber",
+        "accessionNumber": "0001140361-25-025275",
+        "primaryDocument": "ef20051741_8k.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036125025275/ef20051741_8k.htm"
+      },
+      {
+        "date": "2025-05-12",
+        "form": "8-K",
+        "items": [
+          "8.01",
+          "9.01"
+        ],
+        "labels": [
+          "Other events",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001140361-25-018400",
+        "primaryDocument": "ef20048691_8k.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036125018400/ef20048691_8k.htm"
+      },
+      {
+        "date": "2025-05-01",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0000320193-25-000055",
+        "primaryDocument": "aapl-20250501.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000055/aapl-20250501.htm"
       }
     ],
-    "score": 80,
-    "recommendation": "Apple presents as a fundamentally healthy company with record revenue and net income, structurally improving gross margins (41.8% to 50.1%), a substantially deleveraged balance sheet (LT-debt/equity down from 1.95 to 0.66), and ample liquidity. Investors should nonetheless monitor two sustained concerns: annual operating cash conversion has eroded over three years, with FY2025 the first year cash flow trailed reported profit, and R&D costs are compounding at roughly twice the rate of revenue growth, which could pressure future margins if the investment does not translate into new revenue streams. On balance, the record supports holding or accumulating the position, with attention to whether the strong recent quarterly cash flow trend confirms an annual recovery and whether R&D intensity stabilizes."
+    "lateFilings": 0,
+    "counts": {
+      "red": 0,
+      "amber": 6,
+      "info": 8
+    }
+  },
+  "bearCase": "**CHARGE 1: Revenue Stagnation and Outright Decline**\nThe defendant's core revenue engine sputtered for two consecutive fiscal years — falling -2.8% YoY in FY2023 to $383.29B from $394.33B in FY2022, then crawling forward just 2.0% in FY2024 to $391.04B [Exhibit A]. This represents a multi-year plateau in which reported revenue failed to meaningfully exceed FY2022 levels until FY2025, exposing a company that spent two full fiscal years running in place while claiming growth-company status.\n\n**CHARGE 2: Net Income and Margin Compression Despite Rising Costs**\nIn FY2024, net income actually *fell* to $93.74B from $97.00B in FY2023 — a decline of over $3B — even as revenue grew 2.0%, driving net margin down from 25.3% to 24.0% [Exhibit A]. This compression occurred while R&D expense climbed relentlessly from $29.91B (FY2023) to $31.37B (FY2024) to $34.55B (FY2025) [Exhibit A], demonstrating that rising investment is being funneled into the income statement faster than it is converting into bottom-line growth.\n\n**CHARGE 3: Deteriorating Cash Conversion**\nOperating cash flow declined from $118.25B in FY2024 to $111.48B in FY2025 [Exhibit A] — a drop of nearly $6.8B in the very year the defendant touts record net income of $112.01B. A company whose cash generation moves backward while its income statement moves forward invites scrutiny over the quality and sustainability of reported earnings.\n\n**CHARGE 4: Leadership Instability Amid the Numbers**\nThe 8-K docket reveals six separate Item 5.02 director/officer departure or appointment filings within an eighteen-month window — 2025-07-09, 2025-07-25, 2025-12-05, 2026-01-02, 2026-04-20, and 2026-09-01 [Exhibit A]. This unusually persistent churn in senior leadership, occurring alongside historically thin stockholders' equity that collapsed to $50.67B in FY2022 from $90.49B in FY2019 [Exhibit A], signals governance turbulence beneath a balance sheet the defendant otherwise presents as a picture of stability.",
+  "defense": "**Rebuttal to Charge 1: Revenue Stagnation**\nThe FY2023 dip (-2.8%) reflects a well-documented macro-wide consumer electronics slowdown, not company-specific failure, and the defendant answered decisively: FY2025 revenue hit $416.16B (+6.4% YoY), with the two most recent quarters posting 16.6% and 16.4% YoY growth [Exhibit A]. Even peer Microsoft, riding the AI capex boom, needed until FY2024-26 to post its acceleration — Apple's trailing-twelve-month trajectory now shows the same reacceleration pattern the market rewards in Exhibit B's comparator [Exhibit B]. The \"plateau\" the prosecution describes is already two fiscal years in the past.\n\n**Rebuttal to Charge 2: Margin Compression**\nThe FY2024 net income dip of ~$3B occurred despite rising R&D, and margins have since expanded, not contracted: gross margin climbed from 44.1% (FY2023) to 46.9% (FY2025), and operating margin rose to 32.0% in FY2025 and 32.6% by the June 2026 quarter [Exhibit A]. Rising R&D spend ($29.91B→$34.55B) is deliberate growth investment, precisely the strategy Microsoft also pursues (R&D up from $27.20B to $35.56B over the same window) while both companies posted record margins thereafter [Exhibit B]. Net margin has since recovered to 27.2% in the most recent quarter, well above the FY2024 trough.\n\n**Rebuttal to Charge 3: Cash Conversion**\nA single-year OCF dip of $6.8B against $111.48B in absolute operating cash flow is immaterial noise, not a quality-of-earnings crisis, and the most recent quarter shows OCF of $53.92B versus $29.93B a year prior — clear reacceleration [Exhibit A]. The balance sheet remains a fortress: stockholders' equity has more than doubled from $65.83B to $107.52B in twelve months and long-term-debt-to-equity fell from 1.25 to 0.66 over the same period [Exhibit A]. This is a company deleveraging while still generating over $100B annually in cash, a profile few large-cap peers can match.\n\n**Rebuttal to Charge 4: Leadership Instability**\nI concede the frequency of Item 5.02 filings is notable, but the prosecution mischaracterizes the balance-sheet timeline: FY2022's equity trough of $50.67B was driven by capital-return policy (buybacks), not distress, and equity has since rebuilt sharply to $107.52B by mid-2026 with zero red-flagged 8-K items (restatements, auditor changes, bankruptcy, delisting) across the entire 18-month docket [Exhibit A]. Six amber-level officer transitions at a company of this scale, absent any accompanying red flag, reflects ordinary executive succession planning rather than governance breakdown.",
+  "rebuttal": "**On Charge 4 — Leadership Instability:** The defense concedes \"the frequency of Item 5.02 filings is notable\" — let the record reflect that concession stands unrebutted. Their explanation for the FY2022 equity trough of $50.67B as \"capital-return policy\" is asserted with zero supporting figures in Exhibit A — no buyback, dividend, or capital-allocation data was ever entered into evidence to substantiate it.\n\n**On the Exhibit B Comparisons:** Both the Charge 1 and Charge 2 rebuttals lean on Microsoft figures from \"Exhibit B\" — a document never furnished to this Tribunal as part of Apple's own SEC filings. Exhibit A contains no Microsoft data whatsoever; the defense cannot rehabilitate Apple's record by importing an uncorroborated peer comparison that isn't in the evidentiary record before us.\n\n**On Charge 3 — Cash Conversion:** Calling a $6.8B operating cash flow decline \"immaterial noise\" does not explain why cash generation fell from $118.25B to $111.48B in the very fiscal year net income rose to a record $112.01B [Exhibit A]. That divergence — accrual earnings up, cash conversion down — is the textbook definition of a quality-of-earnings question, and the defense offered no reconciliation for FY2025 itself, only forward-looking quarterly data from a different period.\n\n**On Charge 2 — Margin Compression:** The defense's own rebuttal confirms the charge: net income fell from $97.00B to $93.74B in FY2024 precisely as R&D climbed from $29.91B to $31.37B [Exhibit A]. Pointing to FY2025's recovery does not erase that FY2024 remains, on the defendant's own numbers, a year where rising cost absorption outpaced earnings growth exactly as charged.",
+  "verdict": {
+    "summary": "The Tribunal finds the prosecution's charges describe real but largely historical blemishes on an otherwise robust financial record, sustaining them only in part while the defendant's current trajectory stands substantially vindicated.\n\nOn revenue and margins, the underlying facts are conceded — FY2023's -2.8% decline, FY2024's net income drop from $97.00B to $93.74B — but the defense's Exhibit A figures showing FY2025 revenue of $416.16B (+6.4%), 16%+ quarterly growth, gross margin expansion to 46.9%, and net margin recovery to 27.2% render those charges backward-looking rather than indicative of present distress. The Tribunal does, however, strike the Exhibit B Microsoft comparisons from consideration, as the prosecution correctly notes they lie outside the evidentiary record; the defense prevails on its own Exhibit A numbers alone.\n\nThe cash-conversion divergence — FY2025 operating cash flow falling to $111.48B while net income rose to a record $112.01B — remains unreconciled for the fiscal year itself and survives as a legitimate quality-of-earnings question, though the most recent quarter's OCF of $53.92B versus $29.93B a year prior blunts its forward significance. The leadership charge is dismissed: six Item 5.02 filings absent any restatement, auditor change, or other red-flagged item, alongside stockholders' equity rebuilding from $65.83B to $107.52B and debt-to-equity falling from 1.25 to 0.66, does not evidence governance breakdown.",
+    "charges": [
+      {
+        "charge": "Revenue fell -2.8% in FY2023 to $383.29B and grew only 2.0% in FY2024 to $391.04B, a two-year plateau below FY2022 levels.",
+        "rebuttal": "The dip reflected a macro consumer-electronics slowdown, and FY2025 revenue of $416.16B (+6.4%) with recent quarters at 16.6% and 16.4% YoY shows decisive reacceleration.",
+        "status": "PARTIALLY VALID"
+      },
+      {
+        "charge": "FY2024 net income fell over $3B to $93.74B despite 2.0% revenue growth, compressing net margin from 25.3% to 24.0% while R&D climbed from $29.91B toward $34.55B.",
+        "rebuttal": "Margins have since expanded — gross margin from 44.1% to 46.9%, operating margin to 32.6%, net margin to 27.2% — and rising R&D is deliberate growth investment that preceded record profitability.",
+        "status": "PARTIALLY VALID"
+      },
+      {
+        "charge": "Operating cash flow declined $6.8B from $118.25B to $111.48B in FY2025 even as net income hit a record $112.01B, raising a quality-of-earnings question.",
+        "rebuttal": "A single-year dip against $111.48B in absolute OCF is immaterial, the most recent quarter's OCF of $53.92B versus $29.93B a year prior shows reacceleration, and equity doubled to $107.52B while debt-to-equity fell to 0.66.",
+        "status": "PARTIALLY VALID"
+      },
+      {
+        "charge": "Six Item 5.02 officer/director filings in eighteen months, alongside an equity collapse to $50.67B in FY2022, signal governance turbulence.",
+        "rebuttal": "The filing frequency is conceded as notable, but zero red-flagged 8-K items appear in the docket, the equity trough reflected capital-return policy, and equity has rebuilt sharply to $107.52B.",
+        "status": "DISMISSED"
+      }
+    ],
+    "score": 82,
+    "recommendation": "The Tribunal views the defendant as a fundamentally healthy large-cap enterprise whose FY2023-FY2024 soft patch has been convincingly reversed by FY2025 and subsequent quarterly results: reaccelerating revenue, expanding margins, rapid deleveraging, and over $100B in annual operating cash flow. Investors should monitor two residual items — the unreconciled FY2025 divergence between record net income and declining operating cash flow, and the elevated cadence of senior leadership transitions — but neither rises to the level of a disqualifying risk on the evidence presented. Suitable for long-term core holdings, with attention to cash-flow reconciliation in the next annual filing."
   },
   "usage": {
     "prosecutor": {
-      "promptTokens": 3083,
-      "completionTokens": 2377,
-      "totalTokens": 5460,
+      "promptTokens": 3956,
+      "completionTokens": 1753,
+      "totalTokens": 5709,
       "cachedTokens": 0,
-      "cost": 0.14968
+      "cost": 0.025442
     },
     "defense": {
-      "promptTokens": 7669,
-      "completionTokens": 4096,
-      "totalTokens": 11765,
+      "promptTokens": 7704,
+      "completionTokens": 1008,
+      "totalTokens": 8712,
       "cachedTokens": 0,
-      "cost": 0.28149
+      "cost": 0.025488
     },
     "rebuttal": {
-      "promptTokens": 7517,
-      "completionTokens": 2850,
-      "totalTokens": 10367,
+      "promptTokens": 5629,
+      "completionTokens": 2386,
+      "totalTokens": 8015,
       "cachedTokens": 0,
-      "cost": 0.21767
+      "cost": 0.035118
     },
     "judge": {
-      "promptTokens": 6568,
-      "completionTokens": 2392,
-      "totalTokens": 8960,
+      "promptTokens": 3339,
+      "completionTokens": 2172,
+      "totalTokens": 5511,
       "cachedTokens": 0,
-      "cost": 0.18528
+      "cost": 0.14199
     },
     "total": {
-      "promptTokens": 24837,
-      "completionTokens": 11715,
-      "totalTokens": 36552,
+      "promptTokens": 20628,
+      "completionTokens": 7319,
+      "totalTokens": 27947,
       "cachedTokens": 0,
-      "cost": 0.8341200000000001
+      "cost": 0.22803800000000002
     }
   },
-  "generatedAt": "2026-09-18"
+  "generatedAt": "2026-09-19"
 }

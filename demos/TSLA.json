@@ -9,84 +9,310 @@
     "cik10": "0001467858",
     "name": "General Motors Co"
   },
-  "brief": "Company: Tesla, Inc. (ticker TSLA, CIK 0001318605)\nSource: SEC EDGAR XBRL companyfacts — figures exactly as filed in 10-K / 10-Q reports. All values in USD.\n\nRevenue [us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax]:\n  Annual (10-K, FY end): 2021-12-31: $53.82B | 2022-12-31: $81.46B | 2023-12-31: $96.77B | 2024-12-31: $97.69B | 2025-12-31: $94.83B\n  Recent quarters (10-Q, period end): 2025-03-31: $19.34B | 2025-06-30: $22.50B | 2025-09-30: $28.09B | 2026-03-31: $22.39B | 2026-06-30: $28.24B\n\nGross profit [us-gaap:GrossProfit]:\n  Annual (10-K, FY end): 2021-12-31: $13.61B | 2022-12-31: $20.85B | 2023-12-31: $17.66B | 2024-12-31: $17.45B | 2025-12-31: $17.09B\n  Recent quarters (10-Q, period end): 2025-03-31: $3.15B | 2025-06-30: $3.88B | 2025-09-30: $5.05B | 2026-03-31: $4.72B | 2026-06-30: $4.75B\n\nOperating income [us-gaap:OperatingIncomeLoss]:\n  Annual (10-K, FY end): 2021-12-31: $6.52B | 2022-12-31: $13.66B | 2023-12-31: $8.89B | 2024-12-31: $7.08B | 2025-12-31: $4.36B\n  Recent quarters (10-Q, period end): 2025-03-31: $399.0M | 2025-06-30: $923.0M | 2025-09-30: $1.62B | 2026-03-31: $941.0M | 2026-06-30: $398.0M\n\nNet income [us-gaap:NetIncomeLoss]:\n  Annual (10-K, FY end): 2021-12-31: $5.52B | 2022-12-31: $12.56B | 2023-12-31: $15.00B | 2024-12-31: $7.09B | 2025-12-31: $3.79B\n  Recent quarters (10-Q, period end): 2025-03-31: $409.0M | 2025-06-30: $1.17B | 2025-09-30: $1.37B | 2026-03-31: $477.0M | 2026-06-30: $1.11B\n\nOperating cash flow [us-gaap:NetCashProvidedByUsedInOperatingActivities]:\n  Annual (10-K, FY end): 2021-12-31: $11.50B | 2022-12-31: $14.72B | 2023-12-31: $13.26B | 2024-12-31: $14.92B | 2025-12-31: $14.75B\n  Recent quarters (10-Q, period end): 2025-03-31: $2.16B | 2026-03-31: $3.94B\n\nR&D expense [us-gaap:ResearchAndDevelopmentExpense]:\n  Annual (10-K, FY end): 2021-12-31: $2.59B | 2022-12-31: $3.08B | 2023-12-31: $3.97B | 2024-12-31: $4.54B | 2025-12-31: $6.41B\n  Recent quarters (10-Q, period end): 2025-03-31: $1.41B | 2025-06-30: $1.59B | 2025-09-30: $1.63B | 2026-03-31: $1.95B | 2026-06-30: $2.37B\n\nInterest expense [us-gaap:InterestExpense]:\n  Annual (10-K, FY end): 2019-12-31: $685.0M | 2020-12-31: $748.0M | 2021-12-31: $371.0M | 2022-12-31: $191.0M | 2023-12-31: $156.0M\n\nTotal assets [us-gaap:Assets]:\n  Annual (10-K, FY end): 2020-12-31: $52.15B | 2021-12-31: $62.13B | 2022-12-31: $82.34B | 2023-12-31: $106.62B | 2024-12-31: $122.07B\n  Recent quarters (10-Q, period end): 2025-06-30: $128.57B | 2025-09-30: $133.74B | 2025-12-31: $137.81B | 2026-03-31: $143.72B | 2026-06-30: $148.52B\n\nTotal liabilities [us-gaap:Liabilities]:\n  Annual (10-K, FY end): 2020-12-31: $28.42B | 2021-12-31: $30.55B | 2022-12-31: $36.44B | 2023-12-31: $43.01B | 2024-12-31: $48.39B\n  Recent quarters (10-Q, period end): 2025-06-30: $50.49B | 2025-09-30: $53.02B | 2025-12-31: $54.94B | 2026-03-31: $58.92B | 2026-06-30: $61.01B\n\nLong-term debt [us-gaap:LongTermDebt]:\n  Annual (10-K, FY end): 2020-12-31: $8.46B | 2021-12-31: $4.25B | 2022-12-31: $1.03B | 2023-12-31: $2.68B | 2024-12-31: $5.54B\n  Recent quarters (10-Q, period end): 2025-06-30: $4.99B | 2025-09-30: $5.61B | 2025-12-31: $6.58B | 2026-03-31: $7.64B | 2026-06-30: $7.72B\n\nStockholders equity [us-gaap:StockholdersEquity]:\n  Annual (10-K, FY end): 2020-12-31: $22.23B | 2021-12-31: $30.19B | 2022-12-31: $44.70B | 2023-12-31: $62.63B | 2024-12-31: $72.91B\n  Recent quarters (10-Q, period end): 2025-06-30: $77.31B | 2025-09-30: $79.97B | 2025-12-31: $82.14B | 2026-03-31: $84.12B | 2026-06-30: $86.86B\n\nCash & equivalents [us-gaap:CashAndCashEquivalentsAtCarryingValue]:\n  Annual (10-K, FY end): 2019-12-31: $6.27B | 2020-12-31: $19.38B | 2021-12-31: $17.58B | 2022-12-31: $16.25B | 2023-12-31: $16.40B\n  Recent quarters (10-Q, period end): 2025-06-30: $15.59B | 2025-09-30: $18.29B | 2025-12-31: $16.51B | 2026-03-31: $16.60B | 2026-06-30: $15.22B\n\nDerived ratios — annual:\n  2021-12-31: gross margin 25.3%, operating margin 12.1%, net margin 10.3%, LT-debt/equity 0.14\n  2022-12-31: gross margin 25.6%, operating margin 16.8%, net margin 15.4%, revenue YoY 51.4%, LT-debt/equity 0.02\n  2023-12-31: gross margin 18.2%, operating margin 9.2%, net margin 15.5%, revenue YoY 18.8%, LT-debt/equity 0.04\n  2024-12-31: gross margin 17.9%, operating margin 7.2%, net margin 7.3%, revenue YoY 0.9%, LT-debt/equity 0.08\n  2025-12-31: gross margin 18.0%, operating margin 4.6%, net margin 4.0%, revenue YoY -2.9%\n\nDerived ratios — recent quarters:\n  2025-03-31: gross margin 16.3%, operating margin 2.1%, net margin 2.1%\n  2025-06-30: gross margin 17.2%, operating margin 4.1%, net margin 5.2%, LT-debt/equity 0.06\n  2025-09-30: gross margin 18.0%, operating margin 5.8%, net margin 4.9%, LT-debt/equity 0.07\n  2026-03-31: gross margin 21.1%, operating margin 4.2%, net margin 2.1%, revenue YoY 15.8%, LT-debt/equity 0.09\n  2026-06-30: gross margin 16.8%, operating margin 1.4%, net margin 3.9%, revenue YoY 25.5%, LT-debt/equity 0.09",
+  "brief": "Company: Tesla, Inc. (ticker TSLA, CIK 0001318605)\nSource: SEC EDGAR XBRL companyfacts — figures exactly as filed in 10-K / 10-Q reports. All values in USD.\n\nRevenue [us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax]:\n  Annual (10-K, FY end): 2021-12-31: $53.82B | 2022-12-31: $81.46B | 2023-12-31: $96.77B | 2024-12-31: $97.69B | 2025-12-31: $94.83B\n  Recent quarters (10-Q, period end): 2025-03-31: $19.34B | 2025-06-30: $22.50B | 2025-09-30: $28.09B | 2026-03-31: $22.39B | 2026-06-30: $28.24B\n\nGross profit [us-gaap:GrossProfit]:\n  Annual (10-K, FY end): 2021-12-31: $13.61B | 2022-12-31: $20.85B | 2023-12-31: $17.66B | 2024-12-31: $17.45B | 2025-12-31: $17.09B\n  Recent quarters (10-Q, period end): 2025-03-31: $3.15B | 2025-06-30: $3.88B | 2025-09-30: $5.05B | 2026-03-31: $4.72B | 2026-06-30: $4.75B\n\nOperating income [us-gaap:OperatingIncomeLoss]:\n  Annual (10-K, FY end): 2021-12-31: $6.52B | 2022-12-31: $13.66B | 2023-12-31: $8.89B | 2024-12-31: $7.08B | 2025-12-31: $4.36B\n  Recent quarters (10-Q, period end): 2025-03-31: $399.0M | 2025-06-30: $923.0M | 2025-09-30: $1.62B | 2026-03-31: $941.0M | 2026-06-30: $398.0M\n\nNet income [us-gaap:NetIncomeLoss]:\n  Annual (10-K, FY end): 2021-12-31: $5.52B | 2022-12-31: $12.56B | 2023-12-31: $15.00B | 2024-12-31: $7.09B | 2025-12-31: $3.79B\n  Recent quarters (10-Q, period end): 2025-03-31: $409.0M | 2025-06-30: $1.17B | 2025-09-30: $1.37B | 2026-03-31: $477.0M | 2026-06-30: $1.11B\n\nOperating cash flow [us-gaap:NetCashProvidedByUsedInOperatingActivities]:\n  Annual (10-K, FY end): 2021-12-31: $11.50B | 2022-12-31: $14.72B | 2023-12-31: $13.26B | 2024-12-31: $14.92B | 2025-12-31: $14.75B\n  Recent quarters (10-Q, period end): 2025-03-31: $2.16B | 2026-03-31: $3.94B\n\nR&D expense [us-gaap:ResearchAndDevelopmentExpense]:\n  Annual (10-K, FY end): 2021-12-31: $2.59B | 2022-12-31: $3.08B | 2023-12-31: $3.97B | 2024-12-31: $4.54B | 2025-12-31: $6.41B\n  Recent quarters (10-Q, period end): 2025-03-31: $1.41B | 2025-06-30: $1.59B | 2025-09-30: $1.63B | 2026-03-31: $1.95B | 2026-06-30: $2.37B\n\nInterest expense [us-gaap:InterestExpense]:\n  Annual (10-K, FY end): 2019-12-31: $685.0M | 2020-12-31: $748.0M | 2021-12-31: $371.0M | 2022-12-31: $191.0M | 2023-12-31: $156.0M\n\nTotal assets [us-gaap:Assets]:\n  Annual (10-K, FY end): 2020-12-31: $52.15B | 2021-12-31: $62.13B | 2022-12-31: $82.34B | 2023-12-31: $106.62B | 2024-12-31: $122.07B\n  Recent quarters (10-Q, period end): 2025-06-30: $128.57B | 2025-09-30: $133.74B | 2025-12-31: $137.81B | 2026-03-31: $143.72B | 2026-06-30: $148.52B\n\nTotal liabilities [us-gaap:Liabilities]:\n  Annual (10-K, FY end): 2020-12-31: $28.42B | 2021-12-31: $30.55B | 2022-12-31: $36.44B | 2023-12-31: $43.01B | 2024-12-31: $48.39B\n  Recent quarters (10-Q, period end): 2025-06-30: $50.49B | 2025-09-30: $53.02B | 2025-12-31: $54.94B | 2026-03-31: $58.92B | 2026-06-30: $61.01B\n\nLong-term debt [us-gaap:LongTermDebt]:\n  Annual (10-K, FY end): 2020-12-31: $8.46B | 2021-12-31: $4.25B | 2022-12-31: $1.03B | 2023-12-31: $2.68B | 2024-12-31: $5.54B\n  Recent quarters (10-Q, period end): 2025-06-30: $4.99B | 2025-09-30: $5.61B | 2025-12-31: $6.58B | 2026-03-31: $7.64B | 2026-06-30: $7.72B\n\nStockholders equity [us-gaap:StockholdersEquity]:\n  Annual (10-K, FY end): 2020-12-31: $22.23B | 2021-12-31: $30.19B | 2022-12-31: $44.70B | 2023-12-31: $62.63B | 2024-12-31: $72.91B\n  Recent quarters (10-Q, period end): 2025-06-30: $77.31B | 2025-09-30: $79.97B | 2025-12-31: $82.14B | 2026-03-31: $84.12B | 2026-06-30: $86.86B\n\nCash & equivalents [us-gaap:CashAndCashEquivalentsAtCarryingValue]:\n  Annual (10-K, FY end): 2019-12-31: $6.27B | 2020-12-31: $19.38B | 2021-12-31: $17.58B | 2022-12-31: $16.25B | 2023-12-31: $16.40B\n  Recent quarters (10-Q, period end): 2025-06-30: $15.59B | 2025-09-30: $18.29B | 2025-12-31: $16.51B | 2026-03-31: $16.60B | 2026-06-30: $15.22B\n\nDerived ratios — annual:\n  2021-12-31: gross margin 25.3%, operating margin 12.1%, net margin 10.3%, LT-debt/equity 0.14\n  2022-12-31: gross margin 25.6%, operating margin 16.8%, net margin 15.4%, revenue YoY 51.4%, LT-debt/equity 0.02\n  2023-12-31: gross margin 18.2%, operating margin 9.2%, net margin 15.5%, revenue YoY 18.8%, LT-debt/equity 0.04\n  2024-12-31: gross margin 17.9%, operating margin 7.2%, net margin 7.3%, revenue YoY 0.9%, LT-debt/equity 0.08\n  2025-12-31: gross margin 18.0%, operating margin 4.6%, net margin 4.0%, revenue YoY -2.9%\n\nDerived ratios — recent quarters:\n  2025-03-31: gross margin 16.3%, operating margin 2.1%, net margin 2.1%\n  2025-06-30: gross margin 17.2%, operating margin 4.1%, net margin 5.2%, LT-debt/equity 0.06\n  2025-09-30: gross margin 18.0%, operating margin 5.8%, net margin 4.9%, LT-debt/equity 0.07\n  2026-03-31: gross margin 21.1%, operating margin 4.2%, net margin 2.1%, revenue YoY 15.8%, LT-debt/equity 0.09\n  2026-06-30: gross margin 16.8%, operating margin 1.4%, net margin 3.9%, revenue YoY 25.5%, LT-debt/equity 0.09\n\nRECENT MATERIAL EVENTS — 8-K DOCKET (last ~18 months, SEC EDGAR):\n\n- 2026-07-22 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2026-07-02 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2026-04-22 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2026-04-02 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2026-01-28 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2026-01-02 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2025-11-07 [AMBER] Departure/appointment of directors or officers; Submission of matters to a vote of security holders; Financial statements and exhibits (Item 5.02, 5.07, 9.01)\n- 2025-10-22 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2025-10-02 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2025-09-05 [INFO] Entry into a material definitive agreement; Financial statements and exhibits (Item 1.01, 9.01)\n- 2025-08-04 [AMBER] Departure/appointment of directors or officers; Regulation FD disclosure; Financial statements and exhibits (Item 5.02, 7.01, 9.01)\n- 2025-07-23 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n- 2025-07-10 [INFO] Item 5.08 (Item 5.08)\n- 2025-07-02 [INFO] Results of operations and financial condition; Financial statements and exhibits (Item 2.02, 9.01)\n\nSeverity tally: 0 red flag(s), 2 amber flag(s), 12 routine disclosure(s).",
   "peerBrief": "Company: GENERAL MOTORS COMPANY (ticker GM, CIK 0001467858)\nSource: SEC EDGAR XBRL companyfacts — figures exactly as filed in 10-K / 10-Q reports. All values in USD.\n\nRevenue [us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax]:\n  Annual (10-K, FY end): 2021-12-31: $113.59B | 2022-12-31: $143.97B | 2023-12-31: $157.66B | 2024-12-31: $171.61B | 2025-12-31: $167.97B\n  Recent quarters (10-Q, period end): 2025-03-31: $39.86B | 2025-06-30: $42.87B | 2025-09-30: $44.26B | 2026-03-31: $39.35B | 2026-06-30: $43.76B\n\nOperating income [us-gaap:OperatingIncomeLoss]:\n  Annual (10-K, FY end): 2021-12-31: $9.32B | 2022-12-31: $10.31B | 2023-12-31: $9.30B | 2024-12-31: $12.78B | 2025-12-31: $2.91B\n  Recent quarters (10-Q, period end): 2025-03-31: $3.35B | 2025-06-30: $2.13B | 2025-09-30: $1.08B | 2026-03-31: $2.93B | 2026-06-30: $1.46B\n\nNet income [us-gaap:NetIncomeLoss]:\n  Annual (10-K, FY end): 2019-12-31: $6.73B | 2020-12-31: $6.43B\n  Recent quarters (10-Q, period end): 2025-03-31: $2.78B | 2025-06-30: $1.90B | 2025-09-30: $1.33B | 2026-03-31: $2.63B | 2026-06-30: $1.30B\n\nOperating cash flow [us-gaap:NetCashProvidedByUsedInOperatingActivities]:\n  Annual (10-K, FY end): 2021-12-31: $15.19B | 2022-12-31: $16.04B | 2023-12-31: $20.93B | 2024-12-31: $20.13B | 2025-12-31: $26.87B\n  Recent quarters (10-Q, period end): 2025-03-31: $6.06B | 2026-03-31: $2.95B\n\nTotal assets [us-gaap:Assets]:\n  Annual (10-K, FY end): 2020-12-31: $235.19B | 2021-12-31: $244.72B | 2022-12-31: $264.04B | 2023-12-31: $273.06B | 2024-12-31: $279.76B\n  Recent quarters (10-Q, period end): 2025-06-30: $289.38B | 2025-09-30: $288.17B | 2025-12-31: $281.28B | 2026-03-31: $280.97B | 2026-06-30: $282.74B\n\nTotal liabilities [us-gaap:Liabilities]:\n  Annual (10-K, FY end): 2020-12-31: $185.52B | 2021-12-31: $178.90B | 2022-12-31: $191.75B | 2023-12-31: $204.76B | 2024-12-31: $214.17B\n  Recent quarters (10-Q, period end): 2025-06-30: $220.93B | 2025-09-30: $219.77B | 2025-12-31: $218.12B | 2026-03-31: $216.28B | 2026-06-30: $219.10B\n\nStockholders equity [us-gaap:StockholdersEquity]:\n  Annual (10-K, FY end): 2020-12-31: $45.03B | 2021-12-31: $59.74B | 2022-12-31: $67.79B | 2023-12-31: $64.29B | 2024-12-31: $63.07B\n  Recent quarters (10-Q, period end): 2025-06-30: $66.36B | 2025-09-30: $66.37B | 2025-12-31: $61.12B | 2026-03-31: $62.66B | 2026-06-30: $62.00B\n\nCash & equivalents [us-gaap:CashAndCashEquivalentsAtCarryingValue]:\n  Annual (10-K, FY end): 2020-12-31: $19.99B | 2021-12-31: $20.07B | 2022-12-31: $19.15B | 2023-12-31: $18.85B | 2024-12-31: $19.87B\n  Recent quarters (10-Q, period end): 2025-06-30: $22.38B | 2025-09-30: $22.91B | 2025-12-31: $20.95B | 2026-03-31: $19.80B | 2026-06-30: $20.13B\n\nDerived ratios — annual:\n  2021-12-31: operating margin 8.2%\n  2022-12-31: operating margin 7.2%, revenue YoY 26.7%\n  2023-12-31: operating margin 5.9%, revenue YoY 9.5%\n  2024-12-31: operating margin 7.4%, revenue YoY 8.8%\n  2025-12-31: operating margin 1.7%, revenue YoY -2.1%\n\nDerived ratios — recent quarters:\n  2025-03-31: operating margin 8.4%, net margin 7.0%\n  2025-06-30: operating margin 5.0%, net margin 4.4%\n  2025-09-30: operating margin 2.4%, net margin 3.0%\n  2026-03-31: operating margin 7.4%, net margin 6.7%, revenue YoY -1.3%\n  2026-06-30: operating margin 3.3%, net margin 3.0%, revenue YoY 2.1%\n\nNot reported under standard tags: Long-term debt, Gross profit (last reported 2012-12-31), R&D expense (last reported 2013-12-31), Interest expense (last reported 2020-12-31).",
-  "bearCase": "# SEC TRIBUNAL — PROSECUTION'S BEAR CASE\n## In re: Tesla, Inc. (TSLA, CIK 0001318605)\n\nMay it please the Tribunal. The People present the following charges, each grounded exclusively in the defendant's own SEC filings.\n\n---\n\n**CHARGE 1: Revenue Growth Has Collapsed Into Outright Decline**\n\nThe defendant's growth engine has stalled and reversed. Annual revenue growth cratered from **51.4% in FY2022** to **18.8% in FY2023**, then to a near-standstill **0.9% in FY2024**, before turning **negative (-2.9%) in FY2025**, with revenue falling from $97.69B to $94.83B [Exhibit A]. A company priced as a growth story delivered *shrinkage*. Even the recent quarterly rebound (Q2 FY2026 revenue of $28.24B, +25.5% YoY) merely laps a depressed comparison base of $22.50B in Q2 FY2025 [Exhibit A].\n\n**CHARGE 2: Operating Profitability in Structural Freefall**\n\nOperating income has been cut by more than two-thirds in three years: **$13.66B (FY2022) → $8.89B (FY2023) → $7.08B (FY2024) → $4.36B (FY2025)** [Exhibit A]. Operating margin collapsed from **16.8% to 4.6%** over the same span. The most recent quarter is the most damning: Q2 FY2026 operating income of just **$398.0M on $28.24B of revenue — a 1.4% operating margin** — *lower in absolute dollars* than the $923.0M earned a year earlier on $5.7B less revenue [Exhibit A]. The defendant is growing revenue while destroying profit.\n\n**CHARGE 3: Gross Margins Have Been Permanently Impaired**\n\nGross margin fell from **25.6% in FY2022 to 18.0% in FY2025**, with gross profit dollars declining three consecutive years: $20.85B → $17.66B → $17.45B → $17.09B [Exhibit A]. The company generated **$13.4B more revenue in FY2025 than FY2022 yet $3.8B less gross profit**. The brief quarterly recovery to 21.1% in Q1 FY2026 immediately relapsed to **16.8% in Q2 FY2026** [Exhibit A] — pricing power has not returned.\n\n**CHARGE 4: Net Income Has Fallen ~75% From Peak**\n\nNet income declined from **$15.00B (FY2023) to $7.09B (FY2024) to $3.79B (FY2025)** — a roughly 75% collapse in two years, with net margin shrinking from 15.5% to **4.0%** [Exhibit A]. Quarterly net margins now oscillate between **2.1% and 5.2%**, including a mere 2.1% ($477.0M) in Q1 FY2026 [Exhibit A]. This is commodity-manufacturer profitability, not technology-company profitability.\n\n**CHARGE 5: Debt and Liabilities Are Climbing While Earnings Shrink**\n\nLong-term debt has risen relentlessly from a low of **$1.03B (FY2022) to $5.54B (FY2024) to $7.72B by Q2 FY2026** — a more than sevenfold increase [Exhibit A]. Total liabilities grew from $36.44B (FY2022) to **$61.01B (Q2 FY2026)** [Exhibit A]. The defendant is releveraging precisely as operating income shrinks to $398M per quarter, while cash & equivalents drifted down to **$15.22B at Q2 FY2026** from $18.29B two quarters prior [Exhibit A].\n\n**CHARGE 6: Ballooning R&D Spend With No Earnings Payoff**\n\nR&D expense has more than doubled from **$2.59B (FY2021) to $6.41B (FY2025)**, and the quarterly run-rate is still accelerating — from $1.41B (Q1 FY2025) to **$2.37B (Q2 FY2026)**, a 68% increase in five quarters [Exhibit A]. Over the same period, operating income *fell* from FY2021's $6.52B to $4.36B. In Q2 FY2026, the defendant spent **$2.37B on R&D to produce $398M of operating income** [Exhibit A]. The Tribunal is asked to fund speculative bets with shareholders' shrinking profits, on faith alone.\n\n---\n\n**CONCLUSION:** The record shows a company with declining annual revenue, gross profit falling for three straight years, operating margins compressed from 16.8% to 1.4% in the latest quarter, net income down ~75% from peak, and long-term debt up sevenfold from its 2022 trough. The prosecution rests. [Exhibit A]",
-  "defense": "# SEC TRIBUNAL — DEFENSE'S REBUTTAL\n## In re: Tesla, Inc. (TSLA) — Response to the People's Bear Case\n\nMay it please the Tribunal. The prosecution has presented Tesla's figures in a vacuum. When the same SEC-filed data for General Motors — a direct competitor operating in the identical macro environment — is placed alongside [Exhibit B], the picture changes materially. We respond to each charge.\n\n---\n\n**RE: CHARGE 1 — \"Revenue Growth Has Collapsed\"**\n\nThe prosecution omits that the *entire sector* contracted in FY2025. GM's revenue also declined, from $171.61B to $167.97B (**-2.1% YoY**) [Exhibit B] — nearly identical to Tesla's -2.9% [Exhibit A]. This is an industry headwind, not a company-specific failure.\n\nMore importantly, the recovery is real and Tesla-specific. Tesla's Q1 FY2026 revenue grew **+15.8% YoY** and Q2 FY2026 grew **+25.5% YoY** [Exhibit A]. GM's comparable quarters: **-1.3%** and **+2.1%** [Exhibit B]. The prosecution's \"depressed base\" argument fails on its own numbers: Q2 FY2026 revenue of **$28.24B is the highest quarterly figure in the entire record** — exceeding even Q3 FY2025's $28.09B [Exhibit A]. That is not lapping a trough; that is a new high. My client is re-accelerating while its peer stands still.\n\n**RE: CHARGE 2 — \"Operating Profitability in Structural Freefall\"**\n\nIf margin compression proves structural failure, GM must be indicted first. GM's operating margin collapsed from **7.4% (FY2024) to 1.7% (FY2025)** [Exhibit B] — Tesla's FY2025 margin of **4.6%** [Exhibit A] is nearly *triple* the peer's. In absolute terms, Tesla earned **$4.36B in FY2025 operating income versus GM's $2.91B** [Exhibit B] — 50% more profit on a revenue base barely half GM's size. The sector-wide 2025 margin destruction is the environment; Tesla's relative performance within it is the evidence.\n\nOn Q2 FY2026 specifically: the $398M figure absorbs **$2.37B of R&D expense** — up $780M from $1.59B a year prior [Exhibit A]. The decline versus the prior-year quarter is almost entirely explained by that deliberate spending increase, addressed under Charge 6.\n\n**RE: CHARGE 3 — \"Gross Margins Permanently Impaired\"**\n\nWe concede in part: the fall from 25.6% (FY2022) to ~18% is real, and the Q2 FY2026 relapse to 16.8% after Q1's 21.1% is a genuine weakness the defense will not spin away [Exhibit A].\n\nBut \"permanently impaired\" overstates the record. The FY2022 figure was a cyclical peak; gross margin has since **stabilized** — 18.2% → 17.9% → 18.0% across FY2023–FY2025 — not continued falling [Exhibit A]. The quarterly path through 2025 was steadily upward: 16.3% → 17.2% → 18.0% → 21.1% [Exhibit A]. Note also that GM has not reported gross profit under the standard tag since 2012 [Exhibit B]; but its 1.7% FY2025 operating margin makes clear its unit economics are under far greater pressure than my client's.\n\n**RE: CHARGE 4 — \"Net Income Down ~75% From Peak\"**\n\nThe prosecution's chosen \"peak\" is misleading on its face. In FY2023, net income of **$15.00B exceeded operating income of $8.89B**, and net margin (15.5%) exceeded operating margin (9.2%) [Exhibit A]. Operations did not produce that peak — non-operating items did. Measured from the operational earnings picture, the decline is real but far less dramatic than \"75%.\"\n\nThe decline itself is industry-wide: GM's quarterly net margin fell from **7.0% (Q1 FY2025) to 3.0% (Q3 FY2025 and Q2 FY2026)** [Exhibit B]. Tesla's most recent quarter posted $1.11B of net income versus $1.17B a year prior [Exhibit A] — essentially flat, while absorbing sharply higher R&D. We concede the FY2024–FY2025 earnings decline is substantial; we contest that it is a Tesla-specific collapse.\n\n**RE: CHARGE 5 — \"Debt Climbing While Earnings Shrink\"**\n\nThis charge collapses entirely under peer comparison. The \"sevenfold increase\" is arithmetic theater from an abnormally low FY2022 base of $1.03B. The relevant measures:\n\n- **LT-debt/equity of 0.09** at Q2 FY2026 [Exhibit A] — versus 0.14 in FY2021. Tesla is *less* levered than four years ago.\n- **Cash of $15.22B nearly double LT debt of $7.72B** [Exhibit A]. My client could retire its entire long-term debt from cash on hand.\n- Liabilities of $61.01B against assets of $148.52B (~41%); GM carries **$219.10B of liabilities against $282.74B of assets (~77%)** [Exhibit B].\n- Equity has grown every single period on record: $30.19B (FY2021) → **$86.86B** (Q2 FY2026) [Exhibit A]. Balance sheets do not compound like that at failing companies.\n- Interest expense *fell* from $685M (2019) to $156M (2023) [Exhibit A].\n- Operating cash flow held at **$14.75B in FY2025** despite the earnings dip, and Q1 FY2026 OCF of **$3.94B was up 82% YoY** from $2.16B [Exhibit A] — while GM's Q1 OCF *fell* from $6.06B to $2.95B [Exhibit B].\n\nThis is one of the strongest balance sheets in the industry, not a releveraging story.\n\n**RE: CHARGE 6 — \"Ballooning R&D With No Payoff\"**\n\nThe prosecution calls it a charge; the defense calls it the strategy. R&D of $6.41B in FY2025 represents roughly 6.8% of revenue — funded entirely from **$14.75B of operating cash flow**, not from debt or dilution [Exhibit A]. Strip out R&D and FY2025 operations generated $10.77B before that discretionary reinvestment. Total assets grew from $62.13B (FY2021) to **$148.52B** (Q2 FY2026) [Exhibit A]: the spending is building a larger enterprise, on the books, today.\n\nThe peer contrast is telling: GM last reported R&D under the standard tag in **2013** [Exhibit B]. One company in this courtroom is investing visibly and aggressively in its future; the prosecution asks you to punish it for doing so.\n\nAn honest concession: the earnings payoff from this R&D is **not yet visible in the filed numbers**. That is the nature of investment made ahead of returns. But the funding source (internal cash flow), the balance sheet (net cash), and the re-accelerating revenue (+25.5% in the latest quarter) all show a company that can afford the bet.\n\n---\n\n**CONCLUSION:** The FY2024–FY2025 downturn was a sector event — GM's revenue fell alongside Tesla's, and GM's operating margin fell *further*, to 1.7% versus Tesla's 4.6% [Exhibits A, B]. My client exits that downturn with record quarterly revenue, +25.5% growth, cash double its long-term debt, equity at an all-time high of $86.86B, and $14.75B of annual operating cash flow funding the industry's most aggressive R&D program. We concede the margin compression from the 2022 ",
-  "rebuttal": "# SEC TRIBUNAL — PROSECUTION'S REBUTTAL\n## In re: Tesla, Inc. (TSLA)\n\nMay it please the Tribunal. Three matters, briefly.\n\n**FIRST — For the record, the defense's concessions.** Counsel conceded the gross margin decline from 25.6% and the Q2 FY2026 relapse to 16.8% as \"a genuine weakness the defense will not spin away.\" Counsel conceded the FY2024–FY2025 earnings decline is \"substantial.\" And counsel conceded the R&D payoff is \"not yet visible in the filed numbers.\" The Tribunal should enter all three.\n\n**SECOND — The \"record revenue\" defense proves the prosecution's case.** The defense celebrates Q2 FY2026 revenue of $28.24B as \"a new high.\" Examine what that record quarter produced: **$398.0M of operating income — the lowest operating profit of any quarter in the entire record**, one million dollars *below* the $399.0M earned in Q1 FY2025 on just $19.34B of revenue [Exhibit A]. The comparison to Q3 FY2025 is devastating: essentially identical revenue ($28.09B vs. $28.24B), yet operating income of $1.62B then versus $398M now — **76% less profit on the same sales** [Exhibit A]. Revenue that arrives without margin is not recovery; it is volume purchased with price.\n\n**THIRD — The R&D alibi does not cover the shortfall.** The defense claims Q2 FY2026's collapse is \"almost entirely explained\" by higher R&D. The arithmetic disagrees. Sequentially from Q3 FY2025, R&D rose $740M ($1.63B → $2.37B), but operating income fell **$1.22B** ($1.62B → $398M) [Exhibit A]. Nearly half a billion of the decline came from somewhere else — and Exhibit A shows where: gross profit *fell* from $5.05B to $4.75B while revenue *rose*, with gross margin sliding from 18.0% to 16.8%. R&D is a choice; deteriorating unit economics on record volume is not.\n\n**FOURTH — \"Stabilized\" gross margins lasted exactly one quarter.** The defense's own \"steadily upward\" quarterly path — 16.3% → 17.2% → 18.0% → 21.1% — terminates at **16.8% in the most recent quarter**, below three of the four quarters counsel cited as the recovery [Exhibit A]. A trend that ends at its second-lowest reading in the record is not stabilization. And the defense's own reframing of Charge 4 helps the People: measured operationally, as counsel demands, operating income fell from $13.66B (FY2022) to $4.36B (FY2025) — a 68% decline with no non-operating items to blame [Exhibit A].\n\nThe prosecution does not contest the balance-sheet points under Charge 5 — cash of $15.22B against long-term debt of $7.72B and leverage below FY2021 levels are what the record shows, and the People will not pretend otherwise. But solvency was never the charge. The charge is that a company priced for growth now converts record revenue into 1.4% operating margins. The defendant's own latest quarter is the People's best exhibit.\n\nThe prosecution rests.",
-  "verdict": {
-    "summary": "The prosecution charged Tesla with collapsing revenue growth, structural margin destruction, a ~75% net income decline, rising debt, and unproductive R&D spending; the defense countered with sector-wide comparisons to GM, a re-accelerating top line, and a fortress balance sheet. The Tribunal finds the balance-sheet charge fully refuted and the growth charge substantially mitigated, but sustains the core profitability concerns: the latest quarter converted record revenue of $28.24B into the lowest operating income in the record ($398M, a 1.4% margin), and the R&D explanation did not survive the prosecution's arithmetic. Tesla is financially solvent but operationally deteriorated.",
-    "charges": [
+  "docket": {
+    "events": [
       {
-        "charge": "Annual revenue growth collapsed from 51.4% (FY2022) to -2.9% (FY2025), with recent quarterly growth merely lapping a depressed base.",
-        "rebuttal": "The FY2025 decline was sector-wide (GM: -2.1%), and Q2 FY2026 revenue of $28.24B is a record high with +25.5% YoY growth versus GM's +2.1%.",
-        "status": "PARTIALLY VALID"
+        "date": "2026-07-22",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-26-049213",
+        "primaryDocument": "tsla-20260722.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026049213/tsla-20260722.htm"
       },
       {
-        "charge": "Operating income fell from $13.66B (FY2022) to $4.36B (FY2025), with Q2 FY2026 producing only $398M — a 1.4% margin and the lowest quarterly operating profit in the record.",
-        "rebuttal": "GM's FY2025 operating margin fell further (to 1.7% vs. Tesla's 4.6%), and the Q2 FY2026 shortfall is almost entirely explained by a deliberate $780M YoY R&D increase.",
+        "date": "2026-07-02",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-26-046717",
+        "primaryDocument": "tsla-20260702.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026046717/tsla-20260702.htm"
+      },
+      {
+        "date": "2026-04-22",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-26-026551",
+        "primaryDocument": "tsla-20260422.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026026551/tsla-20260422.htm"
+      },
+      {
+        "date": "2026-04-02",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-26-022956",
+        "primaryDocument": "tsla-20260402.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026022956/tsla-20260402.htm"
+      },
+      {
+        "date": "2026-01-28",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-26-003837",
+        "primaryDocument": "tsla-20260128.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026003837/tsla-20260128.htm"
+      },
+      {
+        "date": "2026-01-02",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-26-000016",
+        "primaryDocument": "tsla-20260102.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026000016/tsla-20260102.htm"
+      },
+      {
+        "date": "2025-11-07",
+        "form": "8-K",
+        "items": [
+          "5.02",
+          "5.07",
+          "9.01"
+        ],
+        "labels": [
+          "Departure/appointment of directors or officers",
+          "Submission of matters to a vote of security holders",
+          "Financial statements and exhibits"
+        ],
+        "severity": "amber",
+        "accessionNumber": "0001104659-25-108507",
+        "primaryDocument": "tm2530590d1_8k.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000110465925108507/tm2530590d1_8k.htm"
+      },
+      {
+        "date": "2025-10-22",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-25-045861",
+        "primaryDocument": "tsla-20251022.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828025045861/tsla-20251022.htm"
+      },
+      {
+        "date": "2025-10-02",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-25-043530",
+        "primaryDocument": "tsla-20251002.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828025043530/tsla-20251002.htm"
+      },
+      {
+        "date": "2025-09-05",
+        "form": "8-K",
+        "items": [
+          "1.01",
+          "9.01"
+        ],
+        "labels": [
+          "Entry into a material definitive agreement",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001104659-25-087862",
+        "primaryDocument": "tm2525337d1_8k.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000110465925087862/tm2525337d1_8k.htm"
+      },
+      {
+        "date": "2025-08-04",
+        "form": "8-K",
+        "items": [
+          "5.02",
+          "7.01",
+          "9.01"
+        ],
+        "labels": [
+          "Departure/appointment of directors or officers",
+          "Regulation FD disclosure",
+          "Financial statements and exhibits"
+        ],
+        "severity": "amber",
+        "accessionNumber": "0001104659-25-073263",
+        "primaryDocument": "tm2522385d1_8k.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000110465925073263/tm2522385d1_8k.htm"
+      },
+      {
+        "date": "2025-07-23",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-25-035738",
+        "primaryDocument": "tsla-20250723.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828025035738/tsla-20250723.htm"
+      },
+      {
+        "date": "2025-07-10",
+        "form": "8-K",
+        "items": [
+          "5.08"
+        ],
+        "labels": [
+          "Item 5.08"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-25-034692",
+        "primaryDocument": "tsla-20250709.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828025034692/tsla-20250709.htm"
+      },
+      {
+        "date": "2025-07-02",
+        "form": "8-K",
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "labels": [
+          "Results of operations and financial condition",
+          "Financial statements and exhibits"
+        ],
+        "severity": "info",
+        "accessionNumber": "0001628280-25-033842",
+        "primaryDocument": "tsla-20250702.htm",
+        "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828025033842/tsla-20250702.htm"
+      }
+    ],
+    "lateFilings": 0,
+    "counts": {
+      "red": 0,
+      "amber": 2,
+      "info": 12
+    }
+  },
+  "bearCase": "**CHARGES AGAINST TESLA, INC.**\n\n**Charge I: Systemic Margin Collapse**\nGross margin has deteriorated from 25.6% in FY2022 to a mere 18.0% in FY2025, while operating margin has been gutted from 16.8% to just 4.6% over the same period [Exhibit A]. Net margin has collapsed even more severely, falling from 15.4% (FY2022) to 4.0% (FY2025), and the most recent quarter (2026-06-30) shows operating margin cratering to a razor-thin 1.4% — proof that whatever \"growth\" remains is being purchased at the expense of profitability [Exhibit A].\n\n**Charge II: Revenue Stagnation Masking a Two-Year Growth Death**\nFull-year revenue growth collapsed from 51.4% (FY2022) to 18.8% (FY2023) to a near-flat 0.9% (FY2024), then turned outright negative at -2.9% in FY2025 — the company's first annual revenue *decline* on record in this data [Exhibit A]. The recent quarterly YoY \"recovery\" (15.8% in 2026-03-31, 25.5% in 2026-06-30) is not organic strength but a low-base rebound off a shrinking FY2025 top line, and even so operating margin in that same quarter fell to 1.4% [Exhibit A].\n\n**Charge III: Debt Load Quadrupling While Equity Growth Slows**\nLong-term debt has surged from a low of $1.03B (FY2022) to $7.72B by 2026-06-30 — a more than 7x increase in under four years — pushing LT-debt/equity from 0.02 to 0.09 over that span [Exhibit A]. Total liabilities have climbed relentlessly every single reporting period from $36.44B (FY2022) to $61.01B (2026-06-30), even as operating cash generation has stagnated at roughly $13–15B annually since 2022 with no meaningful growth to service the expanding liability base [Exhibit A].\n\n**Charge IV: Executive Instability Amid Deteriorating Fundamentals**\nThe 8-K docket shows two separate AMBER-flagged officer/director departure events within a three-month span — 2025-08-04 and 2025-11-07 — both coinciding precisely with the period in which operating margins were sliding toward single digits and revenue had just posted its first annual decline [Exhibit A]. This pattern of leadership churn layered atop margin compression and rising leverage signals a company managing crisis, not growth [Exhibit A].",
+  "defense": "**Charge I: Systemic Margin Collapse**\nMargin compression is a sector-wide phenomenon, not a Tesla-specific failure: GM's operating margin fell even more sharply, from 7.4% (FY2024) to just 1.7% (FY2025), while Tesla held 4.6% over the same period [Exhibit A, Exhibit B]. The FY2023 margin drop reflects deliberate pricing investment to defend volume and market share during a capital-intensive product transition, and Tesla's operating margin still outpaces GM's in the most recent comparable annual and several quarterly periods [Exhibit A, Exhibit B].\n\n**Charge II: Revenue Stagnation Masking a Two-Year Growth Death**\nThe FY2025 revenue decline (-2.9%) was mirrored across the industry — GM posted its own -2.1% FY2025 decline — confirming this is a macro/demand-cycle headwind, not a Tesla-specific breakdown [Exhibit A, Exhibit B]. Tesla's recent quarterly reacceleration (15.8% and 25.5% YoY) meaningfully outpaces GM's comparable quarters (-1.3% and 2.1% YoY), evidencing a genuine, industry-beating recovery rather than mere base effects [Exhibit A, Exhibit B].\n\n**Charge III: Debt Load Quadrupling While Equity Growth Slows**\nThe absolute numbers concede the leverage increase is real, but the balance sheet remains conservative in context: Tesla's LT-debt/equity of 0.09 and total-liabilities/equity of roughly 0.70 (2026-06-30) is dramatically stronger than GM's liabilities-to-equity ratio of approximately 3.53 over the same period [Exhibit A, Exhibit B]. Tesla continues to fund growth from a $86.86B equity base and ~$15.22B cash position without straining solvency [Exhibit A].\n\n**Charge IV: Executive Instability Amid Deteriorating Fundamentals**\nThe two amber-flagged 8-Ks reflect routine officer/director transitions and a shareholder vote/Reg FD disclosure — not the restatements, auditor changes, or bankruptcy/delisting triggers that would signal genuine crisis, and the docket shows zero red flags across eighteen months [Exhibit A]. Twelve of fourteen filings in the period are routine results-of-operations disclosures, indicating stable financial reporting cadence rather than institutional turmoil, though the Tribunal is right to monitor whether further departures follow [Exhibit A].",
+  "rebuttal": "**Charge I — Margin Collapse:** Defense's entire rebuttal rests on GM figures from an unauthenticated Exhibit B; within Tesla's own filings, gross margin fell from 21.1% (2026-03-31) to 16.8% (2026-06-30) in a single quarter, and operating margin sank to just 1.4% — the worst reading in the entire record. Sector comparisons do not erase the fact that Tesla's own trend line is still falling, not stabilizing.\n\n**Charge II — Revenue Stagnation:** The defense's \"genuine recovery\" quarter (2026-06-30, +25.5% YoY) is the very same quarter Exhibit A shows operating margin collapsing to 1.4% and gross margin dropping five points sequentially — the defense has conceded the charge in the act of trying to rebut it. Growth purchased at a 1.4% operating margin is not evidence of strength; it is the charge.\n\n**Charge III — Debt Load:** The defense concedes the leverage increase is real — noted for the record. Its \"solvency cushion\" argument also fails on Tesla's own numbers: cash fell from $18.29B (2025-09-30) to $15.22B (2026-06-30) even as total liabilities climbed to $61.01B, meaning the cash buffer is shrinking precisely as the liability base grows.\n\n**Charge IV — Executive Instability:** This point stands. Zero red flags, routine 8-K cadence, and no restatement or auditor-change triggers — the defense's evidence here is sound, and the prosecution does not press it further.",
+  "verdict": {
+    "summary": "The Tribunal sustains the prosecution's core profitability charge, finds two charges partially valid, and dismisses the governance charge, ruling that Tesla is a solvent company undergoing a genuine and unresolved profitability crisis.\n\nOn margins, the defense relied heavily on GM comparisons from an unauthenticated exhibit, and even taken at face value those comparisons cannot erase Tesla's own trend line: gross margin fell from 21.1% to 16.8% in a single quarter and operating margin hit 1.4%, the worst reading in the record. The recent revenue reacceleration (15.8% and 25.5% YoY) is real and industry-beating, but it coincided with the sharpest margin deterioration on record — the recovery is genuine in volume terms yet purchased at near-zero operating profitability.\n\nOn the balance sheet, the leverage increase is conceded but remains modest in absolute terms (LT-debt/equity of 0.09 against an $86.86B equity base), though the shrinking cash buffer ($18.29B to $15.22B) alongside rising liabilities ($61.01B) warrants monitoring. The governance charge collapsed under cross-examination: zero red flags, routine 8-K cadence, and the prosecution itself withdrew the point.",
+    "charges": [
+      {
+        "charge": "Gross margin fell from 25.6% (FY2022) to 18.0% (FY2025) and operating margin cratered to 1.4% in the most recent quarter, evidencing systemic margin collapse.",
+        "rebuttal": "Margin compression is sector-wide — GM's operating margin fell to 1.7% — and Tesla's compression reflects deliberate pricing investment to defend share while still outpacing GM.",
         "status": "SUSTAINED"
       },
       {
-        "charge": "Gross margin fell from 25.6% (FY2022) to 16.8% in Q2 FY2026, with gross profit dollars declining three consecutive years despite $13.4B more revenue.",
-        "rebuttal": "FY2022 was a cyclical peak; margins stabilized near 18% through FY2023–FY2025 and climbed quarterly to 21.1% before the Q2 relapse, which the defense concedes is a genuine weakness.",
+        "charge": "Revenue growth collapsed from 51.4% (FY2022) to -2.9% (FY2025), and the recent quarterly rebound is a low-base illusion bought at a 1.4% operating margin.",
+        "rebuttal": "The FY2025 decline mirrored the industry (GM -2.1%), and Tesla's 15.8% and 25.5% YoY quarterly reacceleration far outpaces GM's comparable quarters, proving genuine recovery.",
         "status": "PARTIALLY VALID"
       },
       {
-        "charge": "Net income collapsed ~75% from $15.00B (FY2023) to $3.79B (FY2025), with net margin shrinking to 4.0%.",
-        "rebuttal": "The FY2023 'peak' was inflated by non-operating items (net income exceeded operating income), the decline was industry-wide, and the latest quarter's net income was essentially flat YoY despite sharply higher R&D.",
+        "charge": "Long-term debt surged over 7x from $1.03B to $7.72B and total liabilities climbed every period to $61.01B while operating cash flow stagnated at $13–15B.",
+        "rebuttal": "The increase is conceded but leverage remains conservative — LT-debt/equity of 0.09 and liabilities/equity of ~0.70 versus GM's ~3.53 — funded from an $86.86B equity base and $15.22B cash.",
         "status": "PARTIALLY VALID"
       },
       {
-        "charge": "Long-term debt rose sevenfold from $1.03B (FY2022) to $7.72B (Q2 FY2026) while total liabilities grew to $61.01B and cash drifted down to $15.22B.",
-        "rebuttal": "LT-debt/equity of 0.09 is below FY2021 levels, cash nearly doubles long-term debt, equity has grown every period to $86.86B, and OCF of $14.75B held firm — a claim the prosecution explicitly conceded in rebuttal.",
+        "charge": "Two AMBER-flagged officer/director departures within three months (2025-08-04 and 2025-11-07) coincided with margin collapse and the first revenue decline, signaling crisis management.",
+        "rebuttal": "The 8-Ks reflect routine transitions and disclosures with zero red flags across eighteen months and a stable filing cadence — no restatements, auditor changes, or crisis triggers.",
         "status": "DISMISSED"
-      },
-      {
-        "charge": "R&D more than doubled to $6.41B annually ($2.37B in Q2 FY2026) while operating income shrank to $398M, with no earnings payoff.",
-        "rebuttal": "R&D is self-funded entirely from $14.75B of operating cash flow with no debt or dilution, assets have grown to $148.52B, and the defense honestly concedes the payoff is not yet visible in filed numbers.",
-        "status": "PARTIALLY VALID"
       }
     ],
-    "score": 58,
-    "recommendation": "The Tribunal finds no solvency or liquidity risk whatsoever — cash of $15.22B against $7.72B of long-term debt, leverage below 2021 levels, and $14.75B of operating cash flow constitute one of the sector's strongest balance sheets. The investment risk lies entirely in the income statement: record revenue is currently being converted into a 1.4% operating margin, gross margins relapsed to 16.8% after a single strong quarter, and the heavy R&D bet has no visible earnings payoff yet. An investor should treat this as a well-capitalized company priced for growth but currently earning like a commodity manufacturer. Hold or accumulate cautiously only with conviction that the R&D investment will convert to margin recovery; the key indicators to monitor are gross margin trajectory over the next two to three quarters and whether operating income recovers alongside the re-accelerating top line."
+    "score": 55,
+    "recommendation": "Investors should treat Tesla as a structurally solvent company in the midst of a serious, unresolved profitability crisis. The balance sheet provides a real cushion — low leverage relative to peers, $15.22B in cash, and an $86.86B equity base — and top-line growth has genuinely reaccelerated ahead of the industry. However, that growth is currently being bought at a 1.4% operating margin, the worst in the record, with no evidence yet of margin stabilization, and the cash buffer is contracting as liabilities rise. A hold or cautious position is warranted: the key catalyst to watch is whether the next two quarters show margin inflection alongside continued revenue growth; sustained sub-5% operating margins would justify a downgrade, while margin recovery on the higher revenue base would materially improve the outlook."
   },
   "usage": {
     "prosecutor": {
-      "promptTokens": 3092,
-      "completionTokens": 1665,
-      "totalTokens": 4757,
+      "promptTokens": 4067,
+      "completionTokens": 856,
+      "totalTokens": 4923,
       "cachedTokens": 0,
-      "cost": 0.11417
+      "cost": 0.016694
     },
     "defense": {
-      "promptTokens": 6799,
-      "completionTokens": 4096,
-      "totalTokens": 10895,
+      "promptTokens": 6963,
+      "completionTokens": 1414,
+      "totalTokens": 8377,
       "cachedTokens": 0,
-      "cost": 0.27279
+      "cost": 0.028066
     },
     "rebuttal": {
-      "promptTokens": 7417,
-      "completionTokens": 2326,
-      "totalTokens": 9743,
+      "promptTokens": 5680,
+      "completionTokens": 1628,
+      "totalTokens": 7308,
       "cachedTokens": 0,
-      "cost": 0.19047
+      "cost": 0.02764
     },
     "judge": {
-      "promptTokens": 6239,
-      "completionTokens": 2604,
-      "totalTokens": 8843,
+      "promptTokens": 3179,
+      "completionTokens": 1932,
+      "totalTokens": 5111,
       "cachedTokens": 0,
-      "cost": 0.19259
+      "cost": 0.12839
     },
     "total": {
-      "promptTokens": 23547,
-      "completionTokens": 10691,
-      "totalTokens": 34238,
+      "promptTokens": 19889,
+      "completionTokens": 5830,
+      "totalTokens": 25719,
       "cachedTokens": 0,
-      "cost": 0.77002
+      "cost": 0.20079000000000002
     }
   },
-  "generatedAt": "2026-09-18"
+  "generatedAt": "2026-09-19"
 }

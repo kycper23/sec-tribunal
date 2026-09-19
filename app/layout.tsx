@@ -32,12 +32,14 @@ export const metadata: Metadata = {
     description:
       'Three AI agents put a public company on trial using real SEC EDGAR filings: prosecution, defense, cross-examination, verdict.',
     type: 'website',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'SEC Tribunal',
     description:
       'Three AI agents put a public company on trial using real SEC EDGAR filings: prosecution, defense, cross-examination, verdict.',
+    images: ['/og-image.jpg'],
   },
 }
 

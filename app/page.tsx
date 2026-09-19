@@ -14,7 +14,7 @@ import { ExhibitChart } from './components/exhibit-chart'
 import { Markdown } from './components/markdown'
 import { ProphecyCardActions } from './components/prophecy-card'
 import { ProphecyLedger } from './components/prophecy-ledger'
-import { ProphecyPanel, ProphecyStickyBar } from './components/prophecy-panel'
+import { ProphecyModal, ProphecyPanel, ProphecyStickyBar } from './components/prophecy-panel'
 import { RevealBanner } from './components/reveal-banner'
 import { TempleGate } from './components/temple-gate'
 import { TrialProgress, type Phase } from './components/trial-progress'
@@ -136,6 +136,10 @@ export default function Courtroom() {
   const [futureSeries, setFutureSeries] = useState<ChartSeries[]>([])
   const [userCall, setUserCall] = useState<Call | null>(null)
   const [ledger, setLedger] = useState<LedgerEntry[]>([])
+  // Blind Trial gate: the ticker waiting on the player's prophecy modal.
+  // Set the instant "Seal the Tribunal" is clicked; the actual trial only
+  // starts once a rise/fall choice clears it.
+  const [pendingTicker, setPendingTicker] = useState<string | null>(null)
 
   // The ledger lives in localStorage: read only after mount so the server
   // render (empty) always matches the first client render.
@@ -223,7 +227,7 @@ export default function Courtroom() {
     setLedger([])
   }
 
-  const runTrial = async (e: React.FormEvent) => {
+  const runTrial = (e: React.FormEvent) => {
     e.preventDefault()
     const t = ticker.trim().toUpperCase()
     if (busy) return
@@ -232,6 +236,25 @@ export default function Courtroom() {
       return
     }
     setTickerError('')
+    if (blindTrial) {
+      // Gate on the prophecy modal first — the trial itself starts only
+      // once the player commits to a rise/fall call.
+      setPendingTicker(t)
+      return
+    }
+    void startTrial(t, null)
+  }
+
+  /** Resolves the pending prophecy modal and immediately starts the sealed trial. */
+  const confirmProphecy = (call: Call) => {
+    const t = pendingTicker
+    if (!t) return
+    setPendingTicker(null)
+    setUserCall(call)
+    void startTrial(t, cutoff)
+  }
+
+  const startTrial = async (t: string, sealAt: string | null) => {
     setBusy(true)
     setError('')
     setSpeeches([])
@@ -247,11 +270,10 @@ export default function Courtroom() {
     followRef.current = true
     setFollow(true)
     dossierRef.current = null
-    const sealAt = blindTrial ? cutoff : null
     setSealedCutoff(sealAt)
     setReality(null)
     setRevealed(false)
-    setUserCall(null)
+    if (!sealAt) setUserCall(null)
 
     try {
       setStatus(sealAt ? `The clerk is sealing the record at ${sealAt}…` : 'The clerk is gathering SEC filings…')
@@ -367,6 +389,7 @@ export default function Courtroom() {
 
   return (
     <main className={`container${sealedCutoff && !revealed ? ' sealed-courtroom' : ''}`}>
+      {pendingTicker && <ProphecyModal cutoff={cutoff} onCall={confirmProphecy} />}
       {sealedCutoff && !revealed && userCall !== null && (
         <ProphecyStickyBar call={userCall} cutoff={sealedCutoff} />
       )}

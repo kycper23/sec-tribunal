@@ -82,6 +82,35 @@ export function ProphecyPanel({
 }
 
 /**
+ * Blind Trial gate: shown the instant "Seal the Tribunal" is clicked, before
+ * any evidence is fetched, so the wager is locked in before the report can
+ * bias it. There is no dismissal without choosing — that's the whole point
+ * of a blind prophecy. The trial itself only starts once a choice is made.
+ */
+export function ProphecyModal({ cutoff, onCall }: { cutoff: string; onCall: (call: Call) => void }) {
+  return (
+    <div className="prophecy-modal-backdrop" role="dialog" aria-modal="true" aria-label="Enter your prophecy">
+      <div className="prophecy-modal">
+        <h3>Enter your prophecy</h3>
+        <p>
+          The record will be sealed at {cutoff}. Before the tribunal even hears the case — will this
+          company&apos;s revenue rise or fall in the filings that came after? Choose now; the trial starts the
+          moment you do.
+        </p>
+        <div className="prophecy-choices">
+          {(['rise', 'fall'] as const).map((c) => (
+            <button key={c} type="button" className={`prophecy-btn ${c}`} onClick={() => onCall(c)}>
+              <ArrowIcon dir={c} />
+              {CALL_LABEL[c]}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/**
  * Sticky reminder of the player's wager, pinned to the top of the viewport
  * for the whole ~150s trial so the choice never gets lost off-screen.
  * Shown from the moment a prophecy is entered until the seal is broken.

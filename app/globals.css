@@ -1070,3 +1070,44 @@ body {
   cursor: pointer;
 }
 
+/* --- Blind Trial prophecy gate: full-screen modal shown the instant "Seal
+   the Tribunal" is clicked, before any evidence is fetched. Blocks the whole
+   page (no dismissal but choosing rise/fall) so the wager is locked in
+   before the report can bias it. --- */
+.prophecy-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 1.5rem;
+  animation: rise 0.25s ease both;
+}
+.prophecy-modal {
+  width: 100%;
+  max-width: 460px;
+  padding: 1.6rem 1.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--panel-2);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+}
+.prophecy-modal h3 {
+  margin: 0 0 0.6rem;
+  font-family: var(--display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 1.05rem;
+  color: var(--frame);
+}
+.prophecy-modal p {
+  margin: 0 0 1.1rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.prophecy-modal .prophecy-choices { gap: 1rem; }
+.prophecy-modal .prophecy-btn { padding: 0.85rem 1rem; font-size: 0.9rem; }
+

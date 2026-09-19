@@ -760,18 +760,19 @@ body {
   transition: color 0.2s, border-color 0.2s;
 }
 
-/* --- Bench stage: absolutely positioned portraits instead of cards --- */
+/* --- Bench stage: portrait row instead of cards --- */
 .bench-stage {
-  position: relative;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 6%;
   width: 100%;
-  min-height: 480px;
+  min-height: 420px;
   margin: 2rem 0;
 }
 
 .bench-stage .bench-agent {
-  position: absolute;
-  bottom: 0;
+  position: static;
   width: 200px;
   display: flex;
   flex-direction: column;
@@ -785,19 +786,15 @@ body {
 }
 
 .bench-stage .bench-agent.defense {
-  left: 12%;
   z-index: 2;
 }
 
 .bench-stage .bench-agent.prosecutor {
-  right: 12%;
   z-index: 2;
 }
 
 .bench-stage .bench-agent.judge {
-  left: 50%;
-  bottom: 60px;
-  transform: translateX(-50%);
+  margin-bottom: 40px;
   z-index: 3;
 }
 
@@ -817,8 +814,8 @@ body {
 .bench-portrait > * {
   image-rendering: pixelated;
   border-radius: 0;
-  -webkit-mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 55%, transparent 100%);
-  mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 55%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 65% at 50% 45%, #000 40%, transparent 92%);
+  mask-image: radial-gradient(ellipse 60% 65% at 50% 45%, #000 40%, transparent 92%);
   transition: transform 0.4s ease, filter 0.4s ease;
 }
 

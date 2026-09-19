@@ -95,12 +95,12 @@ body {
 
 .ticker-form { display: flex; gap: 0.7rem; justify-content: center; margin: 1.75rem 0 2.5rem; flex-wrap: wrap; }
 .ticker-form input {
-  background: var(--panel); border: 1px solid var(--border-strong); color: var(--text);
+  background: rgba(20, 14, 10, 0.92); border: 1px solid rgba(180, 120, 60, 0.35); color: #ede4d0;
   font-size: 1.1rem; padding: 0.7rem 1.1rem; width: 11rem; border-radius: 0;
   text-transform: uppercase; font-family: var(--mono); letter-spacing: 0.12em;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.ticker-form input::placeholder { color: color-mix(in srgb, var(--muted) 55%, transparent); }
+.ticker-form input::placeholder { color: color-mix(in srgb, #ede4d0 55%, transparent); }
 .ticker-form input:focus {
   outline: none; border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent);
@@ -322,8 +322,8 @@ body {
 .bench-agent {
   --role: var(--muted);
   position: relative;
-  background: var(--panel); font-family: inherit; color: var(--text); width: 100%;
-  border: 1px solid var(--border); border-radius: 0; padding: 1rem 0.8rem 0.85rem;
+  background: rgba(20, 14, 10, 0.92); font-family: inherit; color: #ede4d0; width: 100%;
+  border: 1px solid rgba(180, 120, 60, 0.35); border-radius: 0; padding: 1rem 0.8rem 0.85rem;
   text-align: center; cursor: pointer; transition: opacity 0.35s, border-color 0.35s, transform 0.35s, box-shadow 0.35s;
 }
 
@@ -398,16 +398,16 @@ body {
   65% { transform: translate(0.8px, -0.3px) rotate(2deg); }
 }
 
-.bench-name { font-weight: 600; font-size: 0.9rem; letter-spacing: 0.03em; font-family: var(--display); }
+.bench-name { font-weight: 600; font-size: 0.9rem; letter-spacing: 0.03em; font-family: var(--display); color: #ede4d0; }
 .bench-role-sub {
   font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--muted); margin-top: 0.1rem;
+  color: color-mix(in srgb, #ede4d0 65%, transparent); margin-top: 0.1rem;
 }
 .bench-state {
   min-height: 1.5em; margin-top: 0.3rem; display: flex; gap: 0.45rem;
   align-items: center; justify-content: center;
 }
-.bench-status { color: var(--muted); font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.05em; animation: rise 0.3s ease both; }
+.bench-status { color: color-mix(in srgb, #ede4d0 65%, transparent); font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.05em; animation: rise 0.3s ease both; }
 .bench-agent.speaking .bench-status { color: var(--role); text-transform: uppercase; font-weight: 600; }
 
 .bench-desc-wrap {
@@ -417,8 +417,8 @@ body {
 .bench-agent.expanded .bench-desc-wrap { grid-template-rows: 1fr; margin-top: 0.7rem; }
 .bench-desc {
   min-height: 0; overflow: hidden; margin: 0; padding-top: 0.7rem;
-  border-top: 1px solid var(--border); font-size: 0.82rem; font-style: italic;
-  color: var(--muted); text-align: left; line-height: 1.55;
+  border-top: 1px solid rgba(180, 120, 60, 0.35); font-size: 0.82rem; font-style: italic;
+  color: color-mix(in srgb, #ede4d0 75%, transparent); text-align: left; line-height: 1.55;
 }
 
 .dots { display: inline-flex; gap: 3px; align-items: center; }
@@ -576,15 +576,15 @@ body {
 }
 .blind-trial-switch {
   width: 100%; display: flex; align-items: center; gap: 0.7rem; text-align: left;
-  background: var(--panel); border: 1px solid var(--border-strong); border-radius: 0;
-  padding: 0.65rem 0.9rem; cursor: pointer; color: var(--text); font-family: inherit;
+  background: rgba(20, 14, 10, 0.92); border: 1px solid rgba(180, 120, 60, 0.35); border-radius: 0;
+  padding: 0.65rem 0.9rem; cursor: pointer; color: #ede4d0; font-family: inherit;
   transition: border-color 0.2s, background 0.2s;
 }
 .blind-trial-switch:disabled { opacity: 0.55; cursor: wait; }
 .blind-trial.active .blind-trial-switch {
-  border-color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, var(--panel));
+  border-color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, rgba(20, 14, 10, 0.92));
 }
-.hourglass-icon { color: var(--muted); flex-shrink: 0; transition: color 0.3s; }
+.hourglass-icon { color: color-mix(in srgb, #ede4d0 65%, transparent); flex-shrink: 0; transition: color 0.3s; }
 .blind-trial.active .hourglass-icon { color: var(--accent); }
 .hourglass-icon.sealed .hourglass-sand { animation: sand-fall 2.6s ease-in-out infinite; }
 @keyframes sand-fall {
@@ -593,23 +593,24 @@ body {
 }
 .blind-trial-title {
   display: block; font-family: var(--display); font-weight: 600; font-size: 0.92rem; letter-spacing: 0.02em;
+  color: #ede4d0;
 }
-.blind-trial-hint { display: block; color: var(--muted); font-size: 0.76rem; margin-top: 0.15rem; }
+.blind-trial-hint { display: block; color: color-mix(in srgb, #ede4d0 65%, transparent); font-size: 0.76rem; margin-top: 0.15rem; }
 .blind-trial-date {
-  margin-top: 0.6rem; padding: 0.75rem 0.9rem; border: 1px dashed var(--border-strong);
-  border-radius: 0; background: var(--panel-2); animation: rise 0.3s ease both;
+  margin-top: 0.6rem; padding: 0.75rem 0.9rem; border: 1px dashed rgba(180, 120, 60, 0.35);
+  border-radius: 0; background: rgba(20, 14, 10, 0.92); animation: rise 0.3s ease both;
 }
 .blind-trial-date label {
   display: block; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem;
+  text-transform: uppercase; color: color-mix(in srgb, #ede4d0 65%, transparent); margin-bottom: 0.35rem;
 }
 .blind-trial-date input {
-  background: var(--panel); border: 1px solid var(--border-strong); color: var(--text);
+  background: rgba(20, 14, 10, 0.92); border: 1px solid rgba(180, 120, 60, 0.35); color: #ede4d0;
   font-family: var(--mono); font-size: 0.92rem; padding: 0.45rem 0.6rem; border-radius: 0; width: 100%;
 }
 .blind-trial-date input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 .blind-trial-note {
-  margin: 0.55rem 0 0; color: var(--muted); font-size: 0.78rem; font-style: italic; line-height: 1.5;
+  margin: 0.55rem 0 0; color: color-mix(in srgb, #ede4d0 65%, transparent); font-size: 0.78rem; font-style: italic; line-height: 1.5;
 }
 
 /* Sealed courtroom: while a blind trial is running/rendered, the whole page

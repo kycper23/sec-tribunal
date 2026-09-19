@@ -11,7 +11,6 @@ import { BlindTrialToggle } from './components/blind-trial-toggle'
 import { BillReceipt, CostBadge, CourtBill } from './components/court-bill'
 import { DocketPanel } from './components/docket'
 import { ExhibitChart } from './components/exhibit-chart'
-import { HeroPlate } from './components/hero-plate'
 import { Markdown } from './components/markdown'
 import { ProphecyCardActions } from './components/prophecy-card'
 import { ProphecyLedger } from './components/prophecy-ledger'
@@ -315,7 +314,6 @@ export default function Courtroom() {
   return (
     <main className={`container${sealedCutoff && !revealed ? ' sealed-courtroom' : ''}`}>
       <TempleGate />
-      <HeroPlate />
       <header className="masthead">
         <div className="eyebrow">AI Courtroom · SEC EDGAR Evidence</div>
         <h1>SEC Tribunal</h1>

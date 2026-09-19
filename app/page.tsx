@@ -413,7 +413,7 @@ export default function Courtroom() {
             setTicker(e.target.value)
             if (tickerError) setTickerError('')
           }}
-          placeholder="Enter ticker (e.g. TSLA)"
+          placeholder="Enter ticker"
           maxLength={10}
           aria-label="Stock ticker"
         />

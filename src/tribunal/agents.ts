@@ -240,17 +240,35 @@ export const runProsecutorRebuttal = async (
 
 // --- 3. Judge (structured verdict) -------------------------------------------
 
-export const Verdict = z.object({
-  summary: z.string().describe('Two or three sentences: the essence of the case and the ruling.'),
-  charges: z.array(
-    z.object({
-      charge: z.string().describe('The prosecution charge, condensed to one sentence with its key figure.'),
-      rebuttal: z.string().describe('The defense counter-argument, condensed to one sentence.'),
-      status: z.enum(['SUSTAINED', 'DISMISSED', 'PARTIALLY VALID']),
-    }),
-  ),
+const ChargeVerdict = z.object({
+  charge: z.string().describe('The prosecution charge, condensed to one sentence with its key figure.'),
+  rebuttal: z.string().describe('The defense counter-argument, condensed to one sentence.'),
+  status: z.enum(['SUSTAINED', 'DISMISSED', 'PARTIALLY VALID']),
+})
+
+// Sent to the model as the structured `response_format`. Splitting the
+// verdict narrative into three dedicated fields — rather than one free-form
+// "summary" string — is what actually forces the model to structure its
+// prose; asking for "2-3 paragraphs" inside a single string field was
+// consistently ignored and came back as one dense block of text.
+const JudgeOutput = z.object({
+  conclusion: z.string().describe('One sentence: the verdict in brief.'),
+  reasoning: z.string().describe('Two or three sentences: why this score, based on which arguments survived cross-examination.'),
+  outlook: z.string().describe('Two or three sentences: what to watch going forward for this company.'),
+  charges: z.array(ChargeVerdict),
   score: z.number().min(1).max(100).describe('Financial Health Score: 1 = distressed, 100 = excellent.'),
   recommendation: z.string().describe('One short paragraph: the tribunal recommendation for an investor.'),
+})
+
+// Public shape consumed by the rest of the app (report.ts, verdict-card.tsx,
+// trial.ts, ...). `summary` is kept for compatibility — it is assembled from
+// `conclusion` + `reasoning` + `outlook`, joined by a blank line, once the
+// judge call returns.
+export const Verdict = z.object({
+  summary: z.string(),
+  charges: z.array(ChargeVerdict),
+  score: z.number().min(1).max(100),
+  recommendation: z.string(),
 })
 
 export type VerdictData = z.infer<typeof Verdict>
@@ -268,7 +286,7 @@ export const runJudge = async (
           'You are the Judge of the SEC Tribunal. Weigh the prosecution\'s case, the defense, and the prosecution\'s closing rebuttal impartially.',
           'For each original prosecution charge, decide: SUSTAINED (the concern stands), DISMISSED (the defense convincingly refuted it), or PARTIALLY VALID.',
           'Give weight to concessions on either side and to which arguments survived cross-examination.',
-          'Write the "summary" field as 2 to 3 short paragraphs, each 2 to 3 sentences, separated by a blank line ("\\n\\n") — never one dense block of text.',
+          'Fill "conclusion" with one sentence stating the verdict in brief. Fill "reasoning" with 2 to 3 sentences on why this score, citing which arguments survived cross-examination. Fill "outlook" with 2 to 3 sentences on what to watch going forward. Keep the three fields distinct — do not repeat the same sentence across them.',
           'Then assign a Financial Health Score from 1 to 100 and give an investor-facing recommendation. Base everything strictly on the arguments and figures presented.',
         ].join(' '),
       },
@@ -279,9 +297,12 @@ export const runJudge = async (
     ],
     {
       type: 'json_schema',
-      json_schema: { name: 'verdict', strict: true, schema: z.toJSONSchema(Verdict) },
+      json_schema: { name: 'verdict', strict: true, schema: z.toJSONSchema(JudgeOutput) },
     },
     MODEL_JUDGE,
   )
-  return { verdict: Verdict.parse(JSON.parse(content)), usage }
+  const parsed = JudgeOutput.parse(JSON.parse(content))
+  const { conclusion, reasoning, outlook, ...rest } = parsed
+  const summary = [conclusion, reasoning, outlook].join('\n\n')
+  return { verdict: Verdict.parse({ ...rest, summary }), usage }
 }

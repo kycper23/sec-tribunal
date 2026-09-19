@@ -14,7 +14,7 @@ import { ExhibitChart } from './components/exhibit-chart'
 import { Markdown } from './components/markdown'
 import { ProphecyCardActions } from './components/prophecy-card'
 import { ProphecyLedger } from './components/prophecy-ledger'
-import { ProphecyPanel } from './components/prophecy-panel'
+import { ProphecyPanel, ProphecyStickyBar } from './components/prophecy-panel'
 import { RevealBanner } from './components/reveal-banner'
 import { TempleGate } from './components/temple-gate'
 import { TrialProgress, type Phase } from './components/trial-progress'
@@ -361,6 +361,9 @@ export default function Courtroom() {
 
   return (
     <main className={`container${sealedCutoff && !revealed ? ' sealed-courtroom' : ''}`}>
+      {sealedCutoff && !revealed && userCall !== null && (
+        <ProphecyStickyBar call={userCall} cutoff={sealedCutoff} />
+      )}
       <TempleGate />
       <header className="masthead">
         <div className="eyebrow">AI Courtroom · SEC EDGAR Evidence</div>

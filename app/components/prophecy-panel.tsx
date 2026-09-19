@@ -80,3 +80,17 @@ export function ProphecyPanel({
     </div>
   )
 }
+
+/**
+ * Sticky reminder of the player's wager, pinned to the top of the viewport
+ * for the whole ~150s trial so the choice never gets lost off-screen.
+ * Shown from the moment a prophecy is entered until the seal is broken.
+ */
+export function ProphecyStickyBar({ call, cutoff }: { call: Call; cutoff: string }) {
+  return (
+    <div className={`prophecy-sticky-bar prophecy-sticky-${call}`}>
+      YOUR PROPHECY: <span className="prophecy-sticky-word">{CALL_LABEL[call].toUpperCase()}</span> · sealed at{' '}
+      {cutoff}
+    </div>
+  )
+}

@@ -50,7 +50,14 @@ export function VerdictCard({ verdict, title = 'THE VERDICT' }: { verdict: Verdi
     <section className="verdict-card verdict-scroll">
       <h2>{title}</h2>
       <Gauge score={verdict.score} />
-      <p>{verdict.summary}</p>
+      {verdict.summary
+        .split('\n\n')
+        .filter((para) => para.trim().length > 0)
+        .map((para, i) => (
+          <p key={i} style={{ marginBottom: '1rem' }}>
+            {para}
+          </p>
+        ))}
       <table className="charges">
         <thead>
           <tr>

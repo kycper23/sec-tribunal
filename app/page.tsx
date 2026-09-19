@@ -21,6 +21,7 @@ import { TrialProgress, type Phase } from './components/trial-progress'
 import {
   buildDossier,
   post,
+  sumBill,
   type BillEntry,
   type CallUsage,
   type ChartSeries,
@@ -52,6 +53,9 @@ const formatElapsed = (totalSeconds: number): string => {
 
 /** Five-phase ordering used by the phase progress bar (mirrors the stepper's own steps). */
 const PHASE_ORDER: Phase[] = ['evidence', 'prosecution', 'defense', 'rebuttal', 'verdict']
+
+/** Model calls made per trial: Prosecutor, Defense, Prosecutor (rebuttal), Judge. */
+const MODEL_CALLS_TOTAL = 4
 
 /** 1-based phase number of the active phase (0 when no trial is running). */
 const phaseNumber = (phase: Phase | null): number => {
@@ -160,6 +164,10 @@ export default function Courtroom() {
   const [company, setCompany] = useState<Company | null>(null)
   const [bench, setBench] = useState<BenchStates>(BENCH_IDLE)
   const [bill, setBill] = useState<BillEntry[]>([])
+  // Flashes true for a moment right after a phase's model call lands, so the
+  // live cost readout below the progress bar visibly "ticks" instead of just
+  // silently updating its number.
+  const [costFlash, setCostFlash] = useState(false)
   const [docket, setDocket] = useState<Docket | null>(null)
   const [series, setSeries] = useState<ChartSeries[]>([])
   const [phase, setPhase] = useState<Phase | null>(null)
@@ -213,6 +221,9 @@ export default function Courtroom() {
   const addBill = (label: string, usage?: CallUsage) => {
     if (!usage) return
     setBill((prev) => [...prev, { label, usage }])
+    // Brief flash to mark the moment the running total just grew.
+    setCostFlash(true)
+    setTimeout(() => setCostFlash(false), 500)
   }
 
   const stopElapsedTimer = useCallback(() => {
@@ -324,6 +335,7 @@ export default function Courtroom() {
     setSeries([])
     setPhase('evidence')
     setPhaseDone(false)
+    setCostFlash(false)
     startElapsedTimer()
     followRef.current = true
     setFollow(true)
@@ -591,6 +603,9 @@ export default function Courtroom() {
           </div>
           <p className="trial-phase-progress-label">
             Phase {phaseNumber(phase)} of {PHASE_ORDER.length} · {phaseLabel(phase)} {formatElapsed(elapsed)}
+          </p>
+          <p className={`live-cost-meter${costFlash ? ' live-cost-meter-flash' : ''}`}>
+            ${sumBill(bill).cost.toFixed(4)} spent · {bill.length} of {MODEL_CALLS_TOTAL} model calls
           </p>
         </div>
       )}

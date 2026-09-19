@@ -1351,4 +1351,22 @@ body {
   text-align: center;
 }
 
+/* --- Live cost meter: running $ORBIO spend shown under "Phase X of 5" while
+   the trial is in session. Ticks up (with a brief color flash) each time a
+   phase's model call lands; disappears once the verdict is in, since the
+   full itemized Court Bill takes over in the report. --- */
+.live-cost-meter {
+  margin: 0.3rem 0 0;
+  font-family: monospace;
+  color: #B8862B;
+  font-size: 14px;
+  text-align: center;
+  opacity: 0.85;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+.live-cost-meter-flash {
+  opacity: 1;
+  color: #E0AC4F;
+}
+
 

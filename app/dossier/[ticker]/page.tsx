@@ -10,6 +10,7 @@ import { notFound } from 'next/navigation'
 import type { TrialResult } from '../../../src/tribunal/run.js'
 import { BillReceipt } from '../../components/court-bill'
 import { DocketPanel } from '../../components/docket'
+import { HomeButton } from '../../components/home-button'
 import { Markdown } from '../../components/markdown'
 import type { BillEntry } from '../../trial'
 import { VerdictCard } from '../../verdict-card'
@@ -75,6 +76,7 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
 
   return (
     <main className="container">
+      <HomeButton />
       <header className="masthead">
         <div className="eyebrow">Precomputed Case File</div>
         <h1>SEC Tribunal</h1>

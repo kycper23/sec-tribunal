@@ -408,6 +408,14 @@ export default function Courtroom() {
 
   return (
     <main className={`container${sealedCutoff && !revealed ? ' sealed-courtroom' : ''}`}>
+      <div className="scene-banner scene-banner-left" aria-hidden="true">
+        <img className="scene-banner-logo" src="/orb.png" alt="" />
+        <span className="scene-banner-label">ORBIO</span>
+      </div>
+      <div className="scene-banner scene-banner-right" aria-hidden="true">
+        <img className="scene-banner-logo" src="/orb.png" alt="" />
+        <span className="scene-banner-label">ORBIO</span>
+      </div>
       {pendingTicker && <ProphecyModal cutoff={cutoff} onCall={confirmProphecy} />}
       {sealedCutoff && !revealed && userCall !== null && (
         <ProphecyStickyBar call={userCall} cutoff={sealedCutoff} />

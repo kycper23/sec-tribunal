@@ -27,6 +27,18 @@ export const metadata: Metadata = {
   title: 'SEC Tribunal',
   description:
     'Three AI agents put a public company on trial using real SEC EDGAR filings: prosecution, defense, cross-examination, verdict.',
+  openGraph: {
+    title: 'SEC Tribunal',
+    description:
+      'Three AI agents put a public company on trial using real SEC EDGAR filings: prosecution, defense, cross-examination, verdict.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SEC Tribunal',
+    description:
+      'Three AI agents put a public company on trial using real SEC EDGAR filings: prosecution, defense, cross-examination, verdict.',
+  },
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

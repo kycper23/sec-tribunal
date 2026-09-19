@@ -1188,3 +1188,64 @@ body {
   margin-top: 10px;
 }
 
+
+/* --- How the tribunal works: 4-step explainer between demo links and bench --- */
+.how-it-works {
+  margin: 1.4rem 0 1.8rem;
+  text-align: center;
+}
+.how-it-works-title {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #b8862b;
+  margin: 0 0 1rem;
+}
+.how-it-works-steps {
+  display: flex;
+  flex-direction: row;
+  gap: 0.9rem;
+  align-items: stretch;
+}
+.how-it-works-step {
+  flex: 1;
+  background: rgba(12, 8, 5, 0.88);
+  border: 1px solid #7c5f18;
+  border-radius: 0;
+  padding: 16px;
+  text-align: left;
+}
+.how-it-works-num {
+  display: block;
+  font-family: var(--mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #b8862b;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.how-it-works-step-title {
+  font-family: var(--serif);
+  color: #ede4d0;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.4rem;
+}
+.how-it-works-step-desc {
+  color: #c9bca2;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+.how-it-works-footnote {
+  margin: 1rem 0 0;
+  text-align: center;
+  color: #c9bca2;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+@media (max-width: 640px) {
+  .how-it-works-steps { flex-direction: column; }
+}
+

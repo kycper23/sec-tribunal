@@ -440,6 +440,49 @@ export default function Courtroom() {
         <Link href="/dossier/AAPL">Demo: AAPL</Link>
       </nav>
 
+      <section className="how-it-works" aria-label="How the tribunal works">
+        <h2 className="how-it-works-title">HOW THE TRIBUNAL WORKS</h2>
+        <div className="how-it-works-steps">
+          <div className="how-it-works-step">
+            <span className="how-it-works-num">01</span>
+            <h3 className="how-it-works-step-title">EVIDENCE</h3>
+            <p className="how-it-works-step-desc">
+              The Scribe pulls real XBRL financials and 8-K filings straight from SEC EDGAR. No
+              scraping, no guesswork.
+            </p>
+          </div>
+          <div className="how-it-works-step">
+            <span className="how-it-works-num">02</span>
+            <h3 className="how-it-works-step-title">THE CASE</h3>
+            <p className="how-it-works-step-desc">
+              The Skeptic builds a bear case from the numbers. The Advocate answers it. The
+              Skeptic replies once more.
+            </p>
+          </div>
+          <div className="how-it-works-step">
+            <span className="how-it-works-num">03</span>
+            <h3 className="how-it-works-step-title">THE RULING</h3>
+            <p className="how-it-works-step-desc">
+              The Arbiter weighs both sides and scores the company&apos;s financial health from 0
+              to 100, charge by charge.
+            </p>
+          </div>
+          <div className="how-it-works-step">
+            <span className="how-it-works-num">04</span>
+            <h3 className="how-it-works-step-title">THE WAGER</h3>
+            <p className="how-it-works-step-desc">
+              In Blind Trial the record is sealed at a past date. Call the company&apos;s
+              direction before the ruling, then break the seal and see who was right — you, the
+              tribunal, or neither.
+            </p>
+          </div>
+        </div>
+        <p className="how-it-works-footnote">
+          Four model calls per trial · multiple models on one Orbio key · exact cost shown on
+          every ruling
+        </p>
+      </section>
+
       {busy && !verdict && (
         <div className="trial-timer-bar">
           {phaseLabel(phase)} {formatElapsed(elapsed)}

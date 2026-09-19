@@ -34,7 +34,12 @@ const loadDemo = async (ticker: string): Promise<Demo | null> => {
   }
 }
 
-/** Plain-text preview for a collapsed speech's <summary> — strips markdown noise, keeps the first sentence. */
+/** Boilerplate courtroom salutations/labels that make lousy previews — skip past these. */
+const isBoilerplateSentence = (s: string): boolean =>
+  /may it please|^in re[:,]|^exhibit\s+[a-z]:/i.test(s)
+
+/** Plain-text preview for a collapsed speech's <summary> — strips markdown noise, then picks the
+ * first substantive sentence (skipping short/boilerplate salutations), truncated to ~120 chars. */
 const firstSentence = (markdown: string): string => {
   const clean = markdown
     .split('\n')
@@ -44,8 +49,13 @@ const firstSentence = (markdown: string): string => {
     .replace(/\*/g, '')
     .replace(/\s+/g, ' ')
     .trim()
-  const match = clean.match(/^.*?[.!?](?=\s|$)/)
-  return (match ? match[0] : clean.slice(0, 140)).trim()
+
+  const sentences = clean.match(/[^.!?]+[.!?]+/g)?.map((s) => s.trim()) ?? [clean]
+  const pick =
+    sentences.find((s) => s.length >= 60 && !isBoilerplateSentence(s)) ?? sentences[0] ?? clean
+
+  const max = 120
+  return pick.length > max ? `${pick.slice(0, max - 1).trimEnd()}…` : pick
 }
 
 export default async function DossierPage({ params }: { params: Promise<{ ticker: string }> }) {

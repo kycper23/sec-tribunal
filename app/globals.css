@@ -1268,3 +1268,40 @@ body {
   100% { transform: translateX(-50%) translateY(0); }
 }
 
+/* --- Verdict scroll anchor + "more below" hint: the verdict card is the
+   scroll target for "READ THE RULING ↓", so give it top breathing room, and
+   nudge the user that speeches/Court Bill/Break the seal follow further
+   down the report. --- */
+.verdict-section {
+  scroll-margin-top: 24px;
+}
+
+.verdict-scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 32px 0;
+  color: #B8862B;
+  font-family: monospace;
+  text-align: center;
+}
+
+.verdict-scroll-arrow {
+  font-size: 1.5rem;
+  line-height: 1;
+  animation: verdict-scroll-bounce 2s infinite;
+}
+
+.verdict-scroll-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+@keyframes verdict-scroll-bounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+  100% { transform: translateY(0); }
+}
+
+

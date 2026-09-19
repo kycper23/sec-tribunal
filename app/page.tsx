@@ -421,7 +421,7 @@ export default function Courtroom() {
   const revealReport = () => {
     setReportRevealed(true)
     requestAnimationFrame(() => {
-      verdictRef.current?.scrollIntoView({ behavior: 'smooth' })
+      verdictRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     })
   }
 
@@ -629,7 +629,8 @@ export default function Courtroom() {
       )}
 
       {verdict && company && (
-        <div ref={verdictRef}>
+        <>
+        <div ref={verdictRef} className="verdict-section">
           <VerdictCard verdict={verdict} />
           {sealedCutoff && (
             <RevealBanner
@@ -655,6 +656,11 @@ export default function Courtroom() {
             <button onClick={downloadDossier}>Download dossier (.md)</button>
           </div>
         </div>
+        <div className="verdict-scroll-hint" aria-hidden="true">
+          <span className="verdict-scroll-arrow">↓</span>
+          <span className="verdict-scroll-label">the full record continues below</span>
+        </div>
+        </>
       )}
       </div>
 

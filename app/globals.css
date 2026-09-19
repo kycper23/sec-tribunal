@@ -1048,11 +1048,15 @@ body {
 .reveal-break-btn {
   padding: 16px 32px;
   font-size: 18px;
-  background: #7c5f18;
-  color: #ede4d0;
+  font-weight: 600;
+  background: #B8862B;
+  color: #1C1913;
   border: none;
   border-radius: 0;
   cursor: pointer;
+}
+.reveal-break-btn:hover {
+  background: #D4A03C;
 }
 
 /* Ticker field: smaller text/placeholder so "Enter ticker" never gets clipped. */

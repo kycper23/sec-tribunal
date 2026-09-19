@@ -71,6 +71,25 @@ const phaseLabel = (phase: Phase | null): string => {
 /** How close to the bottom of the page (px) still counts as "following" live output. */
 const FOLLOW_THRESHOLD = 160
 
+/**
+ * Turns a raw error (thrown by `post()` from any stage of the trial — evidence,
+ * prosecutor, defense, rebuttal, judge) into a message the user can act on.
+ * The server's `{ error }` string is the only signal we have client-side, so
+ * classification is done by matching on it: a missing ticker (SEC 404) gets a
+ * specific hint, a model-call timeout keeps its own message (already
+ * descriptive), anything else collapses into a generic "try again".
+ */
+const trialErrorMessage = (err: unknown): string => {
+  const message = err instanceof Error ? err.message : ''
+  if (/not found|404/i.test(message)) {
+    return 'No SEC filings found for that ticker. Try a US-listed company (e.g. MSFT, NVDA).'
+  }
+  if (/timed out|timeout/i.test(message)) {
+    return message || 'The tribunal could not convene. Please try again.'
+  }
+  return 'The tribunal could not convene. Please try again.'
+}
+
 function Typewriter({
   text,
   done,
@@ -388,7 +407,7 @@ export default function Courtroom() {
       ]
       dossierRef.current = buildDossier(ev.company, pr.bearCase, df.defense, rb.rebuttal, jd.verdict, fullBill)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'The trial was interrupted. Please retry.')
+      setError(trialErrorMessage(err))
       setStatus('')
       setBench(BENCH_IDLE)
       setPhase(null)
@@ -525,7 +544,22 @@ export default function Courtroom() {
       {tickerError && <p className="ticker-error">{tickerError}</p>}
 
       {status && <p className="status-line">{status}</p>}
-      {error && <p className="error">{error}</p>}
+      {error && (
+        <div
+          role="alert"
+          style={{
+            background: 'rgba(161, 60, 44, 0.15)',
+            border: '1px solid #A13C2C',
+            color: '#EDE4D0',
+            borderRadius: 0,
+            padding: 16,
+            margin: '0 0 1.5rem',
+            textAlign: 'center',
+          }}
+        >
+          {error}
+        </div>
+      )}
 
       {busy && !verdict && (
         <div className="trial-timer-bar">

@@ -84,7 +84,8 @@ body {
 }
 .masthead h1 {
   font-family: var(--display); font-size: 3.2rem; letter-spacing: 0.06em;
-  font-weight: 600; line-height: 1.1; color: var(--frame); text-transform: uppercase;
+  font-weight: 600; line-height: 1.1; text-transform: uppercase;
+  color: #ede4d0; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 .masthead p { color: var(--muted); margin: 0.7rem 0 0; font-size: 1.02rem; font-style: italic; }
 /* Case-register line — the archival ledger entry under a dossier title. */
@@ -347,8 +348,8 @@ body {
 .bench-agent.defense { --role: var(--green); }
 .bench-agent.judge { --role: var(--violet); }
 
-.bench-agent.idle { opacity: 0.55; filter: saturate(0.55); animation: breathe 4.5s ease-in-out infinite; }
-.bench-agent.done { opacity: 0.66; }
+.bench-agent.idle { filter: saturate(0.55) brightness(0.8); animation: breathe 4.5s ease-in-out infinite; }
+.bench-agent.done { filter: brightness(0.85); }
 .bench-agent.thinking, .bench-agent.speaking {
   opacity: 1; border-color: var(--role); box-shadow: 0 0 0 3px color-mix(in srgb, var(--role) 18%, transparent);
   transform: translateY(-3px);

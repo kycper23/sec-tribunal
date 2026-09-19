@@ -14,9 +14,16 @@ import { sumBill } from '../trial'
 const fmtCost = (n: number) => `$${n.toFixed(4)}`
 const fmtTok = (n: number) => n.toLocaleString('en-US')
 
-/** Small mono badge shown in a speech header: "2,431 tok · $0.0182". */
+/**
+ * Small mono badge shown in a speech header: "2,431 tok · $0.0182".
+ * Gated on `totalTokens` (not `cost`) — a free or fully-cached call still
+ * has a real token count worth showing; hiding it entirely would quietly
+ * undercut the "Court Bill" theme of always showing the real usage. Only
+ * genuinely missing usage data (e.g. a gateway that omits the `usage`
+ * block, which surfaces as the all-zero ZERO_USAGE default) is hidden.
+ */
 export function CostBadge({ usage }: { usage?: CallUsage }) {
-  if (!usage || usage.cost <= 0) return null
+  if (!usage || usage.totalTokens <= 0) return null
   return (
     <span className="cost-badge" title="Real cost of this model call, fueled by tokenized $ORBIO credits">
       {fmtTok(usage.totalTokens)} tok · {fmtCost(usage.cost)}
@@ -58,6 +65,8 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
   if (entries.length === 0) return null
   const total = sumBill(entries)
   const priciest = entries.reduce((a, b) => (b.usage.cost > a.usage.cost ? b : a), entries[0])
+  const listPrice = total.cost / 0.775
+  const saved = listPrice - total.cost
   return (
     <section className="bill-receipt">
       <h3>Cost of this ruling</h3>
@@ -74,6 +83,14 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
             <td>Total</td>
             <td>{fmtTok(total.totalTokens)} tok</td>
             <td>{fmtCost(total.cost)}</td>
+          </tr>
+          <tr className="orbio-savings">
+            <td colSpan={3}>
+              Through Orbio: {fmtCost(total.cost)} · list price: {fmtCost(listPrice)} · saved{' '}
+              <span style={{ color: '#3E6B4F' }}>
+                {fmtCost(saved)} (22.5%)
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>

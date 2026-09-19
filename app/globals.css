@@ -654,12 +654,12 @@ body {
   font-size: 1rem; color: var(--frame);
 }
 .reveal-banner button {
-  background: var(--frame); color: var(--panel); border: 1px solid var(--frame);
+  background: #B8862B; color: #1C1913; border: none;
   font-family: var(--display); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 0.55rem 1.3rem; border-radius: 0; cursor: pointer; font-size: 0.85rem;
+  padding: 16px 32px; border-radius: 0; cursor: pointer; font-size: 18px;
   transition: background 0.2s, border-color 0.2s;
 }
-.reveal-banner button:hover { background: var(--accent); border-color: var(--accent); }
+.reveal-banner button:hover { background: #D4A03C; border-color: #D4A03C; }
 .reveal-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin-top: 0.8rem; }
 .reveal-table th, .reveal-table td {
   border: 1px solid var(--border); padding: 0.5rem 0.65rem; text-align: left; vertical-align: top;

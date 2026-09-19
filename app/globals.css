@@ -101,7 +101,7 @@ body {
   text-transform: uppercase; font-family: var(--mono); letter-spacing: 0.12em;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.ticker-form input::placeholder { color: color-mix(in srgb, #ede4d0 55%, transparent); }
+.ticker-form input::placeholder { color: rgba(237, 228, 208, 0.35); }
 .ticker-form input:focus {
   outline: none; border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent);
@@ -114,6 +114,8 @@ body {
 }
 .ticker-form button:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); }
 .ticker-form button:disabled { opacity: 0.45; cursor: wait; }
+
+.ticker-error { text-align: center; color: #a13c2c; margin: -0.75rem 0 1rem; font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.04em; }
 
 .status-line { text-align: center; color: var(--muted); min-height: 1.6em; font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.04em; }
 .error {

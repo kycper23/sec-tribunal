@@ -110,6 +110,7 @@ function Typewriter({
 
 export default function Courtroom() {
   const [ticker, setTicker] = useState('')
+  const [tickerError, setTickerError] = useState('')
   const [busy, setBusy] = useState(false)
   const [status, setStatus] = useState('')
   const [error, setError] = useState('')
@@ -225,7 +226,12 @@ export default function Courtroom() {
   const runTrial = async (e: React.FormEvent) => {
     e.preventDefault()
     const t = ticker.trim().toUpperCase()
-    if (!t || busy) return
+    if (busy) return
+    if (!t) {
+      setTickerError('Enter a ticker symbol first')
+      return
+    }
+    setTickerError('')
     setBusy(true)
     setError('')
     setSpeeches([])
@@ -403,8 +409,11 @@ export default function Courtroom() {
       <form className="ticker-form" onSubmit={runTrial}>
         <input
           value={ticker}
-          onChange={(e) => setTicker(e.target.value)}
-          placeholder="TSLA"
+          onChange={(e) => {
+            setTicker(e.target.value)
+            if (tickerError) setTickerError('')
+          }}
+          placeholder="Enter ticker (e.g. TSLA)"
           maxLength={10}
           aria-label="Stock ticker"
         />
@@ -412,6 +421,8 @@ export default function Courtroom() {
           {busy ? 'In session…' : blindTrial ? 'Seal the Tribunal' : 'Put on Trial'}
         </button>
       </form>
+
+      {tickerError && <p className="ticker-error">{tickerError}</p>}
 
       {status && <p className="status-line">{status}</p>}
       {error && <p className="error">{error}</p>}

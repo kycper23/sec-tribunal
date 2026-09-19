@@ -100,14 +100,14 @@ export function RevealBanner({
 
   if (!revealed) {
     return (
-      <div className="reveal-banner">
+      <div className="reveal-banner reveal-banner-pending">
         <h3>The seal may now be broken</h3>
         <p>
           The tribunal argued blind, as of {reality.cutoff}. SEC EDGAR has since filed what actually happened next
           — ground truth the agents never saw. Break the seal to compare the verdict against reality
           {userCall !== null ? ' — and to settle your prophecy' : ''}.
         </p>
-        <button type="button" onClick={onReveal}>
+        <button type="button" className="reveal-break-btn" onClick={onReveal}>
           Break the seal
         </button>
       </div>

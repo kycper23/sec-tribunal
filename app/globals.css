@@ -1005,3 +1005,34 @@ body {
   color: #a13c2c;
 }
 
+
+/* --- "The seal may now be broken" — the prophecy-game climax, made unmissable --- */
+@keyframes seal-pulse {
+  0%,
+  100% {
+    border-color: #7c5f18;
+    box-shadow: 0 0 0 0 rgba(124, 95, 24, 0.55);
+  }
+  50% {
+    border-color: #a9842c;
+    box-shadow: 0 0 14px 4px rgba(124, 95, 24, 0.85);
+  }
+}
+
+.reveal-banner-pending {
+  border: 2px solid #7c5f18;
+  background: rgba(20, 14, 10, 0.95);
+  border-radius: 0;
+  animation: seal-pulse 2.5s ease-in-out infinite;
+}
+
+.reveal-break-btn {
+  padding: 16px 32px;
+  font-size: 18px;
+  background: #7c5f18;
+  color: #ede4d0;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+

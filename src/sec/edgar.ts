@@ -10,8 +10,23 @@
 
 const SEC_USER_AGENT = 'CompanyInvestigatorBot kacper@example.com'
 
-const fetchJson = async <T>(url: string): Promise<T> => {
-  const res = await fetch(url, { headers: { 'User-Agent': SEC_USER_AGENT } })
+/**
+ * Default cache TTL for SEC responses. SEC explicitly asks callers to be
+ * polite and avoid hammering their infra — companyfacts/submissions only
+ * change when a company files something new, and the ticker map barely
+ * changes at all, so re-fetching on every single trial is both slow for the
+ * user and unfriendly to SEC. `next.revalidate` plugs into Next.js's Data
+ * Cache when this runs inside a route handler; outside Next.js (the tsx
+ * CLI scripts under src/tribunal, src/sec/preview.ts) it's simply an unused
+ * extra fetch option and has no effect, so this stays safe in both contexts.
+ */
+const DEFAULT_REVALIDATE_SECONDS = 60 * 60 // 1 hour
+
+const fetchJson = async <T>(url: string, revalidateSeconds: number = DEFAULT_REVALIDATE_SECONDS): Promise<T> => {
+  const res = await fetch(url, {
+    headers: { 'User-Agent': SEC_USER_AGENT },
+    next: { revalidate: revalidateSeconds },
+  })
   if (!res.ok) throw new Error(`SEC request failed: ${res.status} ${res.statusText} — ${url}`)
   return (await res.json()) as T
 }
@@ -35,7 +50,11 @@ let tickerCache: TickerEntry[] | null = null
 
 export const resolveTicker = async (ticker: string): Promise<Company | null> => {
   if (!tickerCache) {
-    const raw = await fetchJson<Record<string, TickerEntry>>('https://www.sec.gov/files/company_tickers.json')
+    // Rarely changes (new listings/tickers only) — cache far longer than companyfacts.
+    const raw = await fetchJson<Record<string, TickerEntry>>(
+      'https://www.sec.gov/files/company_tickers.json',
+      24 * 60 * 60, // 24 hours
+    )
     tickerCache = Object.values(raw)
   }
   // SEC's mapping file uses dashes for share classes (BRK-B), users often type dots (BRK.B).

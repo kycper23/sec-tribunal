@@ -161,7 +161,7 @@ body {
 }
 .speech > summary.speech-head::-webkit-details-marker { display: none; }
 .speech > summary.speech-head::before {
-  content: '▸'; color: var(--muted); font-size: 0.8rem; margin-right: 0.2rem; transition: transform 0.2s;
+  content: '▸'; color: var(--muted); font-size: 1.3rem; line-height: 1; margin-right: 0.35rem; transition: transform 0.2s;
 }
 .speech[open] > summary.speech-head::before { transform: rotate(90deg); }
 .speech[open] > summary.speech-head { margin-bottom: 0.6rem; }

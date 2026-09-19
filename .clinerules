@@ -1,0 +1,4 @@
+﻿- Zawsze używaj replace_in_file do edycji istniejących plików. NIE używaj write_to_file do plików, które już istnieją.
+- Nie przepisuj całych plików. Rób minimalne, punktowe zmiany.
+- app/globals.css ma ponad 40 KB — nigdy nie czytaj go w całości ani nie przepisuj. Edytuj tylko konkretny fragment albo dopisz na końcu.
+- Nie skanuj repo bez wyraźnej potrzeby.

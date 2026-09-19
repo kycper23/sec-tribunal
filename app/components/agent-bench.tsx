@@ -90,17 +90,20 @@ const snippet = (text: string): string => {
 export function AgentBench({
   states,
   activeSpeech,
+  sticky = false,
 }: {
   states: BenchStates
   /** The speech currently being typed out, if any — powers the live discussion bubble. */
   activeSpeech?: Speech | null
+  /** While the trial is running, pin the bench to the top of the viewport (shrunk) so the reader always knows who's speaking. */
+  sticky?: boolean
 }) {
   const [expanded, setExpanded] = useState<AgentKey | null>(null)
   const bubbleKey =
     activeSpeech && !activeSpeech.done && activeSpeech.role in states ? (activeSpeech.role as AgentKey) : null
 
   return (
-    <div className="bench bench-stage">
+    <div className={`bench bench-stage${sticky ? ' bench-sticky' : ''}`}>
       {CAST.map((agent) => {
         const state = states[agent.key]
         const isOpen = expanded === agent.key
@@ -121,7 +124,7 @@ export function AgentBench({
               </div>
             )}
             <div className="bench-portrait">
-              <AgentAvatar role={agent.key} size={160} />
+              <AgentAvatar role={agent.key} size={sticky ? 80 : 160} />
             </div>
             <div className="bench-label">
               <div className="bench-name">{agent.name}</div>

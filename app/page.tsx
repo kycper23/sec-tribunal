@@ -200,8 +200,8 @@ export default function Courtroom() {
    * known — so it's also the moment the trial is written into the ledger.
    */
   const breakSeal = () => {
-    setRevealed(true)
     if (!company || !verdict || !reality || !sealedCutoff) return
+    setRevealed(true)
     const actual = realityCall(reality)
     const tribunal = tribunalCall(verdict)
     setLedger(
@@ -396,7 +396,11 @@ export default function Courtroom() {
         </div>
       )}
 
-      <AgentBench states={bench} activeSpeech={speeches.length > 0 ? speeches[speeches.length - 1] : null} />
+      <AgentBench
+        states={bench}
+        activeSpeech={speeches.length > 0 ? speeches[speeches.length - 1] : null}
+        sticky={busy && !verdict}
+      />
 
       <BlindTrialToggle
         enabled={blindTrial}

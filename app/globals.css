@@ -968,6 +968,23 @@ body {
   padding: 0.5rem 1rem;
   width: fit-content;
   max-width: 90%;
+
+/* --- Sticky bench: during a running trial, pin the sages to the top of the
+   viewport (shrunk) so the reader always knows who's speaking even after the
+   transcript scrolls the stage out of view. Reverts to normal once busy. --- */
+.bench-stage.bench-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(20, 14, 10, 0.95);
+  padding: 0.5rem 0.75rem;
+}
+.bench-stage.bench-sticky .bench-portrait { width: 80px; height: 80px; }
+.bench-stage.bench-sticky .bench-name { font-size: 0.78rem; }
+.bench-stage.bench-sticky .bench-role-sub { font-size: 0.62rem; }
+.bench-stage.bench-sticky .bench-status { font-size: 0.62rem; }
+.bench-stage.bench-sticky .bench-desc-wrap { display: none; }
+
   letter-spacing: 0.02em;
 }
 

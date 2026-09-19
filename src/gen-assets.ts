@@ -20,12 +20,10 @@ const MODEL = process.env.OPENROUTER_IMAGE_MODEL ?? 'openai/gpt-image-1'
 const OUT_DIR = 'public'
 const FORCE = process.argv.includes('--force')
 
-/** Shared style suffix so the three portraits read as one artwork. */
-const PORTRAIT_BASE =
-  'Stylized 3D cartoon character portrait of a friendly monk in orange robes, whimsical ' +
-  'fairytale animated-movie style, exaggerated playful expression, big round expressive ' +
-  'eyes, soft rounded shapes, vibrant saturated colors, warm rim lighting, Pixar/DreamWorks-' +
-  'style render, blurred colorful mountain background, square composition, waist up, '
+/** Shared pixel-art style suffix so the three portraits read as one artwork. */
+const PORTRAIT_SUFFIX =
+  ', side-lit, limited warm color palette, crisp pixel edges, dark simple background, ' +
+  'square composition, waist up, no text'
 
 type Asset = {
   /** Final filename written under public/ — always .jpg. */
@@ -46,24 +44,33 @@ const ASSETS: Asset[] = [
     outSize: { width: 1536, height: 864 }, // crop 3:2 → 16:9
     maxBytes: 250 * 1024,
     prompt:
-      'Stylized 3D environment, high-end game cinematic art, Himalayan monastery courtyard ' +
-      'at golden hour, colorful prayer flags strung between stone pillars, dramatic mountain ' +
-      'peaks, volumetric light rays through mist, empty stone terrace in foreground, no ' +
-      'characters, rich saturated colors, Unreal Engine cinematic render, wide 16:9',
+      'Pixel art scene, 16-bit retro game style, interior of an ancient mountain temple hall ' +
+      'viewed straight-on from the front, wide symmetrical composition, stone pillars on ' +
+      'both sides, colorful prayer flags strung across the top, large open archway in the ' +
+      'center back showing snowy mountain peaks at golden hour, warm torch light, low raised ' +
+      'stone platform in the foreground center, empty with no characters, dark atmospheric ' +
+      'background with silhouetted details, limited warm color palette of oranges browns ' +
+      'and deep blues, crisp pixel edges, no text, wide 16:9',
   },
   {
     file: 'sage-skeptic.jpg',
     genSize: '1024x1024',
     outSize: { width: 512, height: 512 },
     maxBytes: 100 * 1024,
-    prompt: PORTRAIT_BASE + 'comically skeptical raised eyebrow, arms crossed, exaggerated pout',
+    prompt:
+      'Pixel art character portrait, 16-bit retro game style, wise old monk in orange robes ' +
+      'seated cross-legged, stern skeptical face with furrowed brow, arms crossed' +
+      PORTRAIT_SUFFIX,
   },
   {
     file: 'sage-advocate.jpg',
     genSize: '1024x1024',
     outSize: { width: 512, height: 512 },
     maxBytes: 100 * 1024,
-    prompt: PORTRAIT_BASE + 'huge cheerful grin, open welcoming gesture, sparkling excited eyes',
+    prompt:
+      'Pixel art character portrait, 16-bit retro game style, wise monk in orange robes ' +
+      'seated cross-legged, calm confident face, open welcoming hand gesture' +
+      PORTRAIT_SUFFIX,
   },
   {
     file: 'sage-arbiter.jpg',
@@ -71,8 +78,10 @@ const ASSETS: Asset[] = [
     outSize: { width: 512, height: 512 },
     maxBytes: 100 * 1024,
     prompt:
-      PORTRAIT_BASE +
-      'jolly old elder with a big fluffy white beard, wise twinkly-eyed smile, comically bushy eyebrows',
+      'Pixel art character portrait, 16-bit retro game style, ancient elder monk in orange ' +
+      'robes seated cross-legged, long white beard, eyes closed in meditation, serene ' +
+      'dignified face' +
+      PORTRAIT_SUFFIX,
   },
 ]
 

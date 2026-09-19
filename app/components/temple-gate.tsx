@@ -1,10 +1,11 @@
 'use client'
 
 /**
- * The temple gate: a full-screen entry plate shown once per session on `/`
- * only. Clicking through fades/zooms the gate away to reveal the courtroom
- * behind it — a bit of ceremony before the trial, without touching any
- * agent logic. `/compare` and `/dossier/[ticker]` skip this entirely (they
+ * The temple gate: a full-screen entry plate shown on every visit to `/`.
+ * Clicking through fades/zooms the gate away to reveal the courtroom behind
+ * it — a bit of ceremony before the trial, without touching any agent logic.
+ * State lives only in useState, so it resets on every page load; nothing is
+ * persisted. `/compare` and `/dossier/[ticker]` skip this entirely (they
  * keep the static HeroPlate) since those pages open on a finished case, not
  * a fresh session.
  */
@@ -12,16 +13,8 @@ import { useEffect, useState } from 'react'
 
 type GateStatus = 'gate' | 'closing' | 'gone'
 
-const SESSION_KEY = 'temple-gate-entered'
-
 export function TempleGate() {
   const [status, setStatus] = useState<GateStatus>('gate')
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.sessionStorage.getItem(SESSION_KEY) === '1') {
-      setStatus('gone')
-    }
-  }, [])
 
   useEffect(() => {
     if (status === 'gone') return
@@ -33,7 +26,6 @@ export function TempleGate() {
   }, [status])
 
   const enter = () => {
-    window.sessionStorage.setItem(SESSION_KEY, '1')
     setStatus('closing')
     window.setTimeout(() => setStatus('gone'), 650)
   }

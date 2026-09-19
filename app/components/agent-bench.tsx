@@ -100,7 +100,7 @@ export function AgentBench({
     activeSpeech && !activeSpeech.done && activeSpeech.role in states ? (activeSpeech.role as AgentKey) : null
 
   return (
-    <div className="bench">
+    <div className="bench bench-stage">
       {CAST.map((agent) => {
         const state = states[agent.key]
         const isOpen = expanded === agent.key
@@ -120,11 +120,13 @@ export function AgentBench({
                 {snippet(activeSpeech.text)}
               </div>
             )}
-            <div className="bench-avatar">
-              <AgentAvatar role={agent.key} size={40} />
+            <div className="bench-portrait">
+              <AgentAvatar role={agent.key} size={160} />
             </div>
-            <div className="bench-name">{agent.name}</div>
-            <div className="bench-role-sub">{agent.sub}</div>
+            <div className="bench-label">
+              <div className="bench-name">{agent.name}</div>
+              <div className="bench-role-sub">{agent.sub}</div>
+            </div>
             <div className="bench-state">
               {state === 'thinking' ? (
                 <>

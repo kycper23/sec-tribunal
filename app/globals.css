@@ -759,6 +759,149 @@ body {
   text-transform: uppercase; padding: 0.35rem 0.9rem; cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
 }
+
+/* --- Bench stage: absolutely positioned portraits instead of cards --- */
+.bench-stage {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 480px;
+  margin: 2rem 0;
+}
+
+.bench-stage .bench-agent {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: center;
+}
+
+.bench-stage .bench-agent.defense {
+  left: 4%;
+  z-index: 2;
+}
+
+.bench-stage .bench-agent.prosecutor {
+  right: 4%;
+  z-index: 2;
+}
+
+.bench-stage .bench-agent.judge {
+  left: 50%;
+  bottom: 56px;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.bench-stage .bench-agent.judge.speaking {
+  z-index: 10;
+}
+
+.bench-portrait {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.bench-portrait > * {
+  image-rendering: pixelated;
+  border-radius: 0;
+  mix-blend-mode: screen;
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.bench-agent.idle .bench-portrait > * {
+  transform: scale(0.9);
+  filter: brightness(0.6) saturate(0.7);
+}
+
+.bench-agent.thinking .bench-portrait > * {
+  animation: bench-portrait-pulse 2s ease-in-out infinite;
+}
+
+.bench-agent.speaking {
+  z-index: 10;
+}
+
+.bench-agent.speaking .bench-portrait > * {
+  transform: scale(1.15);
+  filter: brightness(1);
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.bench-agent.done .bench-portrait > * {
+  transform: scale(1);
+  filter: brightness(0.85);
+}
+
+@keyframes bench-portrait-pulse {
+  0%,
+  100% {
+    transform: scale(0.92);
+    filter: brightness(0.7) saturate(0.8);
+  }
+  50% {
+    transform: scale(1.02);
+    filter: brightness(0.9) saturate(1);
+  }
+}
+
+.bench-stage .bench-label {
+  margin-top: -0.4rem;
+  padding: 0.2rem 0.65rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.bench-stage .bench-label .bench-name {
+  color: #fff;
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.bench-stage .bench-label .bench-role-sub {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.65rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .bench-stage {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 0;
+  }
+
+  .bench-stage .bench-agent.defense,
+  .bench-stage .bench-agent.judge,
+  .bench-stage .bench-agent.prosecutor {
+    position: static;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+  }
+
+  .bench-stage .bench-agent.judge.speaking {
+    transform: none;
+  }
+}
+
 .prophecy-ledger-clear:hover { color: var(--red); border-color: var(--red); }
 @media (prefers-reduced-motion: reduce) {
   .prophecy-ledger { animation: none; }

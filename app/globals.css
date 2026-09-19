@@ -1249,3 +1249,22 @@ body {
   .how-it-works-steps { flex-direction: column; }
 }
 
+/* --- Scroll hint: animated ↓ arrow on the first screen, points at the
+   scene below. Hidden once the user has scrolled past it. --- */
+.scroll-hint {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px;
+  color: #b8862b;
+  z-index: 30;
+  pointer-events: none;
+  animation: scroll-hint 2s ease-in-out infinite;
+}
+@keyframes scroll-hint {
+  0% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+

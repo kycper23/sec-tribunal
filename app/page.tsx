@@ -147,11 +147,21 @@ export default function Courtroom() {
   const [reportRevealed, setReportRevealed] = useState(false)
   const verdictRef = useRef<HTMLDivElement>(null)
   const benchRef = useRef<HTMLDivElement>(null)
+  // Scroll hint: tells the user there's more beneath the first screen.
+  // Hides itself once they've scrolled past it — no need for it after that.
+  const [showScrollHint, setShowScrollHint] = useState(true)
 
   // The ledger lives in localStorage: read only after mount so the server
   // render (empty) always matches the first client render.
   useEffect(() => {
     setLedger(loadLedger())
+  }, [])
+
+  // Scroll hint listener: hide the ↓ prompt once the user has scrolled.
+  useEffect(() => {
+    const onScroll = () => setShowScrollHint(window.scrollY <= 100)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const addSpeech = (s: Speech) => setSpeeches((prev) => [...prev, s])
@@ -416,6 +426,11 @@ export default function Courtroom() {
         <img className="scene-banner-logo" src="/orb.png" alt="" />
         <span className="scene-banner-label">ORBIO</span>
       </div>
+      {showScrollHint && (
+        <div className="scroll-hint" aria-hidden="true">
+          ↓
+        </div>
+      )}
       {pendingTicker && <ProphecyModal cutoff={cutoff} onCall={confirmProphecy} />}
       {sealedCutoff && !revealed && userCall !== null && (
         <ProphecyStickyBar call={userCall} cutoff={sealedCutoff} />
@@ -483,28 +498,6 @@ export default function Courtroom() {
         </p>
       </section>
 
-      {busy && !verdict && (
-        <div className="trial-timer-bar">
-          {phaseLabel(phase)} {formatElapsed(elapsed)}
-        </div>
-      )}
-
-      <div ref={benchRef}>
-        <AgentBench
-          states={bench}
-          activeSpeech={speeches.length > 0 ? speeches[speeches.length - 1] : null}
-          sticky={busy && !verdict}
-        />
-      </div>
-
-      {!busy && verdict && !reportRevealed && (
-        <div className="ruling-reveal">
-          <button type="button" className="ruling-reveal-btn" onClick={revealReport}>
-            READ THE RULING ↓
-          </button>
-        </div>
-      )}
-
       <BlindTrialToggle
         enabled={blindTrial}
         cutoff={cutoff}
@@ -533,6 +526,28 @@ export default function Courtroom() {
 
       {status && <p className="status-line">{status}</p>}
       {error && <p className="error">{error}</p>}
+
+      {busy && !verdict && (
+        <div className="trial-timer-bar">
+          {phaseLabel(phase)} {formatElapsed(elapsed)}
+        </div>
+      )}
+
+      <div ref={benchRef}>
+        <AgentBench
+          states={bench}
+          activeSpeech={speeches.length > 0 ? speeches[speeches.length - 1] : null}
+          sticky={busy && !verdict}
+        />
+      </div>
+
+      {!busy && verdict && !reportRevealed && (
+        <div className="ruling-reveal">
+          <button type="button" className="ruling-reveal-btn" onClick={revealReport}>
+            READ THE RULING ↓
+          </button>
+        </div>
+      )}
 
       {/*
        * Speeches + report are rendered here but visually collapsed

@@ -1304,4 +1304,20 @@ body {
   100% { transform: translateY(0); }
 }
 
+/* --- Mobile fixes (iPhone/production bugs):
+   1) scene banners overlap the masthead title/subtitle on narrow screens;
+   2) background-attachment: fixed is buggy on iOS Safari (stretched pixels);
+   3) the fixed scroll-hint arrow lands mid-content on mobile. --- */
+@media (max-width: 900px) {
+  .scene-banner {
+    display: none;
+  }
+  body {
+    background-attachment: scroll;
+  }
+  .scroll-hint {
+    display: none;
+  }
+}
+
 

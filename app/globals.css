@@ -1275,7 +1275,7 @@ body {
    nudge the user that speeches/Court Bill/Break the seal follow further
    down the report. --- */
 .verdict-section {
-  scroll-margin-top: 24px;
+  scroll-margin-top: 140px;
 }
 
 .verdict-scroll-hint {

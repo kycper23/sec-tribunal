@@ -1,15 +1,46 @@
+'use client'
+
 /** Shared verdict card — used by the live courtroom, permalinks and compare mode. */
-import { useId } from 'react'
+import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
 import { scoreColor, type Verdict } from './trial'
+
+/**
+ * Counts 0 → target once, ~1.5s ease-out cubic (mirrors the Court Bill
+ * ticker). Guarded by a ref so a re-render never restarts the count —
+ * the verdict arrives ready, but the reveal still has to earn its number.
+ */
+function useCountUp(target: number, duration = 1500): number {
+  const [shown, setShown] = useState(0)
+  const started = useRef(false)
+  useEffect(() => {
+    if (started.current) return
+    started.current = true
+    if (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setShown(target)
+      return
+    }
+    const start = performance.now()
+    let raf = 0
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration)
+      setShown(target * (1 - Math.pow(1 - t, 3)))
+      if (t < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [target, duration])
+  return shown
+}
 
 /**
  * The score gauge dressed as an engraved seal: the conic-gradient dial sits
  * inside a double ring with circumtext on an SVG textPath. Pure presentation —
- * the score maths is untouched.
+ * the score maths is untouched, only the reveal (0 → score) is animated.
  */
 export function Gauge({ score }: { score: number }) {
   // Ids must be unique when two seals share a page (/compare).
   const pathId = `seal-text-path-${useId()}`
+  const shown = useCountUp(score)
   return (
     <div className="gauge-wrap">
       <div className="seal">
@@ -26,12 +57,12 @@ export function Gauge({ score }: { score: number }) {
         </svg>
         <div
           className="gauge"
-          style={{ background: `conic-gradient(${scoreColor(score)} ${score * 3.6}deg, var(--gauge-track) 0deg)` }}
+          style={{ background: `conic-gradient(${scoreColor(score)} ${shown * 3.6}deg, var(--gauge-track) 0deg)` }}
         >
           <div className="gauge-inner">
             <div>
               <div className="gauge-score" style={{ color: scoreColor(score) }}>
-                {Math.round(score)}
+                {Math.round(shown)}
               </div>
               <div className="gauge-label">FINANCIAL HEALTH / 100</div>
             </div>
@@ -44,6 +75,10 @@ export function Gauge({ score }: { score: number }) {
 
 /** Deterministic, SSR-safe ink-stamp tilt: same index, same angle (−2°…+2°). */
 const stampTilt = (i: number) => ((i * 47) % 5) - 2
+
+/** Row-by-row reveal, one charge every 200ms; the stamp lands 150ms after its row. */
+const ROW_STAGGER_MS = 200
+const STAMP_DELAY_MS = 150
 
 export function VerdictCard({ verdict, title = 'THE VERDICT' }: { verdict: Verdict; title?: string }) {
   return (
@@ -68,13 +103,22 @@ export function VerdictCard({ verdict, title = 'THE VERDICT' }: { verdict: Verdi
         </thead>
         <tbody>
           {verdict.charges.map((c, i) => (
-            <tr key={i}>
+            <tr
+              key={i}
+              className="charge-row"
+              style={{ animationDelay: `${i * ROW_STAGGER_MS}ms` } as CSSProperties}
+            >
               <td>{c.charge}</td>
               <td>{c.rebuttal}</td>
               <td>
                 <span
                   className={`stamp ${c.status === 'PARTIALLY VALID' ? 'PARTIAL' : c.status}`}
-                  style={{ transform: `rotate(${stampTilt(i)}deg)` }}
+                  style={
+                    {
+                      '--stamp-tilt': `${stampTilt(i)}deg`,
+                      animationDelay: `${i * ROW_STAGGER_MS + STAMP_DELAY_MS}ms`,
+                    } as CSSProperties
+                  }
                 >
                   {c.status}
                 </span>

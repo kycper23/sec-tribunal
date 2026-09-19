@@ -146,6 +146,7 @@ export default function Courtroom() {
   // notices the trial finished instead of it silently rendering off-screen.
   const [reportRevealed, setReportRevealed] = useState(false)
   const verdictRef = useRef<HTMLDivElement>(null)
+  const benchRef = useRef<HTMLDivElement>(null)
 
   // The ledger lives in localStorage: read only after mount so the server
   // render (empty) always matches the first client render.
@@ -281,6 +282,9 @@ export default function Courtroom() {
     setRevealed(false)
     setReportRevealed(false)
     if (!sealAt) setUserCall(null)
+    requestAnimationFrame(() => {
+      benchRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
 
     try {
       setStatus(sealAt ? `The clerk is sealing the record at ${sealAt}…` : 'The clerk is gathering SEC filings…')
@@ -434,11 +438,13 @@ export default function Courtroom() {
         </div>
       )}
 
-      <AgentBench
-        states={bench}
-        activeSpeech={speeches.length > 0 ? speeches[speeches.length - 1] : null}
-        sticky={busy && !verdict}
-      />
+      <div ref={benchRef}>
+        <AgentBench
+          states={bench}
+          activeSpeech={speeches.length > 0 ? speeches[speeches.length - 1] : null}
+          sticky={busy && !verdict}
+        />
+      </div>
 
       {!busy && verdict && !reportRevealed && (
         <div className="ruling-reveal">

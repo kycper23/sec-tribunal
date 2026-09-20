@@ -70,14 +70,27 @@ function useCountUp(target: number, start: boolean, duration = 1500): number {
 
 /**
  * The score gauge dressed as an engraved seal: the conic-gradient dial sits
- * inside a double ring with circumtext on an SVG textPath. Pure presentation —
- * the score maths is untouched, only the reveal (0 → score) is animated.
+ * inside a double ring with circumtext on an SVG textPath. Pure presentation.
+ * Once a clerk forensic result is available the dial's headline product
+ * switches from the tribunal's raw score to the Narrative Gap — the signed
+ * spread (tribunal − clerk) — since the judge never sees the clerk's number
+ * and the spread now measures independent judgment, not a correction. Falls
+ * back to the plain Financial Health score wherever no forensic result
+ * exists (e.g. /compare, which never fetches one). Either way, the reveal
+ * (0 → target) is animated exactly as before.
  */
-export function Gauge({ score }: { score: number }) {
+export function Gauge({ score, forensic }: { score: number; forensic?: ForensicsResult | null }) {
   // Ids must be unique when two seals share a page (/compare).
   const pathId = `seal-text-path-${useId()}`
   const [gaugeRef, inView] = useInView<HTMLDivElement>(0.3)
-  const shown = useCountUp(score, inView)
+  const gap = forensic ? score - forensic.total : null
+  const shown = useCountUp(gap ?? score, inView)
+  const shownAbs = Math.abs(shown)
+  // Ring fills against the score's own 0–100 scale, or against a 0–30 spread
+  // scale (above 30 points of drift, the ring is simply full).
+  const ringFraction = gap === null ? shown / 100 : Math.min(1, shownAbs / 30)
+  const color = gap === null ? scoreColor(score) : spreadColor(Math.abs(gap))
+  const sign = gap === null ? '' : gap > 0 ? '+' : gap < 0 ? '−' : '±'
   return (
     <div className="gauge-wrap" ref={gaugeRef}>
       <div className="seal">
@@ -88,20 +101,19 @@ export function Gauge({ score }: { score: number }) {
           <path id={pathId} d="M110 17 a93 93 0 1 1 -0.01 0" fill="none" />
           <text className="seal-text">
             <textPath href={`#${pathId}`} startOffset="0%">
-              · TRIBVNAL · FINANCIAL HEALTH · TRIBVNAL · FINANCIAL HEALTH ·
+              {gap === null
+                ? '· TRIBVNAL · FINANCIAL HEALTH · TRIBVNAL · FINANCIAL HEALTH ·'
+                : '· TRIBVNAL · NARRATIVE GAP · TRIBVNAL · NARRATIVE GAP ·'}
             </textPath>
           </text>
         </svg>
-        <div
-          className="gauge"
-          style={{ background: `conic-gradient(${scoreColor(score)} ${shown * 3.6}deg, var(--gauge-track) 0deg)` }}
-        >
+        <div className="gauge" style={{ background: `conic-gradient(${color} ${ringFraction * 360}deg, var(--gauge-track) 0deg)` }}>
           <div className="gauge-inner">
             <div>
-              <div className="gauge-score" style={{ color: scoreColor(score) }}>
-                {Math.round(shown)}
+              <div className="gauge-score" style={{ color }}>
+                {gap === null ? Math.round(shown) : `${sign}${Math.round(shownAbs)}`}
               </div>
-              <div className="gauge-label">FINANCIAL HEALTH / 100</div>
+              <div className="gauge-label">{gap === null ? 'FINANCIAL HEALTH / 100' : 'NARRATIVE GAP'}</div>
             </div>
           </div>
         </div>
@@ -120,25 +132,41 @@ const STAMP_DELAY_MS = 150
 /** Spread color thresholds: tight agreement, contextual adjustment, sharp departure. */
 const spreadColor = (abs: number): string => (abs <= 5 ? '#6E6250' : abs <= 15 ? '#A87718' : '#A13C2C')
 
-const spreadNote = (abs: number): string =>
-  abs <= 5
-    ? 'The tribunal and the numbers agree.'
-    : abs <= 15
-      ? 'The tribunal adjusted for context the numbers cannot see.'
-      : 'The tribunal departed sharply from the arithmetic — see reasoning.'
+/**
+ * The variable half of the Narrative Gap note. Signed (not absolute) —
+ * "talked itself into optimism" only makes sense when the tribunal scored
+ * *above* the clerk, "read distress" only when it scored below.
+ */
+const gapNote = (gap: number): string =>
+  Math.abs(gap) <= 5
+    ? 'The tribunal stayed anchored to the arithmetic.'
+    : gap > 15
+      ? "The tribunal talked itself into optimism the numbers don't show."
+      : gap < -15
+        ? "The tribunal read distress the numbers don't support."
+        : 'A moderate drift — see the charges below.'
+
+// Verdict carries an explicit revenue call from the judge, independent of the
+// score — added server-side (src/tribunal/agents.ts) but not yet threaded
+// through the shared `Verdict` type in trial.ts. Declared locally so this
+// file can read it without touching that type.
+type VerdictWithCall = Verdict & {
+  revenueCall?: 'rise' | 'fall'
+  revenueCallConfidence?: 'low' | 'medium' | 'high'
+}
 
 /**
  * Sets the Clerk's deterministic score against the tribunal's verdict score,
  * side by side, so the 92/100 forensic figure earlier in the page isn't left
- * floating without a point of reference. Silent (renders nothing) when no
- * forensic result is available — the comparison needs both numbers to mean
- * anything.
+ * floating without a point of reference — then unpacks the Narrative Gap
+ * (the signed spread already sitting inside the gauge above) into its
+ * constant framing, its variable read, and the tribunal's independent
+ * revenue call. Silent (renders nothing) when no forensic result is
+ * available — the comparison needs both numbers to mean anything.
  */
-function ScoreCompareBar({ forensic, tribunalScore }: { forensic: ForensicsResult; tribunalScore: number }) {
-  const spread = tribunalScore - forensic.total
-  const abs = Math.abs(spread)
-  const sign = spread > 0 ? '+' : spread < 0 ? '−' : '±'
-  const color = spreadColor(abs)
+function ScoreCompareBar({ forensic, verdict }: { forensic: ForensicsResult; verdict: VerdictWithCall }) {
+  const tribunalScore = verdict.score
+  const gap = tribunalScore - forensic.total
   return (
     <div className="score-compare">
       <div className="score-compare-row">
@@ -149,12 +177,19 @@ function ScoreCompareBar({ forensic, tribunalScore }: { forensic: ForensicsResul
         <span className="score-compare-item">
           TRIBUNAL <span className="score-compare-num">{tribunalScore}</span>
         </span>
-        <span className="score-compare-sep">·</span>
-        <span className="score-compare-item">
-          SPREAD <span className="score-compare-num" style={{ color }}>{sign}{abs}</span>
-        </span>
       </div>
-      <div className="score-compare-note">{spreadNote(abs)}</div>
+      <div className="score-compare-note">
+        How far the argument drifted from the arithmetic. The judge never sees the clerk&rsquo;s score.
+      </div>
+      <div className="score-compare-note" style={{ color: spreadColor(Math.abs(gap)) }}>
+        {gapNote(gap)}
+      </div>
+      {verdict.revenueCall && (
+        <div className="score-compare-note">
+          TRIBUNAL CALLS: {verdict.revenueCall.toUpperCase()}
+          {verdict.revenueCallConfidence ? ` · ${verdict.revenueCallConfidence} confidence` : ''}
+        </div>
+      )}
     </div>
   )
 }
@@ -181,8 +216,8 @@ export function VerdictCard({
   return (
     <section className="verdict-card verdict-scroll">
       <h2>{title}</h2>
-      <Gauge score={verdict.score} />
-      {forensic && <ScoreCompareBar forensic={forensic} tribunalScore={verdict.score} />}
+      <Gauge score={verdict.score} forensic={forensic} />
+      {forensic && <ScoreCompareBar forensic={forensic} verdict={verdict} />}
       {verdict.summary
         .split('\n\n')
         .filter((para) => para.trim().length > 0)
@@ -191,6 +226,15 @@ export function VerdictCard({
             {para}
           </p>
         ))}
+      {(() => {
+        const total = verdict.charges.length
+        const sustained = verdict.charges.filter((c) => c.status === 'SUSTAINED').length
+        const partial = verdict.charges.filter((c) => c.status === 'PARTIALLY VALID').length
+        const parts = [`${total} charge${total === 1 ? '' : 's'} filed`]
+        if (sustained > 0) parts.push(`${sustained} sustained`)
+        if (partial > 0) parts.push(`${partial} partially valid`)
+        return <div className="score-compare-note">{parts.join(' · ')}</div>
+      })()}
       <table className="charges" ref={tableRef}>
         <thead>
           <tr>

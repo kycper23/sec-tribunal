@@ -1393,8 +1393,23 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .charge-row, .charges .stamp { animation: none; opacity: 1; }
+
   .charges .stamp { transform: rotate(var(--stamp-tilt, 0deg)); }
 }
+
+/* Score comparison bar — Clerk vs Tribunal, sits under the gauge in VerdictCard. */
+.score-compare {
+  text-align: center; margin: 0.4rem 0 1.1rem;
+}
+.score-compare-row {
+  display: flex; align-items: baseline; justify-content: center; gap: 0.6rem;
+  flex-wrap: wrap; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em;
+  color: var(--muted); text-transform: uppercase;
+}
+.score-compare-item { display: inline-flex; align-items: baseline; gap: 0.3rem; }
+.score-compare-num { font-family: var(--serif); font-size: 1.75rem; font-weight: 700; letter-spacing: 0; color: var(--text); line-height: 1; }
+.score-compare-sep { color: var(--border-strong); }
+.score-compare-note { font-family: var(--mono); font-size: 0.75rem; color: #6E6250; margin-top: 0.35rem; }
 
 /* --- Ruling scroll hint: appears under Exhibit A once the report is
    revealed, nudging the user that the verdict follows further down. Hides

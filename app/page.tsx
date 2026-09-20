@@ -714,7 +714,7 @@ export default function Courtroom() {
       {verdict && company && (
         <>
         <div ref={verdictRef} className="verdict-section">
-          <VerdictCard verdict={verdict} />
+          <VerdictCard verdict={verdict} forensic={forensic} />
           {sealedCutoff && (
             <RevealBanner
               reality={reality}

@@ -87,7 +87,7 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
         </p>
       </header>
 
-      <VerdictCard verdict={demo.verdict} />
+      <VerdictCard verdict={demo.verdict} forensic={demo.forensic} />
 
       <details className="speech clerk">
         <summary className="speech-head">

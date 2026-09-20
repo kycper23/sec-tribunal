@@ -2,6 +2,7 @@
 
 /** Shared verdict card — used by the live courtroom, permalinks and compare mode. */
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
+import type { ForensicsResult } from './components/forensic-report'
 import { scoreColor, type Verdict } from './trial'
 
 const prefersReducedMotion = () =>
@@ -116,7 +117,57 @@ const stampTilt = (i: number) => ((i * 47) % 5) - 2
 const ROW_STAGGER_MS = 200
 const STAMP_DELAY_MS = 150
 
-export function VerdictCard({ verdict, title = 'THE VERDICT' }: { verdict: Verdict; title?: string }) {
+/** Spread color thresholds: tight agreement, contextual adjustment, sharp departure. */
+const spreadColor = (abs: number): string => (abs <= 5 ? '#6E6250' : abs <= 15 ? '#A87718' : '#A13C2C')
+
+const spreadNote = (abs: number): string =>
+  abs <= 5
+    ? 'The tribunal and the numbers agree.'
+    : abs <= 15
+      ? 'The tribunal adjusted for context the numbers cannot see.'
+      : 'The tribunal departed sharply from the arithmetic — see reasoning.'
+
+/**
+ * Sets the Clerk's deterministic score against the tribunal's verdict score,
+ * side by side, so the 92/100 forensic figure earlier in the page isn't left
+ * floating without a point of reference. Silent (renders nothing) when no
+ * forensic result is available — the comparison needs both numbers to mean
+ * anything.
+ */
+function ScoreCompareBar({ forensic, tribunalScore }: { forensic: ForensicsResult; tribunalScore: number }) {
+  const spread = tribunalScore - forensic.total
+  const abs = Math.abs(spread)
+  const sign = spread > 0 ? '+' : spread < 0 ? '−' : '±'
+  const color = spreadColor(abs)
+  return (
+    <div className="score-compare">
+      <div className="score-compare-row">
+        <span className="score-compare-item">
+          CLERK <span className="score-compare-num">{forensic.total}</span>
+        </span>
+        <span className="score-compare-sep">·</span>
+        <span className="score-compare-item">
+          TRIBUNAL <span className="score-compare-num">{tribunalScore}</span>
+        </span>
+        <span className="score-compare-sep">·</span>
+        <span className="score-compare-item">
+          SPREAD <span className="score-compare-num" style={{ color }}>{sign}{abs}</span>
+        </span>
+      </div>
+      <div className="score-compare-note">{spreadNote(abs)}</div>
+    </div>
+  )
+}
+
+export function VerdictCard({
+  verdict,
+  title = 'THE VERDICT',
+  forensic,
+}: {
+  verdict: Verdict
+  title?: string
+  forensic?: ForensicsResult | null
+}) {
   // Charge-row / stamp reveal is gated behind the same "has it been seen
   // yet?" check as the gauge, so the whole table doesn't burn its stagger
   // before the user scrolls anywhere near it. Rows/stamps stay paused on
@@ -131,6 +182,7 @@ export function VerdictCard({ verdict, title = 'THE VERDICT' }: { verdict: Verdi
     <section className="verdict-card verdict-scroll">
       <h2>{title}</h2>
       <Gauge score={verdict.score} />
+      {forensic && <ScoreCompareBar forensic={forensic} tribunalScore={verdict.score} />}
       {verdict.summary
         .split('\n\n')
         .filter((para) => para.trim().length > 0)

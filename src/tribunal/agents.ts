@@ -7,16 +7,18 @@ import { z } from 'zod'
 import { openrouterFetch } from '../lib/openrouter.js'
 import type { ForensicsResult } from '../sec/forensics.js'
 import { renderForensics } from '../sec/forensics.js'
+import { getRole, MODEL_FAST } from './roster.js'
 
-// `||` (not `??`) so an env var present but set to an empty string still
-// falls back to the default — Vercel dashboards make it easy to add a key
-// with a blank value, which would otherwise send an empty "model" to the
-// gateway and fail with "A model is required."
-// Split models per role to cut trial latency (~150s end-to-end): the
-// argumentative rounds (prosecutor/defense/rebuttal) run on a faster model,
-// while the judge keeps the higher-quality model for its structured verdict.
-const MODEL_FAST = process.env.OPENROUTER_MODEL_FAST || 'anthropic/claude-sonnet-5'
-const MODEL_JUDGE = process.env.OPENROUTER_MODEL_JUDGE || 'anthropic/claude-fable-5'
+// Models come from the tribunal roster (src/tribunal/roster.ts) — the single
+// source of truth for the cast. Split per role to cut trial latency
+// (~150s end-to-end): the argumentative rounds (prosecutor/defense/rebuttal)
+// run on a faster model, while the judge keeps the higher-quality model for
+// its structured verdict. `?? MODEL_FAST` only narrows the `string | null`
+// type — every LLM role in the roster carries a concrete model.
+const MODEL_PROSECUTION = getRole('prosecution').model ?? MODEL_FAST
+const MODEL_DEFENSE = getRole('defense').model ?? MODEL_FAST
+const MODEL_REBUTTAL = getRole('rebuttal').model ?? MODEL_FAST
+const MODEL_JUDGE = getRole('judge').model ?? MODEL_FAST
 
 interface ChatMessage {
   role: 'system' | 'user'
@@ -171,8 +173,11 @@ export const runProsecutor = async (brief: string): Promise<{ bearCase: string; 
         'Do not use opening formulas such as "May it please the Tribunal" or "In re:" — start directly with the first charge.',
       ].join(' '),
     },
-    { role: 'user', content: `EXHIBIT A — Financial evidence from SEC EDGAR:\n\n${brief}` },
-  ])
+      { role: 'user', content: `EXHIBIT A — Financial evidence from SEC EDGAR:\n\n${brief}` },
+    ],
+    undefined,
+    MODEL_PROSECUTION,
+  )
   return { bearCase: content, usage }
 }
 
@@ -204,9 +209,12 @@ export const runDefense = async (
         `EXHIBIT A — Financial evidence from SEC EDGAR:\n\n${brief}`,
         ...(peerBrief ? [`EXHIBIT B — Industry peer comparison (SEC EDGAR):\n\n${peerBrief}`] : []),
         `PROSECUTION'S BEAR CASE:\n\n${bearCase}`,
-      ].join('\n\n---\n\n'),
-    },
-  ])
+        ].join('\n\n---\n\n'),
+      },
+    ],
+    undefined,
+    MODEL_DEFENSE,
+  )
   return { defense: content, usage }
 }
 
@@ -234,9 +242,12 @@ export const runProsecutorRebuttal = async (
         `EXHIBIT A — Financial evidence from SEC EDGAR:\n\n${brief}`,
         `YOUR ORIGINAL CHARGES:\n\n${bearCase}`,
         `DEFENSE'S RESPONSE:\n\n${defense}`,
-      ].join('\n\n---\n\n'),
-    },
-  ])
+        ].join('\n\n---\n\n'),
+      },
+    ],
+    undefined,
+    MODEL_REBUTTAL,
+  )
   return { rebuttal: content, usage }
 }
 

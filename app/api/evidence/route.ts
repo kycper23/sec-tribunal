@@ -36,12 +36,27 @@ export const POST = withErrorHandling(async (req: Request) => {
 
   const companyFacts = await fetchCompanyFacts(company.cik10)
   let brief = buildBrief(company, companyFacts, cutoff)
+  // Some filers (e.g. ADRs on 20-F/IFRS, not 10-K) tag none of the standard
+  // us-gaap metrics. Rather than parsing the rendered brief text (fragile —
+  // breaks the moment the header format changes), check the same data-driven
+  // series the forensic scorer already computes: without Revenue or Net
+  // income there's no evidence to try, so bail before the client fires off
+  // four paid LLM calls against an empty brief.
+  const forensicSeries: ChartSeries[] = extractForensicsSeries(companyFacts, cutoff)
+  const hasRevenue = forensicSeries.some((s) => s.label === 'Revenue')
+  const hasNetIncome = forensicSeries.some((s) => s.label === 'Net income')
+  if (!hasRevenue || !hasNetIncome) {
+    return jsonError(
+      `No usable us-gaap financial data for ${ticker} — the company likely files 20-F/IFRS rather than 10-K. The tribunal will not convene without evidence.`,
+      422,
+    )
+  }
   const series: ChartSeries[] = extractSeries(companyFacts, cutoff)
   // The clerk's deterministic forensic score — a code-computed, bias-free second
   // opinion alongside the LLM tribunal. Entered into the brief as an exhibit the
   // agents (and the judge in particular) must weigh, plus returned separately
   // for the UI's forensic report panel.
-  const forensic: ForensicsResult = runForensics(extractForensicsSeries(companyFacts, cutoff))
+  const forensic: ForensicsResult = runForensics(forensicSeries)
   brief = `${brief}\n\n${renderForensics(forensic)}`
   // "The Reveal" — computed now (cheap, deterministic) but withheld from the
   // client's `speeches`/verdict UI until the user chooses to reveal it later;

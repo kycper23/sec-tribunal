@@ -114,6 +114,9 @@ const trialErrorMessage = (err: unknown): string => {
   if (/timed out|timeout/i.test(message)) {
     return message || 'The tribunal could not convene. Please try again.'
   }
+  if (/No usable us-gaap financial data|Unknown ticker/i.test(message)) {
+    return message
+  }
   return 'The tribunal could not convene. Please try again.'
 }
 

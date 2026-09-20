@@ -23,22 +23,24 @@ const plexMono = IBM_Plex_Mono({
   display: 'swap',
 })
 
+const DESCRIPTION =
+  'Three AI agents try a US company on its own SEC filings. Code checks their work. Blind Trial grades the verdict against reality.'
+
 export const metadata: Metadata = {
+  metadataBase: new URL('https://sec-tribunal.vercel.app'),
   title: 'SEC Tribunal',
-  description:
-    'Three AI agents put a public company on trial using real SEC EDGAR filings: prosecution, defense, cross-examination, verdict.',
+  description: DESCRIPTION,
   openGraph: {
     title: 'SEC Tribunal',
-    description:
-      'Three AI agents put a public company on trial using real SEC EDGAR filings: prosecution, defense, cross-examination, verdict.',
+    description: DESCRIPTION,
     type: 'website',
+    url: '/',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'SEC Tribunal',
-    description:
-      'Three AI agents put a public company on trial using real SEC EDGAR filings: prosecution, defense, cross-examination, verdict.',
+    description: DESCRIPTION,
     images: ['/og-image.jpg'],
   },
 }

@@ -323,6 +323,9 @@ const ChargeVerdict = z.object({
   charge: z.string().describe('The prosecution charge, condensed to one sentence with its key figure.'),
   rebuttal: z.string().describe('The defense counter-argument, condensed to one sentence.'),
   status: z.enum(['SUSTAINED', 'DISMISSED', 'PARTIALLY VALID']),
+  category: z
+    .enum(['growth', 'profitability', 'earnings_quality', 'leverage', 'liquidity', 'other'])
+    .describe('The sub-score bucket this charge belongs to; use "other" only when none of the five fits.'),
 })
 
 // Sent to the model as the structured `response_format`. Splitting the
@@ -337,6 +340,10 @@ const JudgeOutput = z.object({
   charges: z.array(ChargeVerdict),
   score: z.number().min(1).max(100).describe('Financial Health Score: 1 = distressed, 100 = excellent.'),
   recommendation: z.string().describe('One short paragraph: the tribunal recommendation for an investor.'),
+  revenueCall: z
+    .enum(['rise', 'fall'])
+    .describe('Explicit call: will revenue in the NEXT reported fiscal year rise or fall vs the last full year in evidence? Independent of the score.'),
+  revenueCallConfidence: z.enum(['low', 'medium', 'high']).describe('Confidence in the revenue call.'),
 })
 
 // Public shape consumed by the rest of the app (report.ts, verdict-card.tsx,
@@ -348,9 +355,46 @@ export const Verdict = z.object({
   charges: z.array(ChargeVerdict),
   score: z.number().min(1).max(100),
   recommendation: z.string(),
+  revenueCall: z.enum(['rise', 'fall']),
+  revenueCallConfidence: z.enum(['low', 'medium', 'high']),
 })
 
 export type VerdictData = z.infer<typeof Verdict>
+
+/**
+ * Anchoring guard for the judge: removes the clerk's "DETERMINISTIC FORENSIC
+ * SCORE" block — the five sub-scores, the total, and the Flags section — from
+ * a brief. Cuts from the line starting with "DETERMINISTIC FORENSIC SCORE" up
+ * to the next ALL-CAPS section header, or to the end of the string when the
+ * Flags section closes the brief. Everything else (raw filed figures,
+ * "Derived ratios", the 8-K docket) survives the cut. Pure: a brief without
+ * the block is returned unchanged.
+ */
+export const stripForensicsBlock = (brief: string): string => {
+  const lines = brief.split('\n')
+  const start = lines.findIndex((line) => line.trimStart().startsWith('DETERMINISTIC FORENSIC SCORE'))
+  if (start === -1) return brief
+  // A section header is a line with letters but no lowercase ones that is not
+  // a list item — e.g. "RECENT MATERIAL EVENTS — 8-K DOCKET". Flag entries
+  // ("- [HIGH] ...") start with "-" and are never mistaken for headers.
+  const isUpperHeader = (line: string): boolean => {
+    const t = line.trim()
+    return /[A-Z]/.test(t) && !/[a-z]/.test(t) && !t.startsWith('-')
+  }
+  let end = lines.length
+  for (let i = start + 1; i < lines.length; i++) {
+    if (isUpperHeader(lines[i])) {
+      end = i
+      break
+    }
+  }
+  // Swallow the blank lines that separated the block from the previous
+  // section so the seam is a single blank line (or a clean end of string).
+  let head = start
+  while (head > 0 && lines[head - 1].trim() === '') head--
+  const kept = end < lines.length ? [...lines.slice(0, head), '', ...lines.slice(end)] : lines.slice(0, head)
+  return kept.join('\n')
+}
 
 export const runJudge = async (
   bearCase: string,
@@ -358,7 +402,14 @@ export const runJudge = async (
   rebuttal: string,
   forensic?: ForensicsResult,
 ): Promise<{ verdict: VerdictData; usage: CallUsage }> => {
-  const forensicBlock = forensic ? `\n\n--- CLERK'S FORENSIC REPORT ---\n\n${renderForensics(forensic)}` : ''
+  // The judge must NOT see the clerk's sub-scores, total or flags — otherwise
+  // the CLERK vs TRIBUNAL comparison (Narrative Gap) measures agreement with
+  // a printed number, not independent judgment. stripForensicsBlock removes
+  // exactly that block BEFORE the message to the model is built; anything
+  // else the exhibit carries (raw data, derived ratios, 8-K docket) survives.
+  // Prosecutor, defense and rebuttal keep receiving the brief unchanged.
+  const forensicText = forensic ? stripForensicsBlock(renderForensics(forensic)).trim() : ''
+  const forensicBlock = forensicText ? `\n\n--- CLERK'S FORENSIC REPORT ---\n\n${forensicText}` : ''
   const { content, usage } = await complete(
     [
       {
@@ -370,6 +421,8 @@ export const runJudge = async (
           "The clerk's forensic report, when present, is a bespoke, bias-free numeric exhibit — a deterministic score computed directly from the filings, independent of either side's rhetoric — and it must not be ignored. If your Financial Health Score departs from the clerk's total score by more than 15 points, you must justify that gap explicitly in \"reasoning\".",
           'Fill "conclusion" with one sentence stating the verdict in brief. Fill "reasoning" with 2 to 3 sentences on why this score, citing which arguments survived cross-examination (and, if applicable, why the score departs from the clerk\'s forensic score by more than 15 points). Fill "outlook" with 2 to 3 sentences on what to watch going forward. Keep the three fields distinct — do not repeat the same sentence across them.',
           "Then assign a Financial Health Score from 1 to 100 and give an investor-facing recommendation. Base everything strictly on the arguments, figures, and the clerk's forensic report presented.",
+          'Separately, issue an explicit revenue call in "revenueCall": will the company\'s revenue in the NEXT reported fiscal year rise or fall versus the last full fiscal year visible in the evidence? This call is INDEPENDENT of the Financial Health Score — the score measures financial condition, not revenue direction: a healthy company can have falling revenue and a weak one can have rising revenue. Never derive the call from the score; base it on the revenue trajectory, guidance, and arguments in evidence. State your confidence in "revenueCallConfidence" (low, medium, or high).',
+          'Assign each charge a "category": one of the five sub-score buckets — growth, profitability, earnings_quality, leverage, liquidity — or "other" if none of the five fits.',
         ].join(' '),
       },
       {

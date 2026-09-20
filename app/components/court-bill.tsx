@@ -72,8 +72,6 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
   if (entries.length === 0) return null
   const total = sumBill(entries)
   const priciest = entries.reduce((a, b) => (b.usage.cost > a.usage.cost ? b : a), entries[0])
-  const listPrice = total.cost / 0.775
-  const saved = listPrice - total.cost
   return (
     <section className="bill-receipt">
       <h3>Cost of this ruling</h3>
@@ -95,15 +93,15 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
           </tr>
           <tr className="orbio-savings">
             <td colSpan={4}>
-              Through Orbio: {fmtCost(total.cost)} · list price: {fmtCost(listPrice)} · saved{' '}
-              <span style={{ color: '#3E6B4F' }}>
-                {fmtCost(saved)} (22.5%)
-              </span>
+              This trial burned {fmtCost(total.cost)} of CREDIT · 1 CREDIT = $1 at list price
             </td>
           </tr>
         </tbody>
       </table>
       <p className="bill-multimodel">One Orbio key · multiple models · no subscriptions</p>
+      <p className="bill-footnote">
+        CREDIT trades below par on Orbio&apos;s order book — the USDG you pay depends on the discount you bought at.
+      </p>
       <p className="bill-footnote">
         {entries.length} model calls · fueled by tokenized $ORBIO credits · {priciest.label} argued the most
         expensively.

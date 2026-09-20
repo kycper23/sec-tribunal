@@ -19,7 +19,16 @@ const METRICS: Metric[] = [
   { label: 'Net income', tags: ['NetIncomeLoss'] },
   { label: 'Operating cash flow', tags: ['NetCashProvidedByUsedInOperatingActivities'] },
   { label: 'R&D expense', tags: ['ResearchAndDevelopmentExpense'] },
-  { label: 'Interest expense', tags: ['InterestExpense', 'InterestExpenseDebt'] },
+  {
+    label: 'Interest expense',
+    tags: [
+      'InterestExpense',
+      'InterestExpenseDebt',
+      'InterestExpenseNonoperating',
+      'InterestExpenseBorrowings',
+      'InterestIncomeExpenseNet',
+    ],
+  },
   { label: 'Total assets', tags: ['Assets'] },
   { label: 'Total liabilities', tags: ['Liabilities'] },
   {

@@ -169,7 +169,13 @@ const scoreLeverage = (m: Map<string, SeriesPoint[]>, flags: Flag[]): SubScore =
   if (interest !== null && interest > 0 && opInc !== null) {
     const coverage = opInc / interest
     note += ` Interest coverage ${coverage.toFixed(1)}x.`
-    if (coverage < 2) {
+    if (coverage > 15) {
+      score = Math.max(score, 17)
+      note += ' Very strong interest coverage outweighs the debt/equity level.'
+    } else if (coverage >= 8) {
+      score = Math.max(score, 14)
+      note += ' Solid interest coverage supports the debt/equity level.'
+    } else if (coverage < 2) {
       score = Math.min(score, 6)
       flags.push({
         severity: 'red',
@@ -181,7 +187,7 @@ const scoreLeverage = (m: Map<string, SeriesPoint[]>, flags: Flag[]): SubScore =
   return { label: 'Leverage', score: clamp(score), note }
 }
 
-/** Cash generation and cushion: sign of OCF, direction of the cash balance, and cash vs. long-term debt. */
+/** Cash generation and cushion: sign of OCF (the primary signal), OCF-to-debt payback horizon, and cash trend. */
 const scoreLiquidity = (m: Map<string, SeriesPoint[]>, flags: Flag[]): SubScore => {
   const ocf = at(m.get('Operating cash flow'), 0)
   const cash = at(m.get('Cash & equivalents'), 0)
@@ -197,7 +203,7 @@ const scoreLiquidity = (m: Map<string, SeriesPoint[]>, flags: Flag[]): SubScore 
 
   if (ocf !== null) {
     if (ocf > 0) {
-      score += 5
+      score += 10
       notes.push('Operating cash flow positive.')
     } else {
       score -= 5
@@ -210,29 +216,25 @@ const scoreLiquidity = (m: Map<string, SeriesPoint[]>, flags: Flag[]): SubScore 
     }
   }
 
-  if (cash !== null && priorCash !== null) {
-    if (cash > priorCash) {
+  if (ocf !== null && ocf > 0 && debt !== null && debt > 0) {
+    const payback = debt / ocf
+    if (payback < 2) {
+      score += 6
+      notes.push(`Operating cash flow covers long-term debt in ${payback.toFixed(1)} years (under 2).`)
+    } else if (payback <= 5) {
       score += 3
-      notes.push('Cash balance grew year over year.')
-    } else if (cash < priorCash) {
-      score -= 3
-      notes.push('Cash balance shrank year over year.')
-      flags.push({ severity: 'amber', label: 'Cash balance declining', note: 'Cash & equivalents fell versus the prior fiscal year.' })
+      notes.push(`Operating cash flow covers long-term debt in ${payback.toFixed(1)} years (2-5).`)
     }
   }
 
-  if (cash !== null && debt !== null && debt > 0) {
-    if (cash >= debt) {
+  if (cash !== null && priorCash !== null) {
+    if (cash > priorCash) {
       score += 2
-      notes.push('Cash covers long-term debt.')
-    } else if (cash < debt * 0.5) {
+      notes.push('Cash balance grew year over year.')
+    } else if (cash < priorCash) {
       score -= 2
-      notes.push('Cash covers less than half of long-term debt.')
-      flags.push({
-        severity: 'amber',
-        label: 'Thin cash cushion vs. debt',
-        note: 'Cash & equivalents cover less than half of long-term debt.',
-      })
+      notes.push('Cash balance shrank year over year.')
+      flags.push({ severity: 'amber', label: 'Cash balance declining', note: 'Cash & equivalents fell versus the prior fiscal year.' })
     }
   }
 

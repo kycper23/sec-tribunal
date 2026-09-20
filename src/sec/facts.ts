@@ -355,10 +355,20 @@ export const buildBrief = (company: Company, facts: CompanyFacts, cutoff?: strin
       : []),
     '',
   ]
+  const asof = Math.max(
+    ...[...series.values()].flatMap((s) =>
+      [s.annual.at(-1)?.end, s.quarterly.at(-1)?.end].filter((d): d is string => !!d).map((d) => Date.parse(d)),
+    ),
+  )
   for (const metric of METRICS) {
     const s = series.get(metric.label)
     if (!s) continue
-    lines.push(`${metric.label} [us-gaap:${s.tag}]:`)
+    const latestEnd = [s.annual.at(-1)?.end, s.quarterly.at(-1)?.end]
+      .filter((d): d is string => !!d)
+      .sort()
+      .at(-1)
+    const stale = latestEnd && asof - Date.parse(latestEnd) > 400 * DAY ? ` — STALE: not reported since ${latestEnd}` : ''
+    lines.push(`${metric.label} [us-gaap:${s.tag}]${stale}:`)
     if (s.annual.length) lines.push(`  Annual (10-K, FY end): ${s.annual.map(fmtPoint).join(' | ')}`)
     if (s.quarterly.length) lines.push(`  Recent quarters (10-Q, period end): ${s.quarterly.map(fmtPoint).join(' | ')}`)
     lines.push('')

@@ -252,20 +252,43 @@ const scoreLiquidity = (m: Map<string, SeriesPoint[]>, flags: Flag[]): SubScore 
   return { label: 'Liquidity', score: clamp(score), note: notes.join(' ') || 'No liquidity signal available.' }
 }
 
+/** SIC 6000-6799: banks, insurers, REITs, and other financial institutions. */
+const isFinancialSic = (sic?: string): boolean => {
+  const code = Number(sic)
+  return Number.isFinite(code) && code >= 6000 && code <= 6799
+}
+
 /**
  * Run all five sub-scores against an annual series set (as produced by
  * `extractForensicsSeries`) and total them into a 0-100 deterministic
  * score, independent of and complementary to the LLM tribunal's verdict.
+ *
+ * When `sic` identifies a financial institution (6000-6799), Leverage and
+ * Liquidity are scored neutral without flags: negative OCF reflects loan/
+ * trading-book swings, and debt ratios are structural, not distress signals.
  */
-export const runForensics = (series: ChartSeries[]): ForensicsResult => {
+export const runForensics = (series: ChartSeries[], sic?: string): ForensicsResult => {
   const m = seriesMap(series)
   const flags: Flag[] = []
+  const financial = isFinancialSic(sic)
   const subScores = [
     scoreGrowth(m, flags),
     scoreProfitability(m, flags),
     scoreEarningsQuality(m, flags),
-    scoreLeverage(m, flags),
-    scoreLiquidity(m, flags),
+    financial
+      ? {
+          label: 'Leverage',
+          score: NEUTRAL,
+          note: 'Leverage ratios are not meaningful for financial institutions — scored neutral.',
+        }
+      : scoreLeverage(m, flags),
+    financial
+      ? {
+          label: 'Liquidity',
+          score: NEUTRAL,
+          note: 'Operating cash flow swings with the loan and trading book — not a liquidity signal for financial institutions. Scored neutral.',
+        }
+      : scoreLiquidity(m, flags),
   ]
   const total = subScores.reduce((sum, s) => sum + s.score, 0)
   return { subScores, total, flags }

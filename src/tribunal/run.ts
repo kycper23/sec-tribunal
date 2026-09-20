@@ -65,22 +65,24 @@ export const runTribunal = async (
   const facts = await fetchCompanyFacts(company.cik10)
   let brief = buildBrief(company, facts)
 
-  // The clerk's deterministic forensic score — a code-computed, bias-free second
-  // opinion entered into the brief as an exhibit the agents (and the judge in
-  // particular) must weigh against their own reading of the evidence.
-  const forensic: ForensicsResult = runForensics(extractForensicsSeries(facts))
-  brief = `${brief}\n\n${renderForensics(forensic)}`
-  onProgress({ stage: 'edgar', message: `Clerk's forensic score: ${forensic.total}/100.` })
-
   let docket: Docket | null = null
+  let submissions: Awaited<ReturnType<typeof fetchSubmissions>> | undefined
   try {
-    docket = buildDocket(await fetchSubmissions(company.cik10))
+    submissions = await fetchSubmissions(company.cik10)
+    docket = buildDocket(submissions)
     brief = `${brief}\n\n${renderDocket(docket)}`
     onProgress({ stage: 'edgar', message: `Filings docket ready: ${docket.events.length} 8-K event(s) in window.` })
   } catch {
     docket = null
     onProgress({ stage: 'edgar', message: 'Filings docket unavailable; proceeding without it.' })
   }
+
+  // The clerk's deterministic forensic score — a code-computed, bias-free second
+  // opinion entered into the brief as an exhibit the agents (and the judge in
+  // particular) must weigh against their own reading of the evidence.
+  const forensic: ForensicsResult = runForensics(extractForensicsSeries(facts), submissions?.sic)
+  brief = `${brief}\n\n${renderForensics(forensic)}`
+  onProgress({ stage: 'edgar', message: `Clerk's forensic score: ${forensic.total}/100.` })
 
   onProgress({ stage: 'edgar', message: 'Looking up an industry peer for the defense…' })
   const peer = await findPeer(company)

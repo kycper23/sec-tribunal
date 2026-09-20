@@ -23,14 +23,19 @@ if (!ticker) {
     console.log(brief)
     console.log(`\n--- ${brief.length} chars ---\n`)
 
+    let submissions: Awaited<ReturnType<typeof fetchSubmissions>> | undefined
     try {
-      const docket = buildDocket(await fetchSubmissions(company.cik10))
+      submissions = await fetchSubmissions(company.cik10)
+      const docket = buildDocket(submissions)
       console.log(renderDocket(docket))
     } catch (err) {
       console.error(`Docket unavailable: ${err instanceof Error ? err.message : err}`)
     }
 
-    const forensics = runForensics(extractForensicsSeries(await fetchCompanyFacts(company.cik10)))
+    const forensics = runForensics(
+      extractForensicsSeries(await fetchCompanyFacts(company.cik10)),
+      submissions?.sic,
+    )
     console.log(`\n${renderForensics(forensics)}`)
   }
 }

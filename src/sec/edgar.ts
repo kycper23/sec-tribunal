@@ -83,8 +83,23 @@ export interface CompanyFacts {
   facts: Record<string, Record<string, { label?: string; units: Record<string, FactValue[]> }>>
 }
 
-export const fetchCompanyFacts = (cik10: string): Promise<CompanyFacts> =>
-  fetchJson<CompanyFacts>(`https://data.sec.gov/api/xbrl/companyfacts/CIK${cik10}.json`)
+/**
+ * companyfacts for large filers can weigh 5-6 MB, well past Next.js's Data
+ * Cache 2 MB item limit ("items over 2MB can not be cached"), so relying on
+ * `next.revalidate` alone means every trial re-fetches from SEC — with a
+ * handful of concurrent users that risks 429s. This in-process Map caches
+ * the full (pre-cutoff) response per CIK for a short TTL to absorb bursts.
+ */
+const companyFactsCache = new Map<string, { data: CompanyFacts; expires: number }>()
+const COMPANY_FACTS_CACHE_TTL_MS = 15 * 60 * 1000 // 15 minutes
+
+export const fetchCompanyFacts = async (cik10: string): Promise<CompanyFacts> => {
+  const cached = companyFactsCache.get(cik10)
+  if (cached && cached.expires > Date.now()) return cached.data
+  const data = await fetchJson<CompanyFacts>(`https://data.sec.gov/api/xbrl/companyfacts/CIK${cik10}.json`)
+  companyFactsCache.set(cik10, { data, expires: Date.now() + COMPANY_FACTS_CACHE_TTL_MS })
+  return data
+}
 
 // --- submissions (filing history, incl. 8-K event docket) --------------------
 
@@ -106,6 +121,8 @@ export interface SubmissionsRecent {
 export interface Submissions {
   cik: string
   name: string
+  sic?: string
+  sicDescription?: string
   filings: { recent: SubmissionsRecent }
 }
 

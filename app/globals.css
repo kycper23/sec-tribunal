@@ -1428,3 +1428,38 @@ body {
   .ruling-scroll-arrow { animation: none; }
 }
 
+/* --- Floating "↓ the ruling" hint: pinned to the bottom of the viewport
+   once the report is revealed, points down at the verdict card. Hides once
+   the verdict scrolls into view (tracked via IntersectionObserver). --- */
+.ruling-float-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  background: rgba(20, 14, 10, 0.92);
+  border: 1px solid #B8862B;
+  border-radius: 0;
+  padding: 10px 20px;
+  color: #B8862B;
+  font-family: monospace;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ruling-float-arrow {
+  display: inline-block;
+  font-size: 14px;
+  animation: ruling-float-bounce 2s ease-in-out infinite;
+}
+@keyframes ruling-float-bounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+  100% { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ruling-float-arrow { animation: none; }
+}
+

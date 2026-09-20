@@ -200,10 +200,10 @@ export default function Courtroom() {
   // Scroll hint: tells the user there's more beneath the first screen.
   // Hides itself once they've scrolled past it — no need for it after that.
   const [showScrollHint, setShowScrollHint] = useState(true)
-  // Ruling hint: once the report is revealed, points the user past Exhibit A
-  // toward the verdict further down. Disappears for good once scrolled past.
-  const [showRulingHint, setShowRulingHint] = useState(true)
-  const rulingHintRef = useRef<HTMLDivElement>(null)
+  // Floating "↓ the ruling" hint: sticks to the bottom of the viewport once the
+  // report is revealed, and hides itself as soon as the verdict card scrolls
+  // into view (tracked via IntersectionObserver on verdictRef).
+  const [verdictInView, setVerdictInView] = useState(false)
 
   // The ledger lives in localStorage: read only after mount so the server
   // render (empty) always matches the first client render.
@@ -218,18 +218,19 @@ export default function Courtroom() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Ruling hint listener: hide the "scroll for the ruling" arrow once the
-  // user has scrolled past it — no need to keep nudging after that.
+  // Tracks whether the verdict card is on screen, so the floating
+  // "↓ the ruling" hint can hide itself once the user has reached it.
   useEffect(() => {
-    const onScroll = () => {
-      const el = rulingHintRef.current
-      if (!el) return
-      setShowRulingHint(el.getBoundingClientRect().bottom > 0)
+    const el = verdictRef.current
+    if (!el) return
+    if (typeof IntersectionObserver === 'undefined') {
+      setVerdictInView(true)
+      return
     }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    const observer = new IntersectionObserver(([entry]) => setVerdictInView(entry.isIntersecting))
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [verdict])
 
   const addSpeech = (s: Speech) => setSpeeches((prev) => [...prev, s])
   const finishLast = useCallback(
@@ -483,6 +484,14 @@ export default function Courtroom() {
     })
   }
 
+  /** Scrolls straight to the verdict card, same offset as revealReport. */
+  const scrollToVerdict = () => {
+    const el = verdictRef.current
+    if (!el) return
+    const top = el.getBoundingClientRect().top + window.scrollY - 100
+    window.scrollTo({ top, behavior: 'smooth' })
+  }
+
   const downloadDossier = () => {
     if (!dossierRef.current || !company) return
     const blob = new Blob([dossierRef.current], { type: 'text/markdown' })
@@ -677,12 +686,6 @@ export default function Courtroom() {
             onTick={() => followRef.current && scrollToBottom()}
           />
           {s.role === 'clerk' && <ExhibitChart series={series} future={revealed ? futureSeries : []} />}
-          {s.role === 'clerk' && reportRevealed && showRulingHint && (
-            <div ref={rulingHintRef} className="ruling-scroll-hint" aria-hidden="true">
-              <span className="ruling-scroll-arrow">↓</span>
-              <span className="ruling-scroll-label">scroll for the ruling</span>
-            </div>
-          )}
           {s.role === 'clerk' && <DocketPanel docket={docket} />}
           {s.role === 'clerk' && sealedCutoff && (
             <ProphecyPanel
@@ -736,6 +739,17 @@ export default function Courtroom() {
         </>
       )}
       </div>
+
+      {reportRevealed && verdict && !verdictInView && (
+        <button
+          type="button"
+          className="ruling-float-btn"
+          onClick={scrollToVerdict}
+          aria-label="Scroll to the ruling"
+        >
+          <span className="ruling-float-arrow">↓</span> the ruling
+        </button>
+      )}
 
       <ProphecyLedger entries={ledger} onClear={wipeLedger} />
 

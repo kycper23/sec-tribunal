@@ -735,6 +735,8 @@ export default function Courtroom() {
               verdict={verdict}
               reality={reality}
               userCall={userCall}
+              clerkScore={forensic?.total}
+              costUsd={sumBill(bill).cost}
             />
           )}
           <BillReceipt entries={bill} />

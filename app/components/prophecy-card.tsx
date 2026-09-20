@@ -35,8 +35,10 @@ function buildCardSVG(opts: {
   userCall: Call | null
   tribunal: Call
   actual: Call | null
+  clerkScore?: number
+  costUsd?: number
 }): string {
-  const { ticker, companyName, cutoff, score, userCall, tribunal, actual } = opts
+  const { ticker, companyName, cutoff, score, userCall, tribunal, actual, clerkScore, costUsd } = opts
   const outcome = userCall !== null && actual !== null ? judgeOutcome(userCall, tribunal, actual) : null
   const won = outcome === 'user-beats-tribunal' || outcome === 'both-right'
   const rows: Array<[string, string, string, string]> = [
@@ -59,6 +61,18 @@ function buildCardSVG(opts: {
   const circ = 2 * Math.PI * 74
   const arc = (score / 100) * circ
   const name = companyName.length > 26 ? `${companyName.slice(0, 25)}…` : companyName
+
+  const tribunalRounded = Math.round(score)
+  const hasGap = clerkScore !== undefined
+  const clerkRounded = hasGap ? Math.round(clerkScore) : null
+  const gapValue = hasGap ? tribunalRounded - (clerkRounded as number) : null
+  const gaugeLabel = hasGap ? 'NARRATIVE GAP' : 'FINANCIAL HEALTH'
+  const gaugeValueTxt = hasGap ? `${gapValue! >= 0 ? '+' : '−'}${Math.abs(gapValue!)}` : `${tribunalRounded}`
+  const subParts: string[] = []
+  if (hasGap) subParts.push(`CLERK ${clerkRounded}`)
+  subParts.push(`TRIBUNAL ${tribunalRounded}`)
+  if (costUsd !== undefined) subParts.push(`${costUsd.toFixed(4)} CREDIT`)
+  const gaugeSubLine = subParts.join(' · ')
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <rect width="${W}" height="${H}" fill="${C.bg}"/>
@@ -89,8 +103,9 @@ function buildCardSVG(opts: {
     <circle r="100" fill="none" stroke="${C.border}" stroke-width="0.75"/>
     <circle r="74" fill="none" stroke="#D8CCB2" stroke-width="14"/>
     <circle r="74" fill="none" stroke="${gaugeCol}" stroke-width="14" stroke-dasharray="${arc.toFixed(1)} ${circ.toFixed(1)}" transform="rotate(-90)"/>
-    <text y="12" text-anchor="middle" font-family="Georgia, serif" font-size="64" font-weight="bold" fill="${gaugeCol}">${Math.round(score)}</text>
-    <text y="46" text-anchor="middle" font-family="'Courier New', monospace" font-size="14" letter-spacing="2" fill="${C.muted}">FINANCIAL HEALTH / 100</text>
+    <text y="12" text-anchor="middle" font-family="Georgia, serif" font-size="64" font-weight="bold" fill="${gaugeCol}">${gaugeValueTxt}</text>
+    <text y="46" text-anchor="middle" font-family="'Courier New', monospace" font-size="14" letter-spacing="2" fill="${C.muted}">${esc(gaugeLabel)}</text>
+    <text y="70" text-anchor="middle" font-family="'Courier New', monospace" font-size="12" letter-spacing="1" fill="${C.muted}">${esc(gaugeSubLine)}</text>
   </g>
   <text x="${W / 2}" y="${H - 42}" text-anchor="middle" font-family="'Courier New', monospace" font-size="18" letter-spacing="3" fill="${C.muted}">EVIDENCE: SEC EDGAR · VERDICT RENDERED BLIND · NOT INVESTMENT ADVICE</text>
 </svg>`
@@ -129,6 +144,8 @@ export function ProphecyCardActions({
   verdict,
   reality,
   userCall,
+  clerkScore,
+  costUsd,
 }: {
   ticker: string
   companyName: string
@@ -136,6 +153,8 @@ export function ProphecyCardActions({
   verdict: Verdict
   reality: RealityReport
   userCall: Call | null
+  clerkScore?: number
+  costUsd?: number
 }) {
   const makePng = () =>
     svgToPng(
@@ -147,6 +166,8 @@ export function ProphecyCardActions({
         userCall,
         tribunal: tribunalCall(verdict),
         actual: realityCall(reality),
+        clerkScore,
+        costUsd,
       }),
     )
 

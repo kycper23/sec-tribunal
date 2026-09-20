@@ -237,6 +237,36 @@ export const extractSeries = (facts: CompanyFacts, cutoff?: string): ChartSeries
   })
 }
 
+/** Every headline metric `forensics.ts` needs for its ratios — wider than the three-line Exhibit A chart. */
+const FORENSICS_METRICS = [
+  'Revenue',
+  'Gross profit',
+  'Operating income',
+  'Net income',
+  'Operating cash flow',
+  'Interest expense',
+  'Total assets',
+  'Total liabilities',
+  'Long-term debt',
+  'Stockholders equity',
+  'Cash & equivalents',
+]
+
+/**
+ * Same annual-series extraction as `extractSeries`, but exposing every
+ * balance-sheet/income-statement line the deterministic forensic scorer
+ * needs (not just the three chart metrics). No two-point floor — a single
+ * annual figure is still useful for a snapshot ratio.
+ */
+export const extractForensicsSeries = (facts: CompanyFacts, cutoff?: string): ChartSeries[] => {
+  const { series } = computeSeries(facts, cutoff)
+  return FORENSICS_METRICS.flatMap((label) => {
+    const s = series.get(label)
+    if (!s || !s.annual.length) return []
+    return [{ label, points: s.annual.map((v) => ({ period: v.end, value: v.val })) }]
+  })
+}
+
 /**
  * "The Reveal" exhibit: the annual points that were filed AFTER the cutoff —
  * i.e. what actually happened next, hidden from both the jury and the agents

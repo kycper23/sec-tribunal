@@ -2,7 +2,7 @@
 
 Three AI agents — **The Skeptic**, **The Advocate**, and **The Arbiter** — put a US public company on trial. The evidence is real: financial data pulled live from the SEC EDGAR XBRL `companyfacts` API.
 
-Live: **https://sec-tribunal-tzn4-mu.vercel.app/**
+Live: **https://sec-tribunal.vercel.app/**
 
 ## How a trial runs
 

@@ -1,6 +1,6 @@
 # SEC Tribunal — Roadmap (stan na 19.09.2026, deadline 20.09)
 
-> Plik sterujący pracą. Produkcja: https://sec-tribunal-tzn4-mu.vercel.app/
+> Plik sterujący pracą. Produkcja: https://sec-tribunal.vercel.app/
 > (auto-deploy z `main`). Zasada: każdy etap = edycja → `npm run typecheck` +
 > `npm run build` → commit → push → weryfikacja produkcji → stop.
 > Jeśli sesja się urwie: nowa sesja czyta ten plik i robi PIERWSZY

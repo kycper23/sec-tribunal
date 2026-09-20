@@ -20,6 +20,14 @@ const MODEL_DEFENSE = getRole('defense').model ?? MODEL_FAST
 const MODEL_REBUTTAL = getRole('rebuttal').model ?? MODEL_FAST
 const MODEL_JUDGE = getRole('judge').model ?? MODEL_FAST
 
+// Fallback models from the same roster — used once per call when the primary
+// model is unavailable (no provider, 404, 429/5xx after retries). `?? undefined`
+// only narrows `string | null`; every LLM role carries a concrete fallback.
+const FALLBACK_PROSECUTION = getRole('prosecution').fallback ?? undefined
+const FALLBACK_DEFENSE = getRole('defense').fallback ?? undefined
+const FALLBACK_REBUTTAL = getRole('rebuttal').fallback ?? undefined
+const FALLBACK_JUDGE = getRole('judge').fallback ?? undefined
+
 interface ChatMessage {
   role: 'system' | 'user'
   content: string
@@ -37,9 +45,21 @@ export interface CallUsage {
   totalTokens: number
   cachedTokens: number
   cost: number
+  /** The model that ACTUALLY answered — differs from the role's primary when the fallback kicked in. */
+  model: string
+  /** true when the primary model failed and the ROSTER fallback answered instead. */
+  fellBack: boolean
 }
 
-const ZERO_USAGE: CallUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0, cachedTokens: 0, cost: 0 }
+const ZERO_USAGE: CallUsage = {
+  promptTokens: 0,
+  completionTokens: 0,
+  totalTokens: 0,
+  cachedTokens: 0,
+  cost: 0,
+  model: '',
+  fellBack: false,
+}
 
 export const sumUsage = (entries: CallUsage[]): CallUsage =>
   entries.reduce(
@@ -49,6 +69,10 @@ export const sumUsage = (entries: CallUsage[]): CallUsage =>
       totalTokens: acc.totalTokens + u.totalTokens,
       cachedTokens: acc.cachedTokens + u.cachedTokens,
       cost: acc.cost + u.cost,
+      // An aggregate spans several models, so `model` stays '' — per-call
+      // attribution lives in the individual CallUsage entries.
+      model: acc.model,
+      fellBack: acc.fellBack || u.fellBack,
     }),
     ZERO_USAGE,
   )
@@ -69,10 +93,11 @@ const MAX_ATTEMPTS = 3
  */
 const COMPLETION_TIMEOUT_MS = 90_000
 
-const complete = async (
+/** One model call with the existing 429/5xx retry loop — no fallback logic here. */
+const completeOnce = async (
   messages: ChatMessage[],
-  responseFormat?: object,
-  model: string = MODEL_FAST,
+  responseFormat: object | undefined,
+  model: string,
 ): Promise<CompletionResult> => {
   for (let attempt = 1; ; attempt++) {
     let res: Response
@@ -123,15 +148,17 @@ const complete = async (
         }
       }
       const u = data.usage
-      const usage: CallUsage = u
-        ? {
-            promptTokens: u.prompt_tokens ?? 0,
-            completionTokens: u.completion_tokens ?? 0,
-            totalTokens: u.total_tokens ?? 0,
-            cachedTokens: u.prompt_tokens_details?.cached_tokens ?? 0,
-            cost: u.cost ?? 0,
-          }
-        : ZERO_USAGE
+      const usage: CallUsage = {
+        promptTokens: u?.prompt_tokens ?? 0,
+        completionTokens: u?.completion_tokens ?? 0,
+        totalTokens: u?.total_tokens ?? 0,
+        cachedTokens: u?.prompt_tokens_details?.cached_tokens ?? 0,
+        cost: u?.cost ?? 0,
+        // The model that actually answered; `fellBack` is finalized by the
+        // complete() wrapper, which knows whether this was the fallback run.
+        model,
+        fellBack: false,
+      }
       return { content: data.choices[0].message.content, usage }
     }
     const body = await res.text()
@@ -140,6 +167,42 @@ const complete = async (
     const delayMs = 1500 * 2 ** (attempt - 1)
     console.warn(`  (model call failed with ${res.status}; retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delayMs} ms)`)
     await new Promise((r) => setTimeout(r, delayMs))
+  }
+}
+
+/**
+ * completeOnce + one-shot model fallback. When the primary model is
+ * unavailable (Orbio "no provider serving this model", 404, or 429/5xx that
+ * exhausted the retry budget), the call is repeated ONCE on `fallbackModel`
+ * from the ROSTER and the switch is recorded on the returned CallUsage
+ * (`model` = the model that actually answered, `fellBack: true`). If the
+ * fallback fails too, the ORIGINAL error is rethrown. Schema-validation
+ * errors never reach this catch — Zod parsing happens in the callers, after
+ * complete() has already returned — so only network/availability failures
+ * trigger the fallback. Configuration errors (missing API key) are not
+ * availability issues and are rethrown immediately.
+ */
+const complete = async (
+  messages: ChatMessage[],
+  responseFormat?: object,
+  model: string = MODEL_FAST,
+  fallbackModel?: string,
+): Promise<CompletionResult> => {
+  try {
+    return await completeOnce(messages, responseFormat, model)
+  } catch (err) {
+    if (err instanceof Error && err.message.includes('OPENROUTER_API_KEY')) throw err
+    if (!fallbackModel || fallbackModel === model) throw err
+    const reason = err instanceof Error ? err.message : String(err)
+    console.warn(`  (model "${model}" unavailable — "${reason}"; falling back to "${fallbackModel}")`)
+    try {
+      const result = await completeOnce(messages, responseFormat, fallbackModel)
+      return { ...result, usage: { ...result.usage, fellBack: true } }
+    } catch {
+      // Fallback failed too — surface the ORIGINAL error, which names the
+      // role's primary model and is the more useful diagnostic.
+      throw err
+    }
   }
 }
 
@@ -177,6 +240,7 @@ export const runProsecutor = async (brief: string): Promise<{ bearCase: string; 
     ],
     undefined,
     MODEL_PROSECUTION,
+    FALLBACK_PROSECUTION,
   )
   return { bearCase: content, usage }
 }
@@ -214,6 +278,7 @@ export const runDefense = async (
     ],
     undefined,
     MODEL_DEFENSE,
+    FALLBACK_DEFENSE,
   )
   return { defense: content, usage }
 }
@@ -247,6 +312,7 @@ export const runProsecutorRebuttal = async (
     ],
     undefined,
     MODEL_REBUTTAL,
+    FALLBACK_REBUTTAL,
   )
   return { rebuttal: content, usage }
 }
@@ -316,6 +382,7 @@ export const runJudge = async (
       json_schema: { name: 'verdict', strict: true, schema: z.toJSONSchema(JudgeOutput) },
     },
     MODEL_JUDGE,
+    FALLBACK_JUDGE,
   )
   const parsed = JudgeOutput.parse(JSON.parse(content))
   const { conclusion, reasoning, outlook, ...rest } = parsed

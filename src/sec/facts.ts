@@ -283,11 +283,21 @@ export const extractForensicsSeries = (facts: CompanyFacts, cutoff?: string): Ch
  * two halves of the chart (known / revealed) always splice onto one series.
  */
 export const extractFutureSeries = (facts: CompanyFacts, cutoff: string): ChartSeries[] => {
+  const { series: known } = computeSeries(facts, cutoff) // what was knowable at the cutoff
   const { series: full } = computeSeries(facts) // no cutoff = everything ever filed
   return CHART_METRICS.flatMap((label) => {
     const s = full.get(label)
     if (!s) return []
-    const future = s.annual.filter((v) => (v.filed ?? v.end) > cutoff)
+    // "Future" is decided by the reporting PERIOD (`end`), not the filing date
+    // (`filed`): a later 10-K restates the prior fiscal year as a comparative
+    // column, so its `filed` is after the cutoff even though the period was
+    // already known — filtering on `filed` would re-surface that known year as
+    // the first "revealed" point. ISO date strings compare safely as strings.
+    const lastKnownEnd = known.get(label)?.annual.at(-1)?.end
+    const future =
+      lastKnownEnd === undefined
+        ? s.annual.filter((v) => (v.filed ?? v.end) > cutoff) // no data at cutoff: keep legacy filed-based behaviour
+        : s.annual.filter((v) => v.end > lastKnownEnd)
     if (!future.length) return []
     return [{ label, points: future.map((v) => ({ period: v.end, value: v.val })) }]
   })

@@ -22,6 +22,7 @@
     "tribunal": "tsx src/tribunal/index.ts",
     "gen-assets": "tsx src/gen-assets.ts",
     "precompute": "tsx src/tribunal/precompute.ts",
+    "backtest": "tsx src/tribunal/backtest.ts",
     "brief": "tsx src/sec/preview.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint ."

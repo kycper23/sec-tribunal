@@ -12,6 +12,7 @@
  * first annual revenue figure filed AFTER the cutoff. Results are appended
  * to the output JSON after every ticker, so an interruption never loses work.
  */
+import { execSync } from 'node:child_process'
 import { readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fetchCompanyFacts, fetchSubmissions, resolveTicker } from '../sec/edgar.js'
@@ -30,10 +31,15 @@ interface BacktestRow {
   tribunalScore: number
   clerkDirection: Direction
   tribunalDirection: Direction
+  revenueCallConfidence: 'low' | 'medium' | 'high'
+  gap: number
+  chargesFiled: number
+  chargesSustained: number
   actualDirection: Direction
   tribunalCorrect: boolean
   clerkCorrect: boolean
   costUsd: number
+  commit: string
   models: Record<string, string>
 }
 
@@ -45,16 +51,24 @@ interface BacktestError {
 type BacktestEntry = BacktestRow | BacktestError
 
 /**
- * Score → direction, shared by both graders so the comparison is fair:
- * a Financial Health Score of 60+ is read as "the company is healthy enough
- * that revenue should keep rising", below 60 as "revenue will fall".
- * The clerk's mapping is fixed by the task spec (>= 60 → rise); the tribunal
- * uses the SAME threshold on the judge's `verdict.score` — we deliberately do
- * NOT parse `verdict.recommendation` (free-form prose, model-dependent
- * wording) because a deterministic numeric rule keeps the backtest
- * reproducible and unbiased across models.
+ * Score → direction, used ONLY for the clerk. The clerk has no notion of a
+ * revenue call — it only ever produces a Financial Health Score — so this
+ * fixed >= 60 → rise threshold is a deliberate, deterministic stand-in that
+ * gives the clerk a direction to be graded on at all. It is NOT meant to be
+ * a good predictor; it exists purely as a control group baseline so the
+ * tribunal's real, independent `verdict.revenueCall` has something naive to
+ * beat.
  */
 const directionFromScore = (score: number): Direction => (score >= 60 ? 'rise' : 'fall')
+
+/** Short commit hash for provenance on every row; 'unknown' if git is unavailable. */
+const getCommit = (): string => {
+  try {
+    return execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim()
+  } catch {
+    return 'unknown'
+  }
+}
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
@@ -143,7 +157,10 @@ const runBlindTrial = async (ticker: string, cutoff: string): Promise<BacktestRo
   const { verdict, usage: judgeUsage } = await runJudge(bearCase, defense, rebuttal, forensic)
 
   const total = sumUsage([prosecutorUsage, defenseUsage, rebuttalUsage, judgeUsage])
-  const tribunalDirection = directionFromScore(verdict.score)
+  // The tribunal's real, independent revenue call — NOT derived from its score.
+  const tribunalDirection = verdict.revenueCall
+  // The clerk cannot call a direction; this is the deterministic >= 60
+  // threshold control group described above, kept ONLY as a naive baseline.
   const clerkDirection = directionFromScore(forensic.total)
 
   return {
@@ -153,10 +170,15 @@ const runBlindTrial = async (ticker: string, cutoff: string): Promise<BacktestRo
     tribunalScore: verdict.score,
     clerkDirection,
     tribunalDirection,
+    revenueCallConfidence: verdict.revenueCallConfidence,
+    gap: verdict.score - forensic.total,
+    chargesFiled: verdict.charges.length,
+    chargesSustained: verdict.charges.filter((c) => c.status === 'SUSTAINED').length,
     actualDirection,
     tribunalCorrect: tribunalDirection === actualDirection,
     clerkCorrect: clerkDirection === actualDirection,
     costUsd: total.cost,
+    commit: getCommit(),
     // The model that ACTUALLY answered per role (fallbacks included).
     models: {
       prosecutor: prosecutorUsage.model,
@@ -181,10 +203,11 @@ const main = async (): Promise<void> => {
     try {
       const row = await runBlindTrial(ticker, cutoff)
       await appendResult(outPath, row)
+      const roundedGap = Math.round(row.gap)
       console.log(
         `[${i + 1}/${tickers.length}] ${ticker} — clerk ${row.clerkScore}/100 (${row.clerkDirection}` +
           `${row.clerkCorrect ? ' OK' : ' MISS'}) · tribunal ${Math.round(row.tribunalScore)}/100 (${row.tribunalDirection}` +
-          `${row.tribunalCorrect ? ' OK' : ' MISS'}) · reality ${row.actualDirection} · $${row.costUsd.toFixed(4)}`,
+          `${row.tribunalCorrect ? ' OK' : ' MISS'}) · reality ${row.actualDirection} · gap ${roundedGap >= 0 ? '+' : '−'}${Math.abs(roundedGap)} · $${row.costUsd.toFixed(4)}`,
       )
     } catch (err) {
       // NEVER abort the whole run: SEC 4xx (unknown ticker / no data), model

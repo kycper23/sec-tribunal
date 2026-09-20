@@ -145,8 +145,10 @@ const scoreEarningsQuality = (m: Map<string, SeriesPoint[]>, flags: Flag[]): Sub
 const scoreLeverage = (m: Map<string, SeriesPoint[]>, flags: Flag[]): SubScore => {
   const debt = at(m.get('Long-term debt'), 0)
   const equity = at(m.get('Stockholders equity'), 0)
-  const opInc = at(m.get('Operating income'), 0)
-  const interest = at(m.get('Interest expense'), 0)
+  const opIncPts = m.get('Operating income')
+  const intPts = m.get('Interest expense')
+  const opIncLast = opIncPts?.length ? opIncPts[opIncPts.length - 1] : null
+  const intLast = intPts?.length ? intPts[intPts.length - 1] : null
 
   if (debt === null && equity === null) {
     return { label: 'Leverage', score: NEUTRAL, note: 'Insufficient debt/equity data — neutral score.' }
@@ -166,8 +168,13 @@ const scoreLeverage = (m: Map<string, SeriesPoint[]>, flags: Flag[]): SubScore =
     score = de <= 0.3 ? 20 : de <= 0.6 ? 16 : de <= 1.0 ? 12 : de <= 2.0 ? 8 : 4
     note = `LT-debt/equity ${de.toFixed(2)}.`
   }
-  if (interest !== null && interest > 0 && opInc !== null) {
-    const coverage = opInc / interest
+  const samePeriod = opIncLast !== null && intLast !== null && opIncLast.period === intLast.period
+  if (opIncLast !== null && !samePeriod) {
+    note += ' Interest expense not reported for the latest fiscal year — coverage not computed.'
+  }
+  const coverageComputed = samePeriod && intLast.value > 0
+  if (coverageComputed) {
+    const coverage = opIncLast.value / intLast.value
     note += ` Interest coverage ${coverage.toFixed(1)}x.`
     if (coverage > 15) {
       score = Math.max(score, 17)
@@ -183,6 +190,10 @@ const scoreLeverage = (m: Map<string, SeriesPoint[]>, flags: Flag[]): SubScore =
         note: `Operating income covers interest expense only ${coverage.toFixed(1)}x (below 2x).`,
       })
     }
+  } else {
+    // Coverage could not be computed (missing interest expense or mismatched periods) — never
+    // penalize for absent data; floor at the neutral level without adding a flag.
+    score = Math.max(score, 10)
   }
   return { label: 'Leverage', score: clamp(score), note }
 }

@@ -6,7 +6,8 @@
  */
 import { fetchCompanyFacts, fetchSubmissions, resolveTicker } from './edgar.js'
 import { buildDocket, renderDocket } from './events.js'
-import { buildBrief } from './facts.js'
+import { buildBrief, extractForensicsSeries } from './facts.js'
+import { renderForensics, runForensics } from './forensics.js'
 
 const ticker = (process.argv[2] ?? '').trim().toUpperCase()
 if (!ticker) {
@@ -28,5 +29,8 @@ if (!ticker) {
     } catch (err) {
       console.error(`Docket unavailable: ${err instanceof Error ? err.message : err}`)
     }
+
+    const forensics = runForensics(extractForensicsSeries(await fetchCompanyFacts(company.cik10)))
+    console.log(`\n${renderForensics(forensics)}`)
   }
 }

@@ -5,6 +5,8 @@
  */
 import { z } from 'zod'
 import { openrouterFetch } from '../lib/openrouter.js'
+import type { ForensicsResult } from '../sec/forensics.js'
+import { renderForensics } from '../sec/forensics.js'
 
 // `||` (not `??`) so an env var present but set to an empty string still
 // falls back to the default — Vercel dashboards make it easy to add a key
@@ -277,7 +279,9 @@ export const runJudge = async (
   bearCase: string,
   defense: string,
   rebuttal: string,
+  forensic?: ForensicsResult,
 ): Promise<{ verdict: VerdictData; usage: CallUsage }> => {
+  const forensicBlock = forensic ? `\n\n--- CLERK'S FORENSIC REPORT ---\n\n${renderForensics(forensic)}` : ''
   const { content, usage } = await complete(
     [
       {
@@ -286,13 +290,14 @@ export const runJudge = async (
           'You are the Judge of the SEC Tribunal. Weigh the prosecution\'s case, the defense, and the prosecution\'s closing rebuttal impartially.',
           'For each original prosecution charge, decide: SUSTAINED (the concern stands), DISMISSED (the defense convincingly refuted it), or PARTIALLY VALID.',
           'Give weight to concessions on either side and to which arguments survived cross-examination.',
-          'Fill "conclusion" with one sentence stating the verdict in brief. Fill "reasoning" with 2 to 3 sentences on why this score, citing which arguments survived cross-examination. Fill "outlook" with 2 to 3 sentences on what to watch going forward. Keep the three fields distinct — do not repeat the same sentence across them.',
-          'Then assign a Financial Health Score from 1 to 100 and give an investor-facing recommendation. Base everything strictly on the arguments and figures presented.',
+          "The clerk's forensic report, when present, is a bespoke, bias-free numeric exhibit — a deterministic score computed directly from the filings, independent of either side's rhetoric — and it must not be ignored. If your Financial Health Score departs from the clerk's total score by more than 15 points, you must justify that gap explicitly in \"reasoning\".",
+          'Fill "conclusion" with one sentence stating the verdict in brief. Fill "reasoning" with 2 to 3 sentences on why this score, citing which arguments survived cross-examination (and, if applicable, why the score departs from the clerk\'s forensic score by more than 15 points). Fill "outlook" with 2 to 3 sentences on what to watch going forward. Keep the three fields distinct — do not repeat the same sentence across them.',
+          "Then assign a Financial Health Score from 1 to 100 and give an investor-facing recommendation. Base everything strictly on the arguments, figures, and the clerk's forensic report presented.",
         ].join(' '),
       },
       {
         role: 'user',
-        content: `--- PROSECUTION ---\n\n${bearCase}\n\n--- DEFENSE ---\n\n${defense}\n\n--- PROSECUTION'S REBUTTAL ---\n\n${rebuttal}`,
+        content: `--- PROSECUTION ---\n\n${bearCase}\n\n--- DEFENSE ---\n\n${defense}\n\n--- PROSECUTION'S REBUTTAL ---\n\n${rebuttal}${forensicBlock}`,
       },
     ],
     {

@@ -5,7 +5,8 @@
  */
 import { fetchCompanyFacts, fetchSubmissions, resolveTicker, type Company } from '../sec/edgar.js'
 import { buildDocket, renderDocket, type Docket } from '../sec/events.js'
-import { buildBrief } from '../sec/facts.js'
+import { buildBrief, extractForensicsSeries } from '../sec/facts.js'
+import { renderForensics, runForensics, type ForensicsResult } from '../sec/forensics.js'
 import {
   runDefense,
   runJudge,
@@ -37,6 +38,7 @@ export interface TrialResult {
   brief: string
   peerBrief: string | null
   docket: Docket | null
+  forensic: ForensicsResult
   bearCase: string
   defense: string
   rebuttal: string
@@ -62,6 +64,13 @@ export const runTribunal = async (
   onProgress({ stage: 'edgar', message: `${company.name} → CIK ${company.cik10}. Fetching companyfacts…` })
   const facts = await fetchCompanyFacts(company.cik10)
   let brief = buildBrief(company, facts)
+
+  // The clerk's deterministic forensic score — a code-computed, bias-free second
+  // opinion entered into the brief as an exhibit the agents (and the judge in
+  // particular) must weigh against their own reading of the evidence.
+  const forensic: ForensicsResult = runForensics(extractForensicsSeries(facts))
+  brief = `${brief}\n\n${renderForensics(forensic)}`
+  onProgress({ stage: 'edgar', message: `Clerk's forensic score: ${forensic.total}/100.` })
 
   let docket: Docket | null = null
   try {
@@ -96,7 +105,7 @@ export const runTribunal = async (
   const { rebuttal, usage: rebuttalUsage } = await runProsecutorRebuttal(brief, bearCase, defense)
 
   onProgress({ stage: 'verdict', message: 'The judge is deliberating…' })
-  const { verdict, usage: judgeUsage } = await runJudge(bearCase, defense, rebuttal)
+  const { verdict, usage: judgeUsage } = await runJudge(bearCase, defense, rebuttal, forensic)
 
   const usage: TrialUsage = {
     prosecutor: prosecutorUsage,
@@ -112,6 +121,7 @@ export const runTribunal = async (
     brief,
     peerBrief,
     docket,
+    forensic,
     bearCase,
     defense,
     rebuttal,

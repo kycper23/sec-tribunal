@@ -10,6 +10,7 @@ import { notFound } from 'next/navigation'
 import type { TrialResult } from '../../../src/tribunal/run.js'
 import { BillReceipt } from '../../components/court-bill'
 import { DocketPanel } from '../../components/docket'
+import { ForensicReport } from '../../components/forensic-report'
 import { HomeButton } from '../../components/home-button'
 import { Markdown } from '../../components/markdown'
 import type { BillEntry } from '../../trial'
@@ -94,6 +95,7 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
           <span className="speech-preview">{firstSentence(scribeIntro)}</span>
         </summary>
         <div className="speech-body">{scribeIntro}</div>
+        <ForensicReport forensic={demo.forensic} />
         <DocketPanel docket={demo.docket} />
       </details>
 

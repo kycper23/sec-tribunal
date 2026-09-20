@@ -9,11 +9,13 @@ import { buildDocket, renderDocket, type Docket } from '../../../src/sec/events.
 import {
   buildBrief,
   buildRealityReport,
+  extractForensicsSeries,
   extractFutureSeries,
   extractSeries,
   type ChartSeries,
   type RealityReport,
 } from '../../../src/sec/facts.js'
+import { renderForensics, runForensics, type ForensicsResult } from '../../../src/sec/forensics.js'
 import { findPeer } from '../../../src/tribunal/peers.js'
 import { asString, jsonError, withErrorHandling } from '../_lib.js'
 
@@ -35,6 +37,12 @@ export const POST = withErrorHandling(async (req: Request) => {
   const companyFacts = await fetchCompanyFacts(company.cik10)
   let brief = buildBrief(company, companyFacts, cutoff)
   const series: ChartSeries[] = extractSeries(companyFacts, cutoff)
+  // The clerk's deterministic forensic score — a code-computed, bias-free second
+  // opinion alongside the LLM tribunal. Entered into the brief as an exhibit the
+  // agents (and the judge in particular) must weigh, plus returned separately
+  // for the UI's forensic report panel.
+  const forensic: ForensicsResult = runForensics(extractForensicsSeries(companyFacts, cutoff))
+  brief = `${brief}\n\n${renderForensics(forensic)}`
   // "The Reveal" — computed now (cheap, deterministic) but withheld from the
   // client's `speeches`/verdict UI until the user chooses to reveal it later;
   // never fed into the brief, so the agents can't see the future either.
@@ -71,5 +79,6 @@ export const POST = withErrorHandling(async (req: Request) => {
     cutoff: cutoff ?? null,
     reality,
     futureSeries,
+    forensic,
   })
 })

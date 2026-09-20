@@ -11,6 +11,7 @@ import { BlindTrialToggle } from './components/blind-trial-toggle'
 import { BillReceipt, CostBadge, CourtBill } from './components/court-bill'
 import { DocketPanel } from './components/docket'
 import { ExhibitChart } from './components/exhibit-chart'
+import { ForensicReport, type ForensicsResult } from './components/forensic-report'
 import { Markdown } from './components/markdown'
 import { ProphecyCardActions } from './components/prophecy-card'
 import { ProphecyLedger } from './components/prophecy-ledger'
@@ -169,6 +170,7 @@ export default function Courtroom() {
   // silently updating its number.
   const [costFlash, setCostFlash] = useState(false)
   const [docket, setDocket] = useState<Docket | null>(null)
+  const [forensic, setForensic] = useState<ForensicsResult | null>(null)
   const [series, setSeries] = useState<ChartSeries[]>([])
   const [phase, setPhase] = useState<Phase | null>(null)
   const [phaseDone, setPhaseDone] = useState(false)
@@ -351,6 +353,7 @@ export default function Courtroom() {
     setBench(BENCH_IDLE)
     setBill([])
     setDocket(null)
+    setForensic(null)
     setSeries([])
     setPhase('evidence')
     setPhaseDone(false)
@@ -379,9 +382,11 @@ export default function Courtroom() {
         series: ChartSeries[]
         reality: RealityReport | null
         futureSeries: ChartSeries[]
+        forensic: ForensicsResult
       }>('/api/evidence', { ticker: t, ...(sealAt ? { cutoff: sealAt } : {}) })
       setCompany(ev.company)
       setDocket(ev.docket)
+      setForensic(ev.forensic)
       setSeries(ev.series)
       setReality(ev.reality)
       setFutureSeries(ev.futureSeries ?? [])
@@ -443,6 +448,7 @@ export default function Courtroom() {
         bearCase: pr.bearCase,
         defense: df.defense,
         rebuttal: rb.rebuttal,
+        forensic: ev.forensic,
       })
       finishLast()
       addBill('Judge', jd.usage)
@@ -686,6 +692,7 @@ export default function Courtroom() {
             onTick={() => followRef.current && scrollToBottom()}
           />
           {s.role === 'clerk' && <ExhibitChart series={series} future={revealed ? futureSeries : []} />}
+          {s.role === 'clerk' && <ForensicReport forensic={forensic} />}
           {s.role === 'clerk' && <DocketPanel docket={docket} />}
           {s.role === 'clerk' && sealedCutoff && (
             <ProphecyPanel

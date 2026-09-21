@@ -133,7 +133,7 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
           </tr>
           <tr className="orbio-savings">
             <td colSpan={4}>
-              This trial burned {fmtCost(total.cost)} of CREDIT · 1 CREDIT = $1 at list price
+              This trial burned {total.cost.toFixed(4)} CREDIT · 1 CREDIT = $1 at list price
             </td>
           </tr>
         </tbody>

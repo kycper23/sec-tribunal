@@ -618,8 +618,8 @@ export default function Courtroom() {
             <span className="how-it-works-num">03</span>
             <h3 className="how-it-works-step-title">THE RULING</h3>
             <p className="how-it-works-step-desc">
-              The Arbiter weighs both sides and scores the company&apos;s financial health from 0
-              to 100, charge by charge.
+              The Arbiter weighs both sides without seeing the clerk&apos;s score. The gap between
+              its ruling and the arithmetic is the Narrative Gap.
             </p>
           </div>
           <div className="how-it-works-step">

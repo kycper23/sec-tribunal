@@ -30,6 +30,13 @@ export const DAILY_LIMIT = 100;
 const IP_HOURLY_LIMIT = 5;
 const HOUR_MS = 60 * 60 * 1000;
 
+/**
+ * Maksymalna liczba pytań follow-up do Arbitra na godzinę z jednego IP.
+ * 3 pytania na rozprawę × kilka rozpraw — osobna pula, żeby dopytywanie
+ * po jednej rozprawie nie zjadało limitu rozpraw dla kolejnych spółek.
+ */
+const FOLLOWUP_PER_HOUR = 12;
+
 // ---------------------------------------------------------------------------
 // 1. Saldo klucza — cache w pamięci procesu, TTL 60 s.
 // ---------------------------------------------------------------------------
@@ -131,6 +138,37 @@ export function recordIp(ip: string): void {
   const fresh = pruneIp(ip, now);
   fresh.push(now);
   ipHits.set(ip, fresh);
+}
+
+// ---------------------------------------------------------------------------
+// 3b. Rate limit per IP dla pytań follow-up do Arbitra — osobna pula,
+//     maks. FOLLOWUP_PER_HOUR na godzinę.
+// ---------------------------------------------------------------------------
+
+const followupHits = new Map<string, number[]>();
+
+/** Usuwa timestampy starsze niż godzina; puste wpisy kasuje z mapy. */
+function pruneFollowup(ip: string, now: number): number[] {
+  const fresh = (followupHits.get(ip) ?? []).filter((ts) => now - ts < HOUR_MS);
+  if (fresh.length === 0) {
+    followupHits.delete(ip);
+  } else {
+    followupHits.set(ip, fresh);
+  }
+  return fresh;
+}
+
+/** Czy dany IP mieści się w limicie pytań follow-up na godzinę. */
+export function followupAllowed(ip: string): boolean {
+  return pruneFollowup(ip, Date.now()).length < FOLLOWUP_PER_HOUR;
+}
+
+/** Odnotowuje pytanie follow-up dla danego IP. */
+export function recordFollowup(ip: string): void {
+  const now = Date.now();
+  const fresh = pruneFollowup(ip, now);
+  fresh.push(now);
+  followupHits.set(ip, fresh);
 }
 
 // ---------------------------------------------------------------------------

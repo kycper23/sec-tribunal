@@ -270,6 +270,8 @@ body {
 .footer { text-align: center; color: var(--muted); font-size: 0.78rem; margin-top: 3.5rem; font-family: var(--mono); letter-spacing: 0.03em; }
 .footer a { color: #B8862B; text-decoration: none; }
 .footer a:hover { text-decoration: underline; }
+.bill-receipt a, .speech a { color: #7C5F18; text-decoration: underline; text-underline-offset: 2px; }
+.bill-receipt a:hover, .speech a:hover { color: #B8862B; }
 .footer::before {
   content: '⁂'; display: block; color: var(--border-strong); font-size: 1rem;
   margin-bottom: 0.6rem; font-family: var(--serif);
@@ -280,12 +282,12 @@ body {
 @media (max-width: 900px) { .compare-grid { grid-template-columns: 1fr; } }
 
 .link-button {
-  border: 1px solid var(--border-strong); color: var(--accent); text-decoration: none;
+  border: 1px solid #B8862B; color: #EDE4D0; text-decoration: none;
   padding: 0.55rem 1.2rem; border-radius: 0; font-size: 0.92rem; font-weight: 600;
-  background: transparent; transition: background 0.2s, color 0.2s, border-color 0.2s;
+  background: rgba(12, 8, 5, 0.88); transition: background 0.2s, color 0.2s, border-color 0.2s;
   display: inline-block;
 }
-.link-button:hover { background: var(--frame); color: var(--panel); border-color: var(--frame); }
+.link-button:hover { background: #B8862B; color: #1c1913; border-color: #B8862B; }
 
 .nav-links { display: flex; gap: 0.6rem; justify-content: center; margin-bottom: 1rem; font-size: 0.8rem; flex-wrap: wrap; }
 .nav-links a, .nav-links button {

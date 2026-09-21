@@ -7,6 +7,7 @@
  * hiding it. A taxi-meter ticker above the bench, a cost badge per speech,
  * and a receipt once the verdict is in.
  */
+import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import type { BillEntry, CallUsage } from '../trial'
 import { sumBill } from '../trial'
@@ -141,6 +142,10 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
       <p className="bill-multimodel">
         One Orbio key · {providerCount} {providerCount === 1 ? 'provider' : 'providers'} · {modelCount}{' '}
         {modelCount === 1 ? 'model' : 'models'} · no subscriptions
+      </p>
+      <p className="bill-footnote">
+        Every ruling is a data point on what a dollar of thinking buys — see the{' '}
+        <Link href="/scoreboard">Scoreboard</Link>.
       </p>
       <p className="bill-footnote">
         CREDIT trades below par on Orbio&apos;s order book — the USDG you pay depends on the discount you bought at.

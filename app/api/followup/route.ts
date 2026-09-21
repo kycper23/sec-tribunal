@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server'
 import { openrouterFetch } from '../../../src/lib/openrouter.js'
 import { getRole, MODEL_FAST } from '../../../src/tribunal/roster.js'
 import type { CallUsage } from '../../../src/tribunal/agents.js'
-import { ipAllowed, recordIp } from '../../../src/orbio/treasury.js'
+import { followupAllowed, recordFollowup } from '../../../src/orbio/treasury.js'
 import { asString, jsonError, withErrorHandling } from '../_lib.js'
 
 export const maxDuration = 120
@@ -85,7 +85,7 @@ const complete = async (messages: ChatMessage[]): Promise<{ content: string; usa
 export const POST = withErrorHandling(async (req: Request) => {
   const forwardedFor = req.headers.get('x-forwarded-for') ?? ''
   const ip = forwardedFor.split(',')[0]?.trim() || 'unknown'
-  if (!ipAllowed(ip)) {
+  if (!followupAllowed(ip)) {
     return jsonError('Rate limit reached for your IP — please wait before asking the Judge again.', 429)
   }
 
@@ -100,7 +100,7 @@ export const POST = withErrorHandling(async (req: Request) => {
     return jsonError('Missing "brief" or "verdict".')
   }
 
-  recordIp(ip)
+  recordFollowup(ip)
 
   const { content, usage } = await complete([
     {

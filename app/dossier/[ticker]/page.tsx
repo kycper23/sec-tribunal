@@ -134,7 +134,8 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
       </div>
 
       <footer className="footer">
-        Precomputed demo · Data: SEC EDGAR XBRL companyfacts · Not investment advice.
+        Precomputed demo · Data: SEC EDGAR XBRL companyfacts · Not investment advice ·{" "}
+        <Link href="/scoreboard">Scoreboard</Link> · <Link href="/methodology">Methodology</Link>
       </footer>
     </main>
   )

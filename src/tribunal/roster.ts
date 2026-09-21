@@ -1,6 +1,6 @@
 /**
  * Single source of truth for the tribunal cast. Every role that appears in a
- * trial is declared here — label, model, fallback model, and seed — so that
+ * trial is declared here — label, model, and fallback model — so that
  * upcoming features (model fallback, the Court Bill, cost forecasting, new
  * roles) only ever touch this file instead of being spread across the app.
  *
@@ -19,8 +19,6 @@ export interface RosterEntry {
   model: string | null
   /** Model to fall back to when the primary is unavailable. null for non-LLM roles. */
   fallback: string | null
-  /** Fixed seed for reproducible completions (not yet wired into the calls). */
-  seed?: number
 }
 
 /** Default workhorse model for the argumentative rounds. */
@@ -33,22 +31,18 @@ const MODEL_JUDGE = process.env.OPENROUTER_MODEL_JUDGE || 'anthropic/claude-fabl
 const MODEL_PROSECUTION = process.env.OPENROUTER_MODEL_PROSECUTION || MODEL_FAST
 const MODEL_DEFENSE = process.env.OPENROUTER_MODEL_DEFENSE || MODEL_FAST
 
-/** One fixed seed for every LLM role — reruns of the same trial stay comparable. */
-const TRIBUNAL_SEED = 1729
-
 /** The cast, in order of appearance during a trial. */
 export const ROSTER: RosterEntry[] = [
   { id: 'clerk', label: 'The Scribe', model: null, fallback: null },
-  { id: 'prosecution', label: 'The Skeptic', model: MODEL_PROSECUTION, fallback: MODEL_FAST, seed: TRIBUNAL_SEED },
-  { id: 'defense', label: 'The Advocate', model: MODEL_DEFENSE, fallback: MODEL_FAST, seed: TRIBUNAL_SEED },
+  { id: 'prosecution', label: 'The Skeptic', model: MODEL_PROSECUTION, fallback: MODEL_FAST },
+  { id: 'defense', label: 'The Advocate', model: MODEL_DEFENSE, fallback: MODEL_FAST },
   {
     id: 'rebuttal',
     label: 'The Skeptic (rebuttal)',
     model: MODEL_PROSECUTION,
     fallback: MODEL_FAST,
-    seed: TRIBUNAL_SEED,
   },
-  { id: 'judge', label: 'The Arbiter', model: MODEL_JUDGE, fallback: MODEL_FAST, seed: TRIBUNAL_SEED },
+  { id: 'judge', label: 'The Arbiter', model: MODEL_JUDGE, fallback: MODEL_FAST },
 ]
 
 export const getRole = (id: RoleId): RosterEntry => {

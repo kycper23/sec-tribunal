@@ -667,7 +667,7 @@ export default function Courtroom() {
         </div>
         <p className="how-it-works-footnote">
           Four model calls per trial · multiple models on one Orbio key · exact cost shown on
-          every ruling
+          every ruling · works on any US filer, including the tokenized equities traded next to ORBIO
         </p>
       </section>
 

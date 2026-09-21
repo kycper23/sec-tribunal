@@ -21,7 +21,7 @@ export const RESERVE_USD = 10;
 /**
  * Zmierzona średnia koszt jednej rozprawy (USD) z rzeczywistych przebiegów.
  */
-export const AVERAGE_TRIAL_USD = 0.22;
+export const AVERAGE_TRIAL_USD = 0.24;
 
 /** Maksymalna liczba darmowych rozpraw na dobę (reset o 00:00 UTC). */
 export const DAILY_LIMIT = 100;
@@ -169,6 +169,41 @@ export function recordFollowup(ip: string): void {
   const fresh = pruneFollowup(ip, now);
   fresh.push(now);
   followupHits.set(ip, fresh);
+}
+
+// ---------------------------------------------------------------------------
+// 3c. Rate limit per IP dla pojedynczych wywołań modeli (prosecutor/defense/
+//     rebuttal/judge/followup) — osobna pula, maks. LLM_CALLS_PER_HOUR na
+//     godzinę.
+// ---------------------------------------------------------------------------
+
+/** Maksymalna liczba wywołań modeli na godzinę z jednego IP (ok. 8 rozpraw z pytaniami). */
+const LLM_CALLS_PER_HOUR = 40;
+
+const llmHits = new Map<string, number[]>();
+
+/** Usuwa timestampy starsze niż godzina; puste wpisy kasuje z mapy. */
+function pruneLlm(ip: string, now: number): number[] {
+  const fresh = (llmHits.get(ip) ?? []).filter((ts) => now - ts < HOUR_MS);
+  if (fresh.length === 0) {
+    llmHits.delete(ip);
+  } else {
+    llmHits.set(ip, fresh);
+  }
+  return fresh;
+}
+
+/** Czy dany IP mieści się w limicie wywołań modeli na godzinę. */
+export function llmCallAllowed(ip: string): boolean {
+  return pruneLlm(ip, Date.now()).length < LLM_CALLS_PER_HOUR;
+}
+
+/** Odnotowuje wywołanie modelu dla danego IP. */
+export function recordLlmCall(ip: string): void {
+  const now = Date.now();
+  const fresh = pruneLlm(ip, now);
+  fresh.push(now);
+  llmHits.set(ip, fresh);
 }
 
 // ---------------------------------------------------------------------------

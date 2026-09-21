@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server'
 import { runJudge } from '../../../src/tribunal/agents.js'
 import type { ForensicsResult } from '../../../src/sec/forensics.js'
-import { asString, jsonError, withErrorHandling } from '../_lib.js'
+import { asString, guardModelCall, jsonError, withErrorHandling } from '../_lib.js'
 
 export const maxDuration = 300
 
@@ -16,6 +16,8 @@ export const POST = withErrorHandling(async (req: Request) => {
   // recomputed here.
   const forensic = body.forensic as ForensicsResult | undefined
   if (!bearCase || !defense || !rebuttal) return jsonError('Missing "bearCase", "defense" or "rebuttal".')
+  const blocked = await guardModelCall(req, [bearCase, defense, rebuttal])
+  if (blocked) return blocked as NextResponse
   const { verdict, usage } = await runJudge(bearCase, defense, rebuttal, forensic)
   return NextResponse.json({ verdict, usage })
 })

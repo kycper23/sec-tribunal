@@ -9,7 +9,7 @@ import { openrouterFetch } from '../../../src/lib/openrouter.js'
 import { getRole, MODEL_FAST } from '../../../src/tribunal/roster.js'
 import type { CallUsage } from '../../../src/tribunal/agents.js'
 import { followupAllowed, recordFollowup } from '../../../src/orbio/treasury.js'
-import { asString, jsonError, withErrorHandling } from '../_lib.js'
+import { asString, guardModelCall, jsonError, withErrorHandling } from '../_lib.js'
 
 export const maxDuration = 120
 
@@ -99,6 +99,9 @@ export const POST = withErrorHandling(async (req: Request) => {
   if (!brief || typeof verdict !== 'object' || verdict === null) {
     return jsonError('Missing "brief" or "verdict".')
   }
+
+  const blocked = await guardModelCall(req, [brief, JSON.stringify(verdict)])
+  if (blocked) return blocked as NextResponse
 
   recordFollowup(ip)
 

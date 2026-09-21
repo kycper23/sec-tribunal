@@ -16,7 +16,7 @@
 | No look-ahead in Blind Trial | `knownBy` and `extractFutureSeries` in `src/sec/facts.ts` |
 | Multi-provider on one key | `src/tribunal/roster.ts` — one file assigns a model and a fallback per role |
 | Cost per call, from Orbio | `CallUsage` in `src/tribunal/agents.ts`, rendered by `app/components/court-bill.tsx` |
-| Live treasury and limits | `src/orbio/treasury.ts` — reads Orbio's `/key`, 100 free trials a day, per-IP limit, reserve floor |
+| Live treasury and limits | `src/orbio/treasury.ts` — reads Orbio's `/key`, 100 free trials a day, per-IP limits, reserve floor; every model route is guarded by `guardModelCall` in `app/api/_lib.ts` |
 | Tests and CI | `src/sec/forensics.test.ts` (`npm test`), `.github/workflows/ci.yml` — typecheck, tests, build on every push |
 | Honest limits | [Known limits](#known-limits) and [/methodology](https://sec-tribunal.vercel.app/methodology) |
 
@@ -57,16 +57,16 @@ ticker ──► SEC EDGAR (XBRL companyfacts + 8-K docket)
 3. **The case.** The Skeptic files charges, the Advocate rebuts, the Skeptic replies.
 4. **The ruling.** A Zod-validated verdict: a score, each charge with status and category, and an explicit `revenueCall` with confidence — separate from the score, because a healthy company can have falling revenue.
 5. **The reveal.** Blind Trial evidence is redacted by SEC filing date; the outcome is read from the first reporting period after the last one known at the seal.
-6. **Ask the Arbiter.** After the verdict, three fixed questions — why it departed from the arithmetic, what would change its mind, which charge came closest to falling. No free-text input, so no prompt-injection surface; each answer shows its own model and CREDIT cost.
+6. **Ask the Arbiter.** After the verdict, three fixed questions — why it departed from the arithmetic, what would change its mind, which charge came closest to falling. No free-text field in the interface; each answer shows its own model and CREDIT cost.
 
 ## What this gives Orbio
 
 Orbio made inference a tradable unit. SEC Tribunal treats it as a measurable one.
 
 - **One key, three providers, one file to change.** Every role runs on a single Orbio key; the roster assigns models and fallbacks, and an environment variable swaps any of them.
-- **Every ruling is a receipt.** The Court Bill shows the model that *actually* answered each call — including fallbacks — with tokens and cost read from Orbio's `usage` block. A ruling burns about **0.22 CREDIT**.
+- **Every ruling is a receipt.** The Court Bill shows the model that *actually* answered each call — including fallbacks — with tokens and cost read from Orbio's `usage` block. A ruling burns about **0.24 CREDIT**.
 - **Return per CREDIT, with the data to check it.** The scoreboard reports correct calls per CREDIT for each configuration, and the JSON behind it is in this repository.
-- **A treasury you can see.** The home page reads the key's live balance from Orbio's `/key` endpoint. 100 free trials a day are funded from our own CREDIT, with a per-IP limit and a reserve floor that stops free trials before the balance runs out.
+- **A treasury you can see.** The home page reads the key's live balance from Orbio's `/key` endpoint. 100 free trials a day are funded from our own CREDIT, with a per-IP limit and a reserve floor that stops free trials before the balance runs out. Every model route is rate-limited per IP and stops at the same floor.
 - **No CREDIT burned on an empty brief.** Filers without usable us-gaap data (for example 20-F ADRs) are refused before any model call.
 
 ## What went wrong, and how we caught it

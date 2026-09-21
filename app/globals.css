@@ -1540,3 +1540,11 @@ body {
   font-family: var(--mono); font-size: 0.76rem; color: var(--muted);
 }
 
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+@media (max-width: 640px) {
+  .table-scroll table.charges { min-width: 560px; }
+  .table-scroll .bill-receipt table, .bill-receipt .table-scroll table { min-width: 460px; }
+  .bill-receipt td { white-space: nowrap; }
+  .home-btn { position: absolute; }
+}
+

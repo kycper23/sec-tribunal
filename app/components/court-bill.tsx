@@ -116,29 +116,31 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
   return (
     <section className="bill-receipt">
       <h3>Cost of this ruling</h3>
-      <table>
-        <tbody>
-          {entries.map((e, i) => (
-            <tr key={i} className={e === priciest ? 'priciest' : undefined}>
-              <td>{e.label}</td>
-              <td>{modelForEntry(e)}</td>
-              <td>{fmtTok(e.usage.totalTokens)} tok</td>
-              <td>{fmtCost(e.usage.cost)}</td>
+      <div className="table-scroll">
+        <table>
+          <tbody>
+            {entries.map((e, i) => (
+              <tr key={i} className={e === priciest ? 'priciest' : undefined}>
+                <td>{e.label}</td>
+                <td>{modelForEntry(e)}</td>
+                <td>{fmtTok(e.usage.totalTokens)} tok</td>
+                <td>{fmtCost(e.usage.cost)}</td>
+              </tr>
+            ))}
+            <tr className="total">
+              <td>Total</td>
+              <td></td>
+              <td>{fmtTok(total.totalTokens)} tok</td>
+              <td>{fmtCost(total.cost)}</td>
             </tr>
-          ))}
-          <tr className="total">
-            <td>Total</td>
-            <td></td>
-            <td>{fmtTok(total.totalTokens)} tok</td>
-            <td>{fmtCost(total.cost)}</td>
-          </tr>
-          <tr className="orbio-savings">
-            <td colSpan={4}>
-              This trial burned {total.cost.toFixed(4)} CREDIT · 1 CREDIT = $1 at list price
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <tr className="orbio-savings">
+              <td colSpan={4}>
+                This trial burned {total.cost.toFixed(4)} CREDIT · 1 CREDIT = $1 at list price
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p className="bill-multimodel">
         One Orbio key · {providerCount} {providerCount === 1 ? 'provider' : 'providers'} · {modelCount}{' '}
         {modelCount === 1 ? 'model' : 'models'} · no subscriptions

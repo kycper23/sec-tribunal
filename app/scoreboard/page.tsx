@@ -53,68 +53,70 @@ export default function ScoreboardPage() {
             <strong>{fmtUsd(totalSpent)} of CREDIT spent</strong>
           </div>
 
-          <table className="charges">
-            <thead>
-              <tr>
-                <th>Contestant</th>
-                <th>Correct calls</th>
-                <th>CREDIT spent</th>
-                <th>Correct per CREDIT</th>
-                <th>Mean |gap|</th>
-                <th>Charges sustained</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Always say RISE (naive baseline)</td>
-                <td>
-                  {single.summary.alwaysRiseCorrect} / {graded} ({pctOf(single.summary.alwaysRiseCorrect)})
-                </td>
-                <td>{fmtUsd(0)}</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>Clerk (code only, no model)</td>
-                <td>
-                  {single.summary.clerkCorrect} / {graded} ({pctOf(single.summary.clerkCorrect)})
-                </td>
-                <td>{fmtUsd(0)}</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>
-                  Tribunal — single provider
-                  <br />
-                  <small>{modelLine(single.models)}</small>
-                </td>
-                <td>
-                  {single.summary.tribunalCorrect} / {graded} ({pctOf(single.summary.tribunalCorrect)})
-                </td>
-                <td>{fmtUsd(single.summary.totalCostUsd)}</td>
-                <td>{fmtPer(single.summary.correctPerCredit)}</td>
-                <td>{single.summary.meanAbsGap.toFixed(1)}</td>
-                <td>{fmtPct(single.summary.sustainedRate)}</td>
-              </tr>
-              <tr>
-                <td>
-                  Tribunal — three providers
-                  <br />
-                  <small>{modelLine(multi.models)}</small>
-                </td>
-                <td>
-                  {multi.summary.tribunalCorrect} / {graded} ({pctOf(multi.summary.tribunalCorrect)})
-                </td>
-                <td>{fmtUsd(multi.summary.totalCostUsd)}</td>
-                <td>{fmtPer(multi.summary.correctPerCredit)}</td>
-                <td>{multi.summary.meanAbsGap.toFixed(1)}</td>
-                <td>{fmtPct(multi.summary.sustainedRate)}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="table-scroll">
+            <table className="charges">
+              <thead>
+                <tr>
+                  <th>Contestant</th>
+                  <th>Correct calls</th>
+                  <th>CREDIT spent</th>
+                  <th>Correct per CREDIT</th>
+                  <th>Mean |gap|</th>
+                  <th>Charges sustained</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Always say RISE (naive baseline)</td>
+                  <td>
+                    {single.summary.alwaysRiseCorrect} / {graded} ({pctOf(single.summary.alwaysRiseCorrect)})
+                  </td>
+                  <td>{fmtUsd(0)}</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td>Clerk (code only, no model)</td>
+                  <td>
+                    {single.summary.clerkCorrect} / {graded} ({pctOf(single.summary.clerkCorrect)})
+                  </td>
+                  <td>{fmtUsd(0)}</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td>
+                    Tribunal — single provider
+                    <br />
+                    <small>{modelLine(single.models)}</small>
+                  </td>
+                  <td>
+                    {single.summary.tribunalCorrect} / {graded} ({pctOf(single.summary.tribunalCorrect)})
+                  </td>
+                  <td>{fmtUsd(single.summary.totalCostUsd)}</td>
+                  <td>{fmtPer(single.summary.correctPerCredit)}</td>
+                  <td>{single.summary.meanAbsGap.toFixed(1)}</td>
+                  <td>{fmtPct(single.summary.sustainedRate)}</td>
+                </tr>
+                <tr>
+                  <td>
+                    Tribunal — three providers
+                    <br />
+                    <small>{modelLine(multi.models)}</small>
+                  </td>
+                  <td>
+                    {multi.summary.tribunalCorrect} / {graded} ({pctOf(multi.summary.tribunalCorrect)})
+                  </td>
+                  <td>{fmtUsd(multi.summary.totalCostUsd)}</td>
+                  <td>{fmtPer(multi.summary.correctPerCredit)}</td>
+                  <td>{multi.summary.meanAbsGap.toFixed(1)}</td>
+                  <td>{fmtPct(multi.summary.sustainedRate)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <h3>Where the models earned their CREDIT</h3>
           <p>On most companies code and tribunal agree. These are the cases where they didn&rsquo;t.</p>

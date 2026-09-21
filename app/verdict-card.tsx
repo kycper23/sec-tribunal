@@ -235,46 +235,48 @@ export function VerdictCard({
         if (partial > 0) parts.push(`${partial} partially valid`)
         return <div className="score-compare-note">{parts.join(' · ')}</div>
       })()}
-      <table className="charges" ref={tableRef}>
-        <thead>
-          <tr>
-            <th>Charge</th>
-            <th>Rebuttal</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {verdict.charges.map((c, i) => (
-            <tr
-              key={i}
-              className={`charge-row${tableInView ? ' in-view' : ''}`}
-              style={
-                {
-                  animationDelay: `${i * ROW_STAGGER_MS}ms`,
-                  animationPlayState: playState,
-                } as CSSProperties
-              }
-            >
-              <td>{c.charge}</td>
-              <td>{c.rebuttal}</td>
-              <td>
-                <span
-                  className={`stamp ${c.status === 'PARTIALLY VALID' ? 'PARTIAL' : c.status}${tableInView ? ' in-view' : ''}`}
-                  style={
-                    {
-                      '--stamp-tilt': `${stampTilt(i)}deg`,
-                      animationDelay: `${i * ROW_STAGGER_MS + STAMP_DELAY_MS}ms`,
-                      animationPlayState: playState,
-                    } as CSSProperties
-                  }
-                >
-                  {c.status}
-                </span>
-              </td>
+      <div className="table-scroll">
+        <table className="charges" ref={tableRef}>
+          <thead>
+            <tr>
+              <th>Charge</th>
+              <th>Rebuttal</th>
+              <th>Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {verdict.charges.map((c, i) => (
+              <tr
+                key={i}
+                className={`charge-row${tableInView ? ' in-view' : ''}`}
+                style={
+                  {
+                    animationDelay: `${i * ROW_STAGGER_MS}ms`,
+                    animationPlayState: playState,
+                  } as CSSProperties
+                }
+              >
+                <td>{c.charge}</td>
+                <td>{c.rebuttal}</td>
+                <td>
+                  <span
+                    className={`stamp ${c.status === 'PARTIALLY VALID' ? 'PARTIAL' : c.status}${tableInView ? ' in-view' : ''}`}
+                    style={
+                      {
+                        '--stamp-tilt': `${stampTilt(i)}deg`,
+                        animationDelay: `${i * ROW_STAGGER_MS + STAMP_DELAY_MS}ms`,
+                        animationPlayState: playState,
+                      } as CSSProperties
+                    }
+                  >
+                    {c.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <p>
         <strong>Recommendation:</strong> {verdict.recommendation}
       </p>

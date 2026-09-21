@@ -86,6 +86,7 @@ Each was a real bug in this repository, found by checking output against source 
 - A fact without a `filed` date falls back to its period end for the Blind Trial cutoff.
 - The clerk cannot call revenue direction; its 60-point threshold is a naive reference line.
 - `app/api/followup/route.ts` duplicates the completion-with-fallback logic from `agents.ts` rather than modify a module frozen during the backtest.
+- The Prophecy Ledger lives in each visitor's browser. A shared, server-verified ledger of live blind trials — a scoreboard that grows with every visitor — is the natural next step; it needs persistent storage and server-side verification of outcomes, so it was left out of this build rather than shipped unverified.
 
 ## Run it
 

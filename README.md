@@ -57,7 +57,7 @@ ticker ──► SEC EDGAR (XBRL companyfacts + 8-K docket)
 3. **The case.** The Skeptic files charges, the Advocate rebuts, the Skeptic replies.
 4. **The ruling.** A Zod-validated verdict: a score, each charge with status and category, and an explicit `revenueCall` with confidence — separate from the score, because a healthy company can have falling revenue.
 5. **The reveal.** Blind Trial evidence is redacted by SEC filing date; the outcome is read from the first reporting period after the last one known at the seal.
-6. **Ask the Arbiter.** After the verdict, three fixed questions — why it departed from the arithmetic, what would change its mind, which charge came closest to falling. No free-text input, so no prompt-injection surface; each answer is a priced line on the bill.
+6. **Ask the Arbiter.** After the verdict, three fixed questions — why it departed from the arithmetic, what would change its mind, which charge came closest to falling. No free-text input, so no prompt-injection surface; each answer shows its own model and CREDIT cost.
 
 ## What this gives Orbio
 

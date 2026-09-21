@@ -57,7 +57,7 @@ function ProphecyOutcomeBlock({
             <td className={`reveal-delta ${userRight ? 'up' : 'down'}`}>{userRight ? 'RIGHT' : 'WRONG'}</td>
           </tr>
           <tr>
-            <td>The Tribunal (score {Math.round(verdict.score)})</td>
+            <td>The Tribunal · revenue call</td>
             <td>{CALL_LABEL[tribunal]}</td>
             <td className={`reveal-delta ${tribunalRight ? 'up' : 'down'}`}>
               {tribunalRight ? 'RIGHT' : 'WRONG'}

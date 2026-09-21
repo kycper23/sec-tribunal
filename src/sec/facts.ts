@@ -327,12 +327,16 @@ export interface RealityReport {
  */
 export const buildRealityReport = (facts: CompanyFacts, cutoff: string): RealityReport => {
   const { series: known } = computeSeries(facts, cutoff)
-  const { series: full } = computeSeries(facts)
+  // The "after the seal" point must be the FIRST annual period past the last
+  // one knowable at the cutoff — the same points[0] the README, scoreboard and
+  // backtest grade against (extractFutureSeries), NOT the latest year ever
+  // filed. Reusing extractFutureSeries keeps the two in lockstep.
+  const future = new Map(extractFutureSeries(facts, cutoff).map((s) => [s.label, s.points]))
   const deltas: RealityDelta[] = CHART_METRICS.map((label) => {
     const cutoffPoint = known.get(label)?.annual.at(-1) ?? null
-    const latestPoint = full.get(label)?.annual.at(-1) ?? null
+    const latestPoint = future.get(label)?.[0] ?? null
     const cutoffValue = cutoffPoint?.val ?? null
-    const latestValue = latestPoint?.val ?? null
+    const latestValue = latestPoint?.value ?? null
     const changePct =
       cutoffValue !== null && latestValue !== null && cutoffValue !== 0
         ? ((latestValue - cutoffValue) / Math.abs(cutoffValue)) * 100
@@ -341,7 +345,7 @@ export const buildRealityReport = (facts: CompanyFacts, cutoff: string): Reality
       label,
       cutoffPeriod: cutoffPoint?.end ?? null,
       cutoffValue,
-      latestPeriod: latestPoint?.end ?? null,
+      latestPeriod: latestPoint?.period ?? null,
       latestValue,
       changePct,
     }

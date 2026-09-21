@@ -49,7 +49,7 @@ function buildCardSVG(opts: {
       userCall && actual ? (userCall === actual ? C.green : C.red) : C.muted,
     ],
     [
-      `THE TRIBUNAL · SCORE ${Math.round(score)}`,
+      'THE TRIBUNAL · REVENUE CALL',
       CALL_LABEL[tribunal],
       actual ? (tribunal === actual ? 'RIGHT' : 'WRONG') : '',
       actual ? (tribunal === actual ? C.green : C.red) : C.muted,
@@ -80,7 +80,7 @@ function buildCardSVG(opts: {
   <rect x="30" y="30" width="${W - 60}" height="${H - 60}" fill="none" stroke="${C.border}" stroke-width="0.75"/>
   <text x="90" y="110" font-family="Georgia, 'Times New Roman', serif" font-size="26" letter-spacing="6" fill="${C.muted}">SEC TRIBUNAL · THE PROPHECY ENGINE</text>
   <text x="90" y="185" font-family="Georgia, 'Times New Roman', serif" font-size="60" font-weight="bold" fill="${C.ink}">${esc(ticker)} · ${esc(name)}</text>
-  <text x="90" y="240" font-family="'Courier New', monospace" font-size="26" fill="${C.brass}">RECORD SEALED AT ${esc(cutoff)} — THE TRIBUNAL ARGUED BLIND</text>
+  <text x="90" y="240" font-family="'Courier New', monospace" font-size="26" fill="${C.brass}">SEALED AT ${esc(cutoff)} — THE TRIBUNAL ARGUED BLIND</text>
   <line x1="90" y1="278" x2="820" y2="278" stroke="${C.border}" stroke-width="1"/>
   ${rows
     .map(
@@ -92,22 +92,22 @@ function buildCardSVG(opts: {
     .join('')}
   ${
     outcome
-      ? `<g transform="rotate(-2 450 545)">
-    <rect x="90" y="510" width="720" height="70" fill="none" stroke="${won ? C.green : C.red}" stroke-width="3"/>
-    <text x="450" y="557" text-anchor="middle" font-family="Georgia, serif" font-size="38" font-weight="bold" letter-spacing="4" fill="${won ? C.green : C.red}">${OUTCOME_LABEL[outcome]}</text>
+      ? `<g transform="rotate(-2 450 513)">
+    <rect x="90" y="478" width="720" height="70" fill="none" stroke="${won ? C.green : C.red}" stroke-width="3"/>
+    <text x="450" y="525" text-anchor="middle" font-family="Georgia, serif" font-size="38" font-weight="bold" letter-spacing="4" fill="${won ? C.green : C.red}">${OUTCOME_LABEL[outcome]}</text>
   </g>`
       : `<text x="90" y="555" font-family="Georgia, serif" font-size="26" font-style="italic" fill="${C.muted}">The prophecy stands unsettled — EDGAR has yet to file the answer.</text>`
   }
-  <g transform="translate(985 315)">
-    <circle r="108" fill="none" stroke="${C.border}" stroke-width="1.5"/>
-    <circle r="100" fill="none" stroke="${C.border}" stroke-width="0.75"/>
-    <circle r="74" fill="none" stroke="#D8CCB2" stroke-width="14"/>
-    <circle r="74" fill="none" stroke="${gaugeCol}" stroke-width="14" stroke-dasharray="${arc.toFixed(1)} ${circ.toFixed(1)}" transform="rotate(-90)"/>
-    <text y="12" text-anchor="middle" font-family="Georgia, serif" font-size="64" font-weight="bold" fill="${gaugeCol}">${gaugeValueTxt}</text>
-    <text y="46" text-anchor="middle" font-family="'Courier New', monospace" font-size="14" letter-spacing="2" fill="${C.muted}">${esc(gaugeLabel)}</text>
-    <text y="70" text-anchor="middle" font-family="'Courier New', monospace" font-size="12" letter-spacing="1" fill="${C.muted}">${esc(gaugeSubLine)}</text>
+  <g transform="translate(1050 400)">
+    <circle r="94" fill="none" stroke="${C.border}" stroke-width="1.5"/>
+    <circle r="87" fill="none" stroke="${C.border}" stroke-width="0.75"/>
+    <circle r="74" fill="none" stroke="#D8CCB2" stroke-width="10"/>
+    <circle r="74" fill="none" stroke="${gaugeCol}" stroke-width="10" stroke-dasharray="${arc.toFixed(1)} ${circ.toFixed(1)}" transform="rotate(-90)"/>
+    <text y="22" text-anchor="middle" font-family="Georgia, serif" font-size="64" font-weight="bold" fill="${gaugeCol}">${gaugeValueTxt}</text>
+    <text y="118" text-anchor="middle" font-family="'Courier New', monospace" font-size="12" letter-spacing="2" fill="${C.muted}">${esc(gaugeLabel)}</text>
+    <text y="138" text-anchor="middle" font-family="'Courier New', monospace" font-size="10" fill="${C.muted}">${esc(gaugeSubLine)}</text>
   </g>
-  <text x="${W / 2}" y="${H - 42}" text-anchor="middle" font-family="'Courier New', monospace" font-size="18" letter-spacing="3" fill="${C.muted}">EVIDENCE: SEC EDGAR · VERDICT RENDERED BLIND · NOT INVESTMENT ADVICE</text>
+  <text x="${W / 2}" y="${H - 34}" text-anchor="middle" font-family="'Courier New', monospace" font-size="18" letter-spacing="3" fill="${C.muted}">EVIDENCE: SEC EDGAR · VERDICT RENDERED BLIND · NOT INVESTMENT ADVICE</text>
 </svg>`
 }
 

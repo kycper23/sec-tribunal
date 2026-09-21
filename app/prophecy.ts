@@ -19,8 +19,20 @@ export type ProphecyOutcome =
   | 'tribunal-beats-user'
   | 'both-wrong'
 
-/** The tribunal's implicit bet: a healthy score is a bet on rise. */
-export const tribunalCall = (verdict: Verdict): Call => (verdict.score >= 50 ? 'rise' : 'fall')
+/** Verdict, optionally carrying an explicit revenue call (newer verdicts do). */
+type VerdictWithRevenueCall = Verdict & { revenueCall?: Call }
+
+/**
+ * The tribunal's bet. Prefers the verdict's explicit `revenueCall` when
+ * present; falls back to deriving direction from the score (a healthy score
+ * reads as a bet on rise) for older, already-persisted verdicts that predate
+ * the explicit field.
+ */
+export const tribunalCall = (verdict: Verdict): Call => {
+  const { revenueCall } = verdict as VerdictWithRevenueCall
+  if (revenueCall === 'rise' || revenueCall === 'fall') return revenueCall
+  return verdict.score >= 50 ? 'rise' : 'fall'
+}
 
 /**
  * Reality's answer: the sign of the Revenue delta filed after the seal.

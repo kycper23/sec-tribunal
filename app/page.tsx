@@ -212,6 +212,10 @@ export default function Courtroom() {
   const elapsedTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const [follow, setFollow] = useState(true)
   const followRef = useRef(true)
+  // Set by the first manual scroll gesture (wheel/touch/scroll-key) once a
+  // trial starts; while true, every automatic scroll-to-bench/scroll-to-bottom
+  // call below is skipped so the user's own scrolling is never fought.
+  const userScrolledRef = useRef<boolean>(false)
   const dossierRef = useRef<string | null>(null)
   const [blindTrial, setBlindTrial] = useState(false)
   const [cutoff, setCutoff] = useState(defaultCutoff)
@@ -330,8 +334,32 @@ export default function Courtroom() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // While a trial is in session, the first manual scroll gesture (wheel,
+  // touch drag, or a scroll-relevant key) flips userScrolledRef so the
+  // auto-scrolls above stop pulling the page back down. Listeners are only
+  // attached while busy, and are torn down when the trial ends or on unmount.
+  useEffect(() => {
+    if (!busy) return
+    const SCROLL_KEYS = new Set(['PageUp', 'PageDown', 'ArrowUp', 'ArrowDown', 'Home', 'End', ' '])
+    const markUserScrolled = () => {
+      userScrolledRef.current = true
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (SCROLL_KEYS.has(e.key)) markUserScrolled()
+    }
+    window.addEventListener('wheel', markUserScrolled, { passive: true })
+    window.addEventListener('touchmove', markUserScrolled, { passive: true })
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('wheel', markUserScrolled)
+      window.removeEventListener('touchmove', markUserScrolled)
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [busy])
+
   const jumpToLive = () => {
     followRef.current = true
+    userScrolledRef.current = false
     setFollow(true)
     scrollToBottom()
   }
@@ -408,6 +436,7 @@ export default function Courtroom() {
     setCostFlash(false)
     startElapsedTimer()
     followRef.current = true
+    userScrolledRef.current = false
     setFollow(true)
     dossierRef.current = null
     setSealedCutoff(sealAt)
@@ -416,7 +445,7 @@ export default function Courtroom() {
     setReportRevealed(false)
     if (!sealAt) setUserCall(null)
     requestAnimationFrame(() => {
-      benchRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      if (!userScrolledRef.current) benchRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     })
 
     try {
@@ -448,7 +477,7 @@ export default function Courtroom() {
           (ev.peer ? `\nExhibit B entered: industry peer ${ev.peer.name} (${ev.peer.ticker}).` : ''),
         done: true,
       })
-      if (followRef.current) scrollToBottom()
+      if (followRef.current && !userScrolledRef.current) scrollToBottom()
 
       setStatus('The prosecution has the floor…')
       setPhase('prosecution')
@@ -456,7 +485,7 @@ export default function Courtroom() {
       const pr = await post<{ bearCase: string; usage?: CallUsage }>('/api/prosecutor', { brief: ev.brief })
       addSpeech({ role: 'prosecutor', title: 'The Skeptic — Prosecution', text: pr.bearCase, done: false, usage: pr.usage })
       addBill('Prosecutor', pr.usage)
-      if (followRef.current) scrollToBottom()
+      if (followRef.current && !userScrolledRef.current) scrollToBottom()
 
       setStatus('The defense prepares…')
       setPhase('defense')
@@ -469,7 +498,7 @@ export default function Courtroom() {
       finishLast()
       addSpeech({ role: 'defense', title: 'The Advocate — Defense', text: df.defense, done: false, usage: df.usage })
       addBill('Defense', df.usage)
-      if (followRef.current) scrollToBottom()
+      if (followRef.current && !userScrolledRef.current) scrollToBottom()
 
       setStatus('Cross-examination…')
       setPhase('rebuttal')
@@ -488,7 +517,7 @@ export default function Courtroom() {
         usage: rb.usage,
       })
       addBill('Prosecutor (rebuttal)', rb.usage)
-      if (followRef.current) scrollToBottom()
+      if (followRef.current && !userScrolledRef.current) scrollToBottom()
 
       setStatus('The judge deliberates…')
       setPhase('verdict')
@@ -506,7 +535,7 @@ export default function Courtroom() {
       setPhaseDone(true)
       setStatus('')
       stopElapsedTimer()
-      if (followRef.current) scrollToBottom()
+      if (followRef.current && !userScrolledRef.current) scrollToBottom()
       const fullBill: BillEntry[] = [
         ...(pr.usage ? [{ label: 'Prosecutor', usage: pr.usage }] : []),
         ...(df.usage ? [{ label: 'Defense', usage: df.usage }] : []),
@@ -731,7 +760,6 @@ export default function Courtroom() {
       <TrialProgress phase={phase} done={phaseDone} />
 
       {(busy || speeches.length > 0) && <CourtBill entries={bill} />}
-      {verdict && brief && <AskArbiter brief={brief} verdict={verdict} />}
 
       {speeches.map((s, i) => (
         <section key={i} className={`speech ${s.role}`}>
@@ -744,7 +772,7 @@ export default function Courtroom() {
             text={s.text}
             done={s.done}
             onDone={finishLast}
-            onTick={() => followRef.current && scrollToBottom()}
+            onTick={() => followRef.current && !userScrolledRef.current && scrollToBottom()}
           />
           {s.role === 'clerk' && <ExhibitChart series={series} future={revealed ? futureSeries : []} />}
           {s.role === 'clerk' && <ForensicReport forensic={forensic} />}
@@ -792,6 +820,7 @@ export default function Courtroom() {
             />
           )}
           <BillReceipt entries={bill} />
+          {verdict && brief && <AskArbiter brief={brief} verdict={verdict} />}
           <div className="actions">
             <button onClick={downloadDossier}>Download dossier (.md)</button>
           </div>

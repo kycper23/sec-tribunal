@@ -101,9 +101,16 @@ export function Markdown({ text }: { text: string }) {
     flushTable()
   }
 
-  for (const raw of lines) {
+  for (let idx = 0; idx < lines.length; idx++) {
+    const raw = lines[idx]
     const line = raw.trim()
     if (!line) {
+      if (list?.ordered) {
+        let next = idx + 1
+        while (next < lines.length && !lines[next].trim()) next++
+        const nextLine = next < lines.length ? lines[next].trim() : ''
+        if (nextLine && LIST_ITEM.test(nextLine) && ORDERED.test(nextLine)) continue
+      }
       flushAll()
       continue
     }

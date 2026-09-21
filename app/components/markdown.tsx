@@ -7,8 +7,16 @@
 import { createElement, type ReactNode } from 'react'
 
 const INLINE = /(\*\*[^*]+\*\*|\*[^*\s][^*\n]*\*|`[^`]+`)/g
+// Unescape markdown escape sequences (e.g. "\[Exhibit A\]" -> "[Exhibit A]") before
+// parsing bold/italic/code. Limited to punctuation that cannot be mistaken for an
+// INLINE marker once unescaped. \, `, *, _, {, } are intentionally excluded: unescaping
+// them here would let the recovered character be re-interpreted by INLINE as a new
+// formatting marker (e.g. "\*foo\*" -> "*foo*" -> italic), which would require
+// restructuring INLINE matching (e.g. placeholder-masking) to handle safely.
+const ESCAPE = /\\([[\]()#+\-.!])/g
 
 const inline = (text: string): ReactNode[] => {
+  text = text.replace(ESCAPE, '$1')
   const out: ReactNode[] = []
   let last = 0
   let key = 0

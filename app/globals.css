@@ -260,11 +260,11 @@ body {
 }
 @media (prefers-reduced-motion: reduce) { .actions { animation: none; } }
 .actions button {
-  background: transparent; border: 1px solid var(--border-strong); color: var(--accent);
+  background: rgba(12, 8, 5, 0.88); border: 1px solid #B8862B; color: #EDE4D0;
   padding: 0.55rem 1.2rem; border-radius: 0; cursor: pointer; font-family: var(--serif); font-size: 0.92rem;
   font-weight: 600; transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
-.actions button:hover { background: var(--frame); color: var(--panel); border-color: var(--frame); }
+.actions button:hover { background: #B8862B; color: #1c1913; border-color: #B8862B; }
 
 /* Colophon — the closing mark of the volume. */
 .footer { text-align: center; color: var(--muted); font-size: 0.78rem; margin-top: 3.5rem; font-family: var(--mono); letter-spacing: 0.03em; }

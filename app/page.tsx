@@ -595,6 +595,7 @@ export default function Courtroom() {
 
       <nav className="nav-links">
         <Link href="/compare">Double trial (compare two tickers)</Link>
+        <Link href="/scoreboard">Scoreboard: 19 sealed trials</Link>
       </nav>
 
       <section className="how-it-works" aria-label="How the tribunal works">
@@ -815,7 +816,7 @@ export default function Courtroom() {
       <ProphecyLedger entries={ledger} onClear={wipeLedger} />
 
       <footer className="footer">
-        Built for Orbio Build Week · Data: SEC EDGAR XBRL companyfacts · Not investment advice · <Link href="/methodology">Methodology</Link>
+        Built for Orbio Build Week · Data: SEC EDGAR XBRL companyfacts · Not investment advice · <Link href="/scoreboard">Scoreboard</Link> · <Link href="/methodology">Methodology</Link>
       </footer>
     </main>
   )

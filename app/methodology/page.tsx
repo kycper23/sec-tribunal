@@ -5,6 +5,7 @@
  * paraphrased. No client code, no data fetching: pure server-rendered prose.
  */
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { HomeButton } from '../components/home-button'
 
 export const metadata: Metadata = {
@@ -127,8 +128,10 @@ export default function MethodologyPage() {
             forecast.
           </li>
           <li>
-            The 60-point threshold is a naive reference line, not a validated predictor. Nothing
-            here has been backtested as an investment signal.
+            The 60-point threshold is a naive reference line the clerk is graded on, not a
+            predictor. The tribunal was backtested on 19 companies sealed at 2025-03-31 (see{' '}
+            <Link href="/scoreboard">Scoreboard</Link>) — a first measurement on a small sample,
+            and a test of revenue direction, not an investment signal.
           </li>
           <li>
             There is no banking model. Financial institutions would need ROE, net interest margin,

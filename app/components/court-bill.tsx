@@ -22,6 +22,43 @@ const fmtTok = (n: number) => n.toLocaleString('en-US')
 const modelForLabel = (label: string): string => (label === 'Judge' ? 'fable-5' : 'sonnet-5')
 
 /**
+ * `app/trial.ts`'s `CallUsage` predates the `model`/`fellBack` fields that
+ * `src/tribunal/agents.ts` now attaches to every usage block (the model that
+ * ACTUALLY answered, and whether the ROSTER fallback kicked in). Widening
+ * the type locally — rather than touching `trial.ts` — keeps this read safe
+ * without assuming either field is present (older demo JSON, e.g.
+ * `demos/TSLA.json` before this change, may omit them).
+ */
+type UsageWithModel = CallUsage & { model?: string; fellBack?: boolean }
+
+/** "openai/gpt-5.2" → "gpt-5.2"; "anthropic/claude-fable-5" → "fable-5". */
+const shortModel = (model: string): string => {
+  const afterSlash = model.includes('/') ? model.slice(model.indexOf('/') + 1) : model
+  return afterSlash.replace(/^claude-/, '')
+}
+
+/**
+ * The full (provider-prefixed) model id that actually answered for one bill
+ * row — e.g. "openai/gpt-5.2". Falls back to guessing from the agent role
+ * (the old behavior) only when `usage.model` is missing — e.g. demo JSON
+ * captured before Orbio started reporting it.
+ */
+const rawModelForEntry = (e: BillEntry): string => {
+  const usage = e.usage as UsageWithModel
+  return usage.model && usage.model.length > 0 ? usage.model : modelForLabel(e.label)
+}
+
+/**
+ * The model that actually answered for one bill row, shortened, with a
+ * " (fallback)" suffix when the primary model failed and the ROSTER
+ * fallback answered instead.
+ */
+const modelForEntry = (e: BillEntry): string => {
+  const short = shortModel(rawModelForEntry(e))
+  return (e.usage as UsageWithModel).fellBack ? `${short} (fallback)` : short
+}
+
+/**
  * Small mono badge shown in a speech header: "2,431 tok · $0.0182".
  * Gated on `totalTokens` (not `cost`) — a free or fully-cached call still
  * has a real token count worth showing; hiding it entirely would quietly
@@ -72,6 +109,9 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
   if (entries.length === 0) return null
   const total = sumBill(entries)
   const priciest = entries.reduce((a, b) => (b.usage.cost > a.usage.cost ? b : a), entries[0])
+  const rawModels = entries.map(rawModelForEntry)
+  const providerCount = new Set(rawModels.map((m) => (m.includes('/') ? m.slice(0, m.indexOf('/')) : m))).size
+  const modelCount = new Set(rawModels).size
   return (
     <section className="bill-receipt">
       <h3>Cost of this ruling</h3>
@@ -80,7 +120,7 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
           {entries.map((e, i) => (
             <tr key={i} className={e === priciest ? 'priciest' : undefined}>
               <td>{e.label}</td>
-              <td>{modelForLabel(e.label)}</td>
+              <td>{modelForEntry(e)}</td>
               <td>{fmtTok(e.usage.totalTokens)} tok</td>
               <td>{fmtCost(e.usage.cost)}</td>
             </tr>
@@ -98,7 +138,10 @@ export function BillReceipt({ entries }: { entries: BillEntry[] }) {
           </tr>
         </tbody>
       </table>
-      <p className="bill-multimodel">One Orbio key · multiple models · no subscriptions</p>
+      <p className="bill-multimodel">
+        One Orbio key · {providerCount} {providerCount === 1 ? 'provider' : 'providers'} · {modelCount}{' '}
+        {modelCount === 1 ? 'model' : 'models'} · no subscriptions
+      </p>
       <p className="bill-footnote">
         CREDIT trades below par on Orbio&apos;s order book — the USDG you pay depends on the discount you bought at.
       </p>

@@ -22,6 +22,7 @@ export default function MethodologyPage() {
         <p>How the numbers are made — and where they stop being trustworthy.</p>
       </header>
 
+      <div className="speech">
       <article className="md">
         <h3>1. The clerk</h3>
         <p>
@@ -141,6 +142,7 @@ export default function MethodologyPage() {
           </li>
         </ul>
       </article>
+      </div>
 
       <footer className="footer">
         Data: SEC EDGAR XBRL companyfacts · Not investment advice.

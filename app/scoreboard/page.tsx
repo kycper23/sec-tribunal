@@ -48,10 +48,10 @@ export default function ScoreboardPage() {
 
       <div className="speech">
         <article className="md">
-          <p>
+          <div>
             <strong>{graded} sealed trials</strong> · <strong>2 tribunal configurations</strong> ·{' '}
             <strong>{fmtUsd(totalSpent)} of CREDIT spent</strong>
-          </p>
+          </div>
 
           <table className="charges">
             <thead>

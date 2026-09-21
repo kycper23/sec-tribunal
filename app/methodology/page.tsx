@@ -148,7 +148,7 @@ export default function MethodologyPage() {
       </div>
 
       <footer className="footer">
-        Data: SEC EDGAR XBRL companyfacts · Not investment advice.
+        Data: SEC EDGAR XBRL companyfacts · Not investment advice · <Link href="/scoreboard">Scoreboard</Link> · <Link href="/">Courtroom</Link>
       </footer>
     </main>
   )

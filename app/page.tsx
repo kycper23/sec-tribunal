@@ -581,7 +581,7 @@ export default function Courtroom() {
             ? revealed
               ? `Seal broken — the record was sealed at ${sealedCutoff}; reality is now unlocked below.`
               : `Sealed at ${sealedCutoff} — the tribunal argues blind, as if it never happened.`
-            : 'Three AI agents put a public company on trial — evidence: real SEC EDGAR filings.'}
+            : 'Code scores the filings. Three agents argue them. The gap between them is the product.'}
         </p>
       </header>
 
@@ -589,13 +589,10 @@ export default function Courtroom() {
         <p className="live-cost-meter">{formatTreasuryLine(treasury)}</p>
       )}
 
-      <div className="actions">
-        <Link className="link-button" href="/dossier/TSLA">See a finished ruling →</Link>
-      </div>
-
       <nav className="nav-links">
-        <Link href="/compare">Double trial (compare two tickers)</Link>
+        <Link href="/dossier/TSLA">See a finished ruling →</Link>
         <Link href="/scoreboard">Scoreboard: 19 sealed trials</Link>
+        <Link href="/compare">Compare two companies</Link>
       </nav>
 
       <section className="how-it-works" aria-label="How the tribunal works">

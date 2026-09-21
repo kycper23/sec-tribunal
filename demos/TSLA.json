@@ -284,85 +284,91 @@
       }
     ]
   },
-  "bearCase": "1) **Charge: Year-over-year revenue growth has stalled and turned negative.** Revenue peaked at **$96.77B (FY2023)**, barely moved to **$97.69B (FY2024, +0.9% YoY)**, then **fell to $94.83B (FY2025, -2.9% YoY)**—putting the company **below its FY2023 level** despite a larger asset base [Exhibit A]. This is the classic profile of demand/price pressure: size is rising, but top-line momentum is not [Exhibit A].\n\n2) **Charge: Margin compression is severe, persistent, and now structural.** Gross margin deteriorated from **25.6% (FY2022)** to **18.2% (FY2023)** and stayed depressed at **17.9% (FY2024)** and **18.0% (FY2025)** [Exhibit A]. Operating margin fell even harder—from **16.8% (FY2022)** to **9.2% (FY2023)** to **7.2% (FY2024)** and just **4.6% (FY2025)**—showing that incremental revenue is not translating into operating leverage [Exhibit A]. In the most recent quarter provided, **operating margin was only 1.4% (2026-06-30)** despite **$28.24B** of revenue, reinforcing that profitability is being squeezed at current scale [Exhibit A].\n\n3) **Charge: Earnings power has collapsed, with troubling recent-quarter profitability.** Operating income dropped from **$13.66B (FY2022)** to **$7.08B (FY2024)** and then to **$4.36B (FY2025)**, while net income fell from **$15.00B (FY2023)** to **$7.09B (FY2024)** and then to **$3.79B (FY2025)** [Exhibit A]. Quarterly results show fragility: operating income plunged from **$1.62B (2025-09-30)** to just **$398M (2026-06-30)** even as quarterly revenue reached **$28.24B**—a sign costs are outrunning growth [Exhibit A]. This is not a one-off dip; it aligns with the multi-year downtrend in operating and net margins [Exhibit A].\n\n4) **Charge: Leverage and fixed financial burdens are rising while management stability shows stress signals.** Total liabilities increased from **$48.39B (FY2024)** to **$54.94B (2025-12-31)** and then to **$61.01B (2026-06-30)**, while long-term debt climbed from **$5.54B (FY2024)** to **$6.58B (2025-12-31)** and **$7.72B (2026-06-30)** [Exhibit A]. Interest expense also stepped up from **$156M (FY2023)** to **$350M (FY2024)** and remained elevated at **$338M (FY2025)**—exactly the wrong direction during a margin downturn [Exhibit A]. Finally, the company disclosed **officer/director departure/appointment events** on **2025-08-04** and **2025-11-07**, an amber governance signal that adds risk at a time of weakening profitability and rising obligations [Exhibit A].",
-  "defense": "**Charge 1**\nThe FY2025 revenue contraction of -2.9% reflects a broader macroeconomic headwind affecting the entire sector, as demonstrated by competitor GM's own -2.1% YoY revenue decline in FY2025 [Exhibit A, Exhibit B]. However, our client has already aggressively reversed this trend with accelerating recent top-line momentum, achieving 15.8% YoY revenue growth in Q1 2026 and 25.5% YoY growth in Q2 2026 [Exhibit A]. This robust recent quarterly growth vastly outperforms GM, which only managed -1.3% and 2.1% YoY revenue growth in those exact same 2026 quarters [Exhibit B]. \n\n**Charge 2**\nWhile we concede that gross and operating margins have declined since 2022, this is largely driven by a deliberate, long-term growth investment strategy, with R&D expenses surging from $4.54B in FY2024 to $6.41B in FY2025 [Exhibit A]. Furthermore, the entire auto industry is facing severe margin pressure, yet Tesla's FY2025 operating margin of 4.6% remained significantly more resilient than GM's 1.7% [Exhibit A, Exhibit B]. Despite the Q2 2026 operating margin dip to 1.4% as R&D spending peaked, underlying unit economics remain sound, with Q1 2026 gross margins having recently recovered to a strong 21.1% [Exhibit A]. \n\n**Charge 3**\nWe acknowledge the drop in headline net income, but this does not reflect collapsed earnings power; rather, it underscores exceptional earnings quality where FY2025 operating cash flow of $14.75B robustly covered net income by 3.89 times [Exhibit A]. The recent operating income compression is a direct result of scaling future technologies rather than business failure, evidenced by Q2 2026 R&D expenses reaching a massive $2.37B in a single quarter [Exhibit A]. Comparatively, our client is weathering industry conditions far better than GM, whose FY2025 operating income suffered a much steeper structural collapse from $12.78B to just $2.91B [Exhibit B]. \n\n**Charge 4**\nThe prosecution mischaracterizes our highly conservative leverage; long-term debt of $7.72B in Q2 2026 is completely dwarfed by $15.22B in cash and equivalents, yielding a pristine long-term debt-to-equity ratio of just 0.09 [Exhibit A]. The FY2025 interest expense of $338M is immaterial against our $14.75B in operating cash flow, demonstrating fortress-like balance sheet strength and a comfortable 12.9x interest coverage ratio [Exhibit A]. Finally, the officer and director transitions in late 2025 were routine corporate governance events that have fully stabilized, evidenced by the fact that zero amber or red flags appear in the 8-K docket throughout the first half of 2026 [Exhibit A].",
-  "rebuttal": "The defense’s “macro headwind” framing doesn’t rebut the charged fact pattern: revenue effectively flatlined at **$97.69B in FY2024 (+0.9% YoY)** and then **fell to $94.83B in FY2025 (-2.9% YoY)**—still **below FY2023’s $96.77B** despite a larger asset base. Two good YoY quarters (**15.8% in Q1 2026** and **25.5% in Q2 2026**) don’t erase that the last full year was down and remains below the prior peak.\n\nThey attribute margin compression “largely” to higher R&D, but **R&D does not explain gross margin**—gross margin is upstream of R&D. Gross margin fell from **25.6% (FY2022)** to **18.2% (FY2023)** and stayed around **~18% in FY2024–FY2025**, with **Q2 2026 back down to 16.8%**, showing cost/price pressure at the gross level.\n\nThe claim of “recovered” unit economics cherry-picks **Q1 2026 gross margin of 21.1%** while ignoring the immediate reversion to **16.8% in Q2 2026**. Even in dollars, gross profit barely moved (**$4.72B in Q1 2026** to **$4.75B in Q2 2026**) while revenue jumped (**$22.39B** to **$28.24B**), which is the opposite of operating leverage.\n\nOn “earnings power hasn’t collapsed,” the defense points to cash-flow quality (**FY2025 OCF $14.75B; OCF/NI 3.89x**), but that doesn’t rebut the collapse in earnings itself: **operating income fell to $4.36B in FY2025 from $13.66B (FY2022)** and net income fell to **$3.79B in FY2025 from $15.00B (FY2023)**. And the recent-quarter fragility remains: operating income dropped from **$1.62B (2025-09-30)** to **$398M (2026-06-30)**.\n\nFor the record, the defense **concedes** that **gross and operating margins have declined since 2022** (Charge 2’s core factual premise).",
+  "bearCase": "1) **Charge: Weakening revenue trajectory and stalled growth.** Annual revenue peaked at **$97.69B (FY 2024)** then declined to **$94.83B (FY 2025)**, a **-2.9% YoY** contraction, leaving revenue **below FY 2023’s $96.77B** despite years of expansion investment [Exhibit A]. This is not a temporary plateau: FY 2024 was only **+0.9% YoY** before the drop in FY 2025, signaling a multi-year slowdown [Exhibit A].\n\n2) **Charge: Shrinking margins and collapsing profitability despite roughly stable revenue.** Gross margin fell from **25.6% (FY 2022)** to **18.2% (FY 2023)** and remained depressed at **~18.0% (FY 2025)**, while operating margin deteriorated from **16.8% (FY 2022)** to **4.6% (FY 2025)** [Exhibit A]. Operating income dropped from **$13.66B (FY 2022)** to **$4.36B (FY 2025)** and net income fell from **$15.00B (FY 2023)** to **$3.79B (FY 2025)**—a severe earnings compression inconsistent with a healthy growth story [Exhibit A].\n\n3) **Charge: Rising debt and balance-sheet leverage during profit decline.** Long-term debt rose from **$1.03B (FY 2022)** to **$5.54B (FY 2024)** and further to **$7.72B (2026-06-30)**, while total liabilities increased from **$48.39B (FY 2024)** to **$61.01B (2026-06-30)** [Exhibit A]. Interest expense also stepped up versus prior years—**$156M (FY 2023)** to **$350M (FY 2024)** and **$338M (FY 2025)**—adding fixed financial burden as operating income contracts [Exhibit A].\n\n4) **Charge: Most recent quarters show renewed margin stress, cost escalation, and governance churn.** Operating margin fell to **1.4% (2026-06-30)** from **5.8% (2025-09-30)** and operating income sank to **$398M (2026-06-30)** from **$1.62B (2025-09-30)**, while gross margin also dropped from **21.1% (2026-03-31)** to **16.8% (2026-06-30)** [Exhibit A]. At the same time, R&D spending accelerated from **$1.63B (2025-09-30)** to **$2.37B (2026-06-30)**, and two **amber** 8-Ks report **director/officer departures/appointments** on **2025-08-04** and **2025-11-07**, compounding execution risk during a profitability downturn [Exhibit A].",
+  "defense": "**Charge 1**\nThe revenue contraction in FY 2025 reflects a sector-wide macroeconomic headwind rather than a structural failure, as evidenced by our competitor General Motors experiencing a similar -2.1% revenue decline in the exact same year [Exhibit B]. Tesla has already decisively reversed this trend, with recent quarterly revenue accelerating sharply by +15.8% year-over-year in March 2026 and by +25.5% year-over-year to a record $28.24B in June 2026 [Exhibit A]. \n\n**Charge 2**\nProfitability compression is an industry-wide reality, with General Motors' operating margin plunging to a mere 1.7% in FY 2025, highlighting that Tesla's 4.6% operating margin actually represents sector-leading resilience [Exhibit A, Exhibit B]. Furthermore, Tesla's margin decline is largely driven by deliberate growth investments, as R&D expense was aggressively scaled from $3.08B in FY 2022 to $6.41B in FY 2025 to secure future market dominance [Exhibit A].\n\n**Charge 3**\nThe prosecution mischaracterizes Tesla's leverage, ignoring that as of June 2026, the company holds $86.86B in stockholders' equity, resulting in an exceptionally pristine long-term debt-to-equity ratio of just 0.09 [Exhibit A]. Tesla's balance sheet remains fortress-like, with $15.22B in cash and equivalents as of June 2026 and robust FY 2025 operating cash flows of $14.75B, which easily service the modest $338M annual interest expense without risking solvency [Exhibit A].\n\n**Charge 4**\nThe supposed cost escalation in recent quarters is a conscious, forward-looking investment strategy, with R&D purposefully accelerated to $2.37B in June 2026 to fund next-generation product pipelines [Exhibit A]. The amber executive transitions cited from late 2025 were fully remediated without material disruption, allowing the company to successfully oversee massive top-line reacceleration in 2026 [Exhibit A]. Despite aggressively funding this heavy R&D cycle, Tesla's operations remain highly profitable, successfully delivering $1.11B in net income in the June 2026 quarter [Exhibit A].",
+  "rebuttal": "1) The “decisive reversal” claim doesn’t answer the charge of stalled *annual* growth: revenue was **$96.77B (FY 2023)**, **$97.69B (FY 2024, +0.9%)**, then fell to **$94.83B (FY 2025, -2.9%)**—still **below FY 2023**. A couple of higher YoY quarters in 2026 doesn’t erase a two-year plateau and then contraction in the audited annuals.\n\n2) The “sector-leading resilience” framing collapses on Tesla’s own recent operating results: operating margin fell to **1.4% (2026-06-30)** from **5.8% (2025-09-30)**. Operating income likewise dropped from **$1.62B (2025-09-30)** to **$398M (2026-06-30)**, confirming renewed margin stress.\n\n3) Blaming the margin deterioration mainly on “deliberate R&D investment” ignores that the biggest compression is at the gross line: gross margin fell from **25.6% (FY 2022)** to **~18.0% (FY 2025)**. And while R&D rose from **$4.54B (FY 2024)** to **$6.41B (FY 2025)**, operating income still fell from **$7.08B** to **$4.36B** on only a modest revenue change (**$97.69B** to **$94.83B**)—that’s worsening operating leverage, not just “investment.”\n\n4) “Fortress-like” balance sheet rhetoric omits the direction of travel: long-term debt increased from **$1.03B (FY 2022)** to **$7.72B (2026-06-30)** while interest expense ran **$338M (FY 2025)** versus **$156M (FY 2023)**. Total liabilities also rose from **$48.39B (FY 2024)** to **$61.01B (2026-06-30)** as cash fell to **$15.22B (2026-06-30)** from **$18.29B (2025-09-30)**—more obligations alongside thinner profitability.\n\nFor the record, the defense conceded **no** charge.",
   "verdict": {
-    "summary": "The tribunal finds a company with a fortress balance sheet but genuinely compressed profitability, sustaining the margin charge, partially sustaining growth and earnings-power charges, and dismissing the leverage charge.\n\nThe defense conceded the core of Charge 2 — gross margin fell from 25.6% (FY2022) to ~18% and reverted to 16.8% in Q2 2026, which R&D spending cannot explain since it sits below the gross line — and the prosecution's point that gross profit dollars were flat ($4.72B to $4.75B) while revenue jumped survived cross-examination. However, the defense convincingly refuted the leverage charge with $15.22B cash against $7.72B long-term debt, 0.09 debt-to-equity, and 12.9x interest coverage, and the 3.89x OCF/NI ratio demonstrates earnings quality even as headline earnings collapsed. The FY2025 revenue decline stands as fact, but two consecutive quarters of 15.8% and 25.5% YoY growth materially blunt the growth charge going forward.\n\nWatch whether the Q1-Q2 2026 revenue acceleration sustains through the full year and whether gross margin can hold above the high-teens rather than reverting toward 16.8% as it did in Q2 2026. The elevated R&D run-rate ($2.37B in Q2 2026 alone) must eventually translate into operating leverage; if operating income remains near the $398M quarterly level despite ~$28B revenue, the structural-compression thesis wins. Also monitor the trajectory of total liabilities, which rose from $48.39B to $61.01B over 18 months.",
+    "summary": "The tribunal finds Tesla financially sound at the balance-sheet level but suffering genuine and unresolved profitability erosion, warranting a moderately healthy score of 62.\n\nCharges on margin compression survived cross-examination decisively — the prosecution's point that the largest deterioration is at the gross line (25.6% to ~18.0%) undercuts the defense's 'deliberate R&D investment' framing, and the 1.4% operating margin in the June 2026 quarter confirms ongoing stress. However, the leverage charge was convincingly refuted: a 0.09 long-term debt-to-equity ratio, $15.22B cash, and $14.75B operating cash flow against $338M interest expense is genuinely fortress-like despite the unfavorable direction of travel. The growth charge is only partially valid because the annual contraction is factual, but the +15.8% and +25.5% YoY quarterly reacceleration in 2026 materially blunts the 'stalled growth' narrative.\n\nWatch whether the 2026 revenue reacceleration converts into gross margin recovery, or whether volume is being bought with price cuts that keep operating margins pinned near breakeven. Monitor whether R&D spending ($2.37B/quarter and rising) begins yielding monetizable product revenue, and track the trajectory of total liabilities and cash burn. Executive stability following the late-2025 departures also deserves continued scrutiny.",
     "charges": [
       {
-        "charge": "Revenue growth stalled and turned negative, falling to $94.83B in FY2025 (-2.9% YoY), below the FY2023 peak of $96.77B.",
-        "rebuttal": "The decline mirrored a sector-wide headwind (GM -2.1% in FY2025) and has already reversed with 15.8% and 25.5% YoY growth in Q1 and Q2 2026, far outpacing GM.",
+        "charge": "Annual revenue peaked at $97.69B (FY 2024) then contracted -2.9% to $94.83B (FY 2025), below FY 2023 levels, indicating multi-year stalled growth.",
+        "rebuttal": "The decline was a sector-wide headwind (GM fell -2.1%) and has been decisively reversed with +15.8% and +25.5% YoY quarterly growth in 2026, including a record $28.24B June quarter.",
         "status": "PARTIALLY VALID",
         "category": "growth"
       },
       {
-        "charge": "Margin compression is severe and structural, with gross margin down from 25.6% (FY2022) to ~18% and operating margin down to 4.6% (FY2025) and 1.4% in the latest quarter.",
-        "rebuttal": "The compression reflects deliberate R&D investment ($6.41B in FY2025) and industry-wide pressure, with Tesla's 4.6% operating margin still beating GM's 1.7% and Q1 2026 gross margin recovering to 21.1%.",
+        "charge": "Gross margin fell from 25.6% (FY 2022) to ~18.0% (FY 2025) and operating margin from 16.8% to 4.6%, with net income collapsing from $15.00B to $3.79B.",
+        "rebuttal": "Compression is industry-wide (GM at 1.7% operating margin) and largely reflects deliberate R&D scaling from $3.08B to $6.41B to secure future dominance.",
         "status": "SUSTAINED",
         "category": "profitability"
       },
       {
-        "charge": "Earnings power has collapsed, with operating income falling from $13.66B (FY2022) to $4.36B (FY2025) and net income from $15.00B to $3.79B, plus quarterly operating income cratering to $398M.",
-        "rebuttal": "FY2025 operating cash flow of $14.75B covered net income 3.89x, demonstrating high earnings quality, and the compression reflects R&D scaling rather than business failure, with GM's collapse far steeper.",
-        "status": "PARTIALLY VALID",
-        "category": "earnings_quality"
-      },
-      {
-        "charge": "Leverage and fixed financial burdens are rising, with total liabilities up to $61.01B, long-term debt to $7.72B, interest expense elevated at $338M, plus governance-change amber flags in late 2025.",
-        "rebuttal": "Long-term debt of $7.72B is dwarfed by $15.22B in cash (0.09 debt-to-equity), interest is covered 12.9x by operating cash flow, and the officer transitions were routine with a clean 8-K docket through H1 2026.",
+        "charge": "Long-term debt rose from $1.03B (FY 2022) to $7.72B (2026-06-30) and total liabilities from $48.39B to $61.01B while interest expense more than doubled to ~$338M.",
+        "rebuttal": "With $86.86B in equity the long-term debt-to-equity ratio is just 0.09, and $15.22B cash plus $14.75B in FY 2025 operating cash flow easily services the modest interest burden.",
         "status": "DISMISSED",
         "category": "leverage"
+      },
+      {
+        "charge": "Recent quarters show renewed stress with operating margin down to 1.4% (2026-06-30) from 5.8%, operating income sinking to $398M, plus R&D escalation and two amber director/officer departure 8-Ks.",
+        "rebuttal": "Cost escalation is a conscious forward investment in next-generation products, executive transitions were remediated without disruption, and the June 2026 quarter still delivered $1.11B in net income.",
+        "status": "PARTIALLY VALID",
+        "category": "profitability"
+      },
+      {
+        "charge": "",
+        "rebuttal": "",
+        "status": "DISMISSED",
+        "category": "other"
       }
     ],
     "score": 62,
-    "recommendation": "Hold with caution. The balance sheet is genuinely fortress-like — net cash position, negligible leverage, and operating cash flow of $14.75B that dwarfs both interest obligations and reported net income — so distress risk is minimal. However, the sustained erosion of gross and operating margins is real, conceded by the defense, and not fully explained by R&D investment; the company is currently growing revenue without converting it into profit. Investors should not add aggressively until gross margin stabilizes above 19-20% and quarterly operating income shows a durable rebound from the $398M trough; those already holding can rely on liquidity strength to wait out the transition, but should treat further gross-margin deterioration as a sell signal.",
+    "recommendation": "Hold, or accumulate cautiously on weakness. Tesla's balance sheet is unambiguously strong — minimal leverage, ample cash, and robust operating cash flow eliminate solvency risk — and 2026 revenue is reaccelerating sharply. But the sustained collapse in gross and operating margins means the earnings engine is impaired: investors are paying for a growth story whose profitability has not yet recovered. Position sizing should reflect that the stock's health depends on margin recovery materializing alongside the top-line rebound; a return of gross margins above 20% would justify upgrading conviction, while continued sub-2% operating margins would warrant reduction.",
     "revenueCall": "rise",
     "revenueCallConfidence": "high"
   },
   "usage": {
     "prosecutor": {
       "promptTokens": 3481,
-      "completionTokens": 1548,
-      "totalTokens": 5029,
-      "cachedTokens": 0,
-      "cost": 0.02776375,
+      "completionTokens": 1530,
+      "totalTokens": 5011,
+      "cachedTokens": 3328,
+      "cost": 0.02227015,
       "model": "openai/gpt-5.2",
       "fellBack": false
     },
     "defense": {
-      "promptTokens": 7497,
-      "completionTokens": 3441,
-      "totalTokens": 10938,
+      "promptTokens": 7426,
+      "completionTokens": 2692,
+      "totalTokens": 10118,
       "cachedTokens": 0,
-      "cost": 0.056286,
+      "cost": 0.047156,
       "model": "google/gemini-3.1-pro-preview",
       "fellBack": false
     },
     "rebuttal": {
-      "promptTokens": 4794,
-      "completionTokens": 1218,
-      "totalTokens": 6012,
-      "cachedTokens": 0,
-      "cost": 0.0254415,
+      "promptTokens": 4555,
+      "completionTokens": 1470,
+      "totalTokens": 6025,
+      "cachedTokens": 2688,
+      "cost": 0.02431765,
       "model": "openai/gpt-5.2",
       "fellBack": false
     },
     "judge": {
-      "promptTokens": 4496,
-      "completionTokens": 1809,
-      "totalTokens": 6305,
+      "promptTokens": 4116,
+      "completionTokens": 1803,
+      "totalTokens": 5919,
       "cachedTokens": 0,
-      "cost": 0.13541,
+      "cost": 0.13131,
       "model": "anthropic/claude-fable-5",
       "fellBack": false
     },
     "total": {
-      "promptTokens": 20268,
-      "completionTokens": 8016,
-      "totalTokens": 28284,
-      "cachedTokens": 0,
-      "cost": 0.24490125000000001,
+      "promptTokens": 19578,
+      "completionTokens": 7495,
+      "totalTokens": 27073,
+      "cachedTokens": 6016,
+      "cost": 0.22505380000000003,
       "model": "",
       "fellBack": false
     }

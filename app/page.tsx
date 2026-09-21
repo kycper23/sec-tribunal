@@ -52,6 +52,28 @@ const formatElapsed = (totalSeconds: number): string => {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
+/** Shape returned by GET /api/treasury — the public demo's live balance bar. */
+type TreasuryStatus = {
+  availableUsd: number | null
+  trialsLeft: number | null
+  perTrialUsd: number | null
+}
+
+/**
+ * "TRIBUNAL TREASURY: 76.2 CREDIT · 87 free trials left today · ~0.22 CREDIT per ruling"
+ * Each segment is optional and silently skipped if its data isn't a usable number —
+ * this status bar is a bonus, never worth breaking the page over.
+ */
+const formatTreasuryLine = (t: TreasuryStatus): string | null => {
+  const parts: string[] = []
+  if (typeof t.availableUsd === 'number') parts.push(`${t.availableUsd.toFixed(1)} CREDIT`)
+  if (t.trialsLeft === 0) parts.push('the docket is full until 00:00 UTC')
+  else if (typeof t.trialsLeft === 'number') parts.push(`${t.trialsLeft} free trials left today`)
+  if (typeof t.perTrialUsd === 'number') parts.push(`~${t.perTrialUsd.toFixed(2)} CREDIT per ruling`)
+  if (parts.length === 0) return null
+  return `TRIBUNAL TREASURY: ${parts.join(' · ')}`
+}
+
 /** Five-phase ordering used by the phase progress bar (mirrors the stepper's own steps). */
 const PHASE_ORDER: Phase[] = ['evidence', 'prosecution', 'defense', 'rebuttal', 'verdict']
 
@@ -115,6 +137,13 @@ const trialErrorMessage = (err: unknown): string => {
     return message || 'The tribunal could not convene. Please try again.'
   }
   if (/No usable us-gaap financial data|Unknown ticker/i.test(message)) {
+    return message
+  }
+  if (
+    /The tribunal needs a recess|free trials have all been heard|CREDIT treasury is spent/i.test(
+      message,
+    )
+  ) {
     return message
   }
   return 'The tribunal could not convene. Please try again.'
@@ -209,11 +238,24 @@ export default function Courtroom() {
   // report is revealed, and hides itself as soon as the verdict card scrolls
   // into view (tracked via IntersectionObserver on verdictRef).
   const [verdictInView, setVerdictInView] = useState(false)
+  // Treasury status bar under the masthead: live balance + free-trial count.
+  // Purely decorative — a failed fetch just leaves it null and the bar stays hidden.
+  const [treasury, setTreasury] = useState<TreasuryStatus | null>(null)
 
   // The ledger lives in localStorage: read only after mount so the server
   // render (empty) always matches the first client render.
   useEffect(() => {
     setLedger(loadLedger())
+  }, [])
+
+  // Treasury status bar: fetch once on mount. Never surfaces an error to the
+  // user — the bar is an extra, not load-bearing, so a failure just means it
+  // stays hidden.
+  useEffect(() => {
+    fetch('/api/treasury')
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error('treasury fetch failed'))))
+      .then((data: TreasuryStatus) => setTreasury(data))
+      .catch(() => {})
   }, [])
 
   // Scroll hint listener: hide the ↓ prompt once the user has scrolled.
@@ -543,9 +585,16 @@ export default function Courtroom() {
         </p>
       </header>
 
+      {treasury && formatTreasuryLine(treasury) && (
+        <p className="live-cost-meter">{formatTreasuryLine(treasury)}</p>
+      )}
+
+      <div className="actions">
+        <Link className="link-button" href="/dossier/TSLA">See a finished ruling →</Link>
+      </div>
+
       <nav className="nav-links">
         <Link href="/compare">Double trial (compare two tickers)</Link>
-        <Link href="/dossier/TSLA">Example trial: TSLA</Link>
       </nav>
 
       <section className="how-it-works" aria-label="How the tribunal works">
@@ -766,7 +815,7 @@ export default function Courtroom() {
       <ProphecyLedger entries={ledger} onClear={wipeLedger} />
 
       <footer className="footer">
-        Built for Orbio Build Week · Data: SEC EDGAR XBRL companyfacts · Not investment advice.
+        Built for Orbio Build Week · Data: SEC EDGAR XBRL companyfacts · Not investment advice · <Link href="/methodology">Methodology</Link>
       </footer>
     </main>
   )

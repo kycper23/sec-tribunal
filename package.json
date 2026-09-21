@@ -24,6 +24,7 @@
     "precompute": "tsx src/tribunal/precompute.ts",
     "backtest": "tsx src/tribunal/backtest.ts",
     "brief": "tsx src/sec/preview.ts",
+    "test": "tsx --test src/sec/forensics.test.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint ."
   },

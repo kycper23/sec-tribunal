@@ -17,6 +17,7 @@ import {
 } from '../../../src/sec/facts.js'
 import { renderForensics, runForensics, type ForensicsResult } from '../../../src/sec/forensics.js'
 import { findPeer } from '../../../src/tribunal/peers.js'
+import { canConveneNow, recordIp, recordTrial } from '../../../src/orbio/treasury.js'
 import { asString, jsonError, withErrorHandling } from '../_lib.js'
 
 export const maxDuration = 60
@@ -24,7 +25,27 @@ export const maxDuration = 60
 /** YYYY-MM-DD only — anything else is treated as "no cutoff" (live trial). */
 const CUTOFF_RE = /^\d{4}-\d{2}-\d{2}$/
 
+const RATE_LIMIT_MESSAGE =
+  'You have held several trials this hour. The tribunal needs a recess — try again later, or read a finished ruling.'
+const DAILY_LIMIT_MESSAGE =
+  "Today's 100 free trials have all been heard. The docket reopens at 00:00 UTC — meanwhile, a finished ruling is on file."
+const TREASURY_EMPTY_MESSAGE = "The tribunal's CREDIT treasury is spent. A finished ruling is on file."
+
 export const POST = withErrorHandling(async (req: Request) => {
+  const forwardedFor = req.headers.get('x-forwarded-for') ?? ''
+  const ip = forwardedFor.split(',')[0]?.trim() || 'unknown'
+
+  const gate = await canConveneNow(ip)
+  if (!gate.ok) {
+    const message =
+      gate.reason === 'rate-limit'
+        ? RATE_LIMIT_MESSAGE
+        : gate.reason === 'daily-limit'
+          ? DAILY_LIMIT_MESSAGE
+          : TREASURY_EMPTY_MESSAGE
+    return jsonError(message, 429)
+  }
+
   const body = (await req.json().catch(() => ({}))) as Record<string, unknown>
   const ticker = asString(body.ticker).trim().toUpperCase()
   if (!ticker || ticker.length > 10) return jsonError('Provide a ticker, e.g. TSLA.')
@@ -86,6 +107,9 @@ export const POST = withErrorHandling(async (req: Request) => {
     peer = null
     peerBrief = null
   }
+
+  recordTrial()
+  recordIp(ip)
 
   return NextResponse.json({
     company,

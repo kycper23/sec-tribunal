@@ -8,6 +8,7 @@ import { resolve } from 'node:path'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { TrialResult } from '../../../src/tribunal/run.js'
+import AskArbiter from '../../components/ask-arbiter'
 import { BillReceipt } from '../../components/court-bill'
 import { DocketPanel } from '../../components/docket'
 import { ForensicReport } from '../../components/forensic-report'
@@ -123,6 +124,8 @@ export default async function DossierPage({ params }: { params: Promise<{ ticker
           }
         />
       )}
+
+      <AskArbiter brief={demo.brief} verdict={demo.verdict} />
 
       <div className="actions">
         <Link className="link-button" href="/">

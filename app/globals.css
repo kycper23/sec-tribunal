@@ -286,12 +286,14 @@ body {
 .link-button:hover { background: var(--frame); color: var(--panel); border-color: var(--frame); }
 
 .nav-links { display: flex; gap: 0.6rem; justify-content: center; margin-bottom: 1rem; font-size: 0.8rem; flex-wrap: wrap; }
-.nav-links a {
+.nav-links a, .nav-links button {
   color: #ede4d0; text-decoration: none; letter-spacing: 0.04em; font-family: var(--mono);
   padding: 0.3rem 0.8rem; border-radius: 0; background: rgba(12, 8, 5, 0.88); border: 1px solid #b8862b;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
-.nav-links a:hover { color: #1c1913; border-color: #b8862b; background: #b8862b; }
+.nav-links a:hover, .nav-links button:hover:not(:disabled) { color: #1c1913; border-color: #b8862b; background: #b8862b; }
+.nav-links button { font-size: inherit; line-height: inherit; cursor: pointer; }
+.nav-links button:disabled { opacity: 0.5; cursor: wait; }
 
 @media (max-width: 640px) {
   .masthead h1 { font-size: 2.2rem; }

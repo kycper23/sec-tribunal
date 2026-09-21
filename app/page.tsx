@@ -6,6 +6,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import AskArbiter from './components/ask-arbiter'
 import { AgentBench, type BenchStates } from './components/agent-bench'
 import { BlindTrialToggle } from './components/blind-trial-toggle'
 import { BillReceipt, CostBadge, CourtBill } from './components/court-bill'
@@ -195,6 +196,7 @@ export default function Courtroom() {
   const [speeches, setSpeeches] = useState<Speech[]>([])
   const [verdict, setVerdict] = useState<Verdict | null>(null)
   const [company, setCompany] = useState<Company | null>(null)
+  const [brief, setBrief] = useState<string | null>(null)
   const [bench, setBench] = useState<BenchStates>(BENCH_IDLE)
   const [bill, setBill] = useState<BillEntry[]>([])
   // Flashes true for a moment right after a phase's model call lands, so the
@@ -395,6 +397,7 @@ export default function Courtroom() {
     setSpeeches([])
     setVerdict(null)
     setCompany(null)
+    setBrief(null)
     setBench(BENCH_IDLE)
     setBill([])
     setDocket(null)
@@ -430,6 +433,7 @@ export default function Courtroom() {
         forensic: ForensicsResult
       }>('/api/evidence', { ticker: t, ...(sealAt ? { cutoff: sealAt } : {}) })
       setCompany(ev.company)
+      setBrief(ev.brief)
       setDocket(ev.docket)
       setForensic(ev.forensic)
       setSeries(ev.series)
@@ -727,6 +731,7 @@ export default function Courtroom() {
       <TrialProgress phase={phase} done={phaseDone} />
 
       {(busy || speeches.length > 0) && <CourtBill entries={bill} />}
+      {verdict && brief && <AskArbiter brief={brief} verdict={verdict} />}
 
       {speeches.map((s, i) => (
         <section key={i} className={`speech ${s.role}`}>
